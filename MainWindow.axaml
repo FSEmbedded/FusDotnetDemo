@@ -1,0 +1,52 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        x:Class="IoTLib_Test.MainWindow"
+        xmlns:vm="clr-namespace:IoTLib_Test"
+        x:DataType="vm:MainWindow"
+        mc:Ignorable="d"
+        Width="300" d:DesignWidth="300"
+        Height="240" d:DesignHeight="240"
+        Title="IoTLib_Test">
+  <Grid Margin="5">
+    <Grid.Styles>
+      <Style Selector="Button">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="5"/>
+      </Style>
+      <Style Selector="StackPanel">
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Grid.Row" Value="0"/>
+      </Style>
+      <Style Selector="TextBlock">
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Margin" Value="5"/>
+      </Style>
+      <Style Selector="DockPanel">
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="Margin" Value="5"/>
+      </Style>
+    </Grid.Styles>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+    <StackPanel Grid.Column="0">
+      <Button Name="btnGpio" Content="GPIO Test"/>
+      <Button Name="btn1" Content="Empty"/>
+      <Button Name="btn2" Content="Empty"/>
+      <Button Name="btn3" Content="Empty"/>
+    </StackPanel>
+    <StackPanel Grid.Column="1">
+      <Button Name="btn4" Content="Empty"/>
+      <Button Name="btn5" Content="Empty"/>
+      <Button Name="btn6" Content="Empty"/>
+      <Button Name="btn7" Content="Empty"/>
+    </StackPanel>
+    <DockPanel>
+      <TextBlock Name="tbInfo"/>
+    </DockPanel>
+  </Grid>
+  
+</Window>
