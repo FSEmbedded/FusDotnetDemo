@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "IoTLib_Test": {
+      "commandName": "Project",
+      "remoteDebugEnabled": false
+    }
+  }
+}
