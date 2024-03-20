@@ -14,26 +14,22 @@ namespace IoTLib_Test
     public partial class MainWindow : Window
     {
         /* GPIO_LED Pin Number*/
-        int GPIO_J1_54 = 1;
+        readonly int GPIO_J1_54 = 1;
         /* GPIO_Input Pin Number */
-        int GPIO_J1_52 = 78;
+        readonly int GPIO_J1_52 = 78;
 
         /* GPIO_LED Values */
-        int ledBank;
-        int ledPin;
+        readonly int ledBank;
+        readonly int ledPin;
         GpioDriver? drvLed;
         /* GPIO_Input values */
-        int inputBank;
-        int inputPin;
+        readonly int inputBank;
+        readonly int inputPin;
         GpioDriver? drvInput;
-        /* Used for button (de)activation */
-        bool LedButtonEnabled = true;
-        bool GpioInButtonEnabled = true;
 
         bool LedIsOn = false;
         int buttonClickCount;
         GpioController? inputController;
-        GpioController? ledController;
 
         public MainWindow()
         {
@@ -45,19 +41,19 @@ namespace IoTLib_Test
             drvLed = new LibGpiodDriver(ledBank);
             /* GPIO_LED button bindings */
             btnLedOn.Command = ReactiveCommand.Create(LedOn);
-            btnLedOn.IsEnabled = LedButtonEnabled;
+            btnLedOn.IsEnabled = true;
             btnLedBlink.Command = ReactiveCommand.Create(LedBlink);
             btnLedOff.Command = ReactiveCommand.Create(LedOff);
-            btnLedOff.IsEnabled = !LedButtonEnabled;
+            btnLedOff.IsEnabled = false;
             /* GPIO_Input */
             inputBank = PinConverter.GetGpioBank(GPIO_J1_52);
             inputPin = PinConverter.GetGpioPin(GPIO_J1_52);
             drvInput = new LibGpiodDriver(inputBank);
             /* GPIO_Input button bindings */
             btnGpioInputActive.Command = ReactiveCommand.Create(ReadGpioInput);
-            btnGpioInputActive.IsEnabled = GpioInButtonEnabled;
+            btnGpioInputActive.IsEnabled = true;
             btnGpioInputInactive.Command = ReactiveCommand.Create(StopGpioInput);
-            btnGpioInputInactive.IsEnabled = !GpioInButtonEnabled;
+            btnGpioInputInactive.IsEnabled = false;
         }
         #region GPIO_LED
         void LedOn()
@@ -69,8 +65,8 @@ namespace IoTLib_Test
 
             LedIsOn = true;
             tbInfo.Text = "LED on Pin J11-8 is on";
-            btnLedOn.IsEnabled = !LedButtonEnabled;
-            btnLedOff.IsEnabled = LedButtonEnabled;
+            btnLedOn.IsEnabled = false;
+            btnLedOff.IsEnabled = true;
         }
 
         void LedOff()
@@ -82,8 +78,8 @@ namespace IoTLib_Test
 
             LedIsOn = false;
             tbInfo.Text = "LED on Pin J11-8 is off";
-            btnLedOn.IsEnabled = LedButtonEnabled;
-            btnLedOff.IsEnabled = !LedButtonEnabled;
+            btnLedOn.IsEnabled = true;
+            btnLedOff.IsEnabled = false;
         }
 
         void LedBlink()
@@ -114,10 +110,7 @@ namespace IoTLib_Test
             /* Reset counter */
             buttonClickCount = 0;
 
-            inputBank = PinConverter.GetGpioBank(GPIO_J1_52);
-            inputPin = PinConverter.GetGpioPin(GPIO_J1_52);
             drvInput = new LibGpiodDriver(inputBank);
-
             inputController = new GpioController(PinNumberingScheme.Logical, drvInput);
             inputController.OpenPin(inputPin, PinMode.InputPullUp);
             /* Set event for hardware button clicked */
@@ -132,8 +125,8 @@ namespace IoTLib_Test
                 ButtonReleased);
 
             tbInfo.Text = "Waiting for Hardware-Button click";
-            btnGpioInputActive.IsEnabled = !GpioInButtonEnabled;
-            btnGpioInputInactive.IsEnabled = GpioInButtonEnabled;
+            btnGpioInputActive.IsEnabled = false;
+            btnGpioInputInactive.IsEnabled = true;
         }
 
         void StopGpioInput()
@@ -143,33 +136,23 @@ namespace IoTLib_Test
                 inputController.ClosePin(inputPin);
                 inputController.Dispose();
             }
-            if(ledController != null)
-            {
-                ledController.ClosePin(ledPin);
-                ledController.Dispose();
-            }
             /* Turn off the lights before leaving */
             LedOff();
 
             tbInfo.Text = "Hardware-Button deactivated";
-            btnGpioInputActive.IsEnabled = GpioInButtonEnabled;
-            btnGpioInputInactive.IsEnabled = !GpioInButtonEnabled;
+            btnGpioInputActive.IsEnabled = true;
+            btnGpioInputInactive.IsEnabled = false;
         }
 
         async void ButtonClicked(object sender, PinValueChangedEventArgs args)
         {
-            bool tempLedIsOn = LedIsOn;
-
-            await Dispatcher.UIThread.InvokeAsync(async () =>
-            {
-                LedOn();
-            });
             /* Only update text if LED switched from off to on */
-            if (tempLedIsOn != LedIsOn)
+            if (!LedIsOn)
             {
                 await Dispatcher.UIThread.InvokeAsync(async () =>
                 {
-                    UpdateInfoText(); //TODO
+                    LedOn();
+                    UpdateInfoText();
                 });
             }
         }

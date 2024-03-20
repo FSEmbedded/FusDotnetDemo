@@ -58,7 +58,7 @@
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
       <Button Name="btnGpioInputActive" Content="Start GPIO Input" Grid.Column="0"/>
-      <TextBlock Name="tbGpioIn" TextWrapping="Wrap" Grid.Column="1"/>
+      <TextBlock Name="tbGpioIn" TextWrapping="Wrap" Grid.Column="1" Foreground="Blue"/>
       <Button Name="btnGpioInputInactive" Content="Stop GPIO Input" Grid.Column="2"/>
     </Grid>
     <Border/>
