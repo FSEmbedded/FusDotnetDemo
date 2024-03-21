@@ -23,6 +23,13 @@
   </ItemGroup>
 
 
+  <ItemGroup>
+    <Compile Update="Views\UserControl_I2c.axaml.cs">
+      <DependentUpon>UserControl_I2c.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="powershell.exe .\copy_to_board.ps1" />
   </Target>

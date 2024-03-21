@@ -4,110 +4,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         x:Class="IoTLib_Test.MainWindow"
         xmlns:vm="clr-namespace:IoTLib_Test"
+        xmlns:views="clr-namespace:IoTLib_Test.Views"
         x:DataType="vm:MainWindow"
         mc:Ignorable="d"
         Width="400" d:DesignWidth="400"
-        Height="400" d:DesignHeight="400"
-        Title="IoTLib_Test">
+        Height="300" d:DesignHeight="300"
+        SystemDecorations="BorderOnly"
+        CanResize="False"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome"
+        ExtendClientAreaTitleBarHeightHint="0">
 
-  <StackPanel Margin="5">
-    <StackPanel.Styles>
-      <Style Selector="Button">
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="Margin" Value="5"/>
-        <Setter Property="FontSize" Value="10"/>
-      </Style>
-      <Style Selector="StackPanel">
-        <Setter Property="Margin" Value="5"/>
-        <Setter Property="Grid.Row" Value="0"/>
-      </Style>
-      <Style Selector="TextBlock">
+  <TabControl>
+    <TabControl.Styles>
+      <Style Selector="TabItem">
         <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontWeight" Value="DemiBold"/>
       </Style>
-      <Style Selector="DockPanel">
-        <Setter Property="VerticalAlignment" Value="Bottom"/>
-        <Setter Property="Margin" Value="5"/>
-      </Style>
-      <Style Selector="Border">
-        <Setter Property="BorderThickness" Value="0.6"/>
-        <Setter Property="BorderBrush" Value="Black"/>
-        <Setter Property="Margin" Value="0,0,0,3"/>
-      </Style>
-    </StackPanel.Styles>
-
-    <TextBlock Text="GPIO LED Test" FontWeight="Bold"/>
-    <TextBlock Text="Connect LED to PcoreBBDSI Rev1.40 - J11-8 / J11-11" FontSize="10"/>
-    <Grid>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-      </Grid.ColumnDefinitions>
-      <Button Name="btnLedOn" Content="LED On" Grid.Column="0"/>
-      <Button Name="btnLedBlink" Content="LED Blinking" Grid.Column="1"/>
-      <Button Name="btnLedOff" Content="LED Off" Grid.Column="2"/>
-    </Grid>
-    <Border/>
-
-    <TextBlock Text="GPIO Input Test" FontWeight="Bold"/>
-    <TextBlock Text="Connect LED to PcoreBBDSI Rev1.40 - J11-18 / J11-27" FontSize="10"/>
-    <Grid>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-      </Grid.ColumnDefinitions>
-      <Button Name="btnGpioInputActive" Content="Start GPIO Input" Grid.Column="0"/>
-      <TextBlock Name="tbGpioIn" TextWrapping="Wrap" Grid.Column="1" Foreground="Blue"/>
-      <Button Name="btnGpioInputInactive" Content="Stop GPIO Input" Grid.Column="2"/>
-    </Grid>
-    <Border/>
-
-    <TextBlock Text="Read Sensor Input" FontWeight="Bold"/>
-    <TextBlock Text="Not yet implemented" FontSize="10"/>
-    <Grid>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-      </Grid.ColumnDefinitions>
-      <Button Name="btn4" Content="Empty" Grid.Column="0"/>
-      <Button Name="btn5" Content="Empty" Grid.Column="1"/>
-      <Button Name="btn6" Content="Empty" Grid.Column="2"/>
-    </Grid>
-    <Border/>
-
-    <TextBlock Text="Show text on LC-Display" FontWeight="Bold"/>
-    <TextBlock Text="Not yet implemented" FontSize="10"/>
-    <Grid>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-      </Grid.ColumnDefinitions>
-      <Button Name="btn7" Content="Empty" Grid.Column="0"/>
-      <Button Name="btn8" Content="Empty" Grid.Column="1"/>
-      <Button Name="btn9" Content="Empty" Grid.Column="2"/>
-    </Grid>
-    <Border/>
-
-    <TextBlock Text="Show text on LC-Display" FontWeight="Bold"/>
-    <TextBlock Text="Not yet implemented" FontSize="10"/>
-    <Grid>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-      </Grid.ColumnDefinitions>
-      <Button Name="btn10" Content="Empty" Grid.Column="0"/>
-      <Button Name="btn11" Content="Empty" Grid.Column="1"/>
-      <Button Name="btn12" Content="Empty" Grid.Column="2"/>
-    </Grid>
-    <Border/>
-
-    <DockPanel>
-      <TextBlock Name="tbInfo" FontWeight="Medium" TextWrapping="Wrap" Foreground="Blue"/>
-    </DockPanel>
-    
-  </StackPanel>
+    </TabControl.Styles>
+    <TabItem Header="GPIO Test">
+      <views:UserControl_Gpio/>
+    </TabItem>
+    <TabItem Header="I²C Test">
+      <views:UserControl_I2c/>
+    </TabItem>
+  </TabControl>
+  
 </Window>

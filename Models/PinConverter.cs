@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace IoTLib_Test
+﻿namespace IoTLib_Test.Models
 {
     static class PinConverter
     {
