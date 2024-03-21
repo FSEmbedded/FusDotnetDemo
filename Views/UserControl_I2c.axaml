@@ -29,9 +29,9 @@
       </Style>
     </StackPanel.Styles>
 
-    <TextBlock Text="Read Sensor Input" FontWeight="Bold"/>
-    <TextBlock Text="Not yet implemented" FontSize="10"/>
-
+    <!-- I2C Extension Board - LED Test -->
+    <TextBlock Text="I2C Extension Board - LED Test" FontWeight="Bold"/>
+    <TextBlock Name="tbDesc" FontSize="10"/>
     <StackPanel Orientation="Horizontal">
       <TextBlock Text="I²C Bus ID: "/>
       <TextBox Name="tbBusId"/>
@@ -40,14 +40,24 @@
       <TextBlock Text="I²C Device Address: " />
       <TextBox Name="tbDevAddr"/>
     </StackPanel>
-    <Button Name="btnI2c" Content="Start I²C" Background="LightGreen" Grid.Column="0"/>
+    <Button Name="btnI2cWrite" Content="Start I²C LED Test" Background="LightGreen"/>
+    <TextBlock Name="tbLedInfo" FontWeight="Medium" TextWrapping="Wrap" Foreground="Blue"/>
+    <Border/>
     
+    <!-- I2C Extension Board - Read Test -->
+    <TextBlock Text="I2C Extension Board - Read Test" FontWeight="Bold"/>
+    <Button Name="btnI2cRead" Content="Start I²C Read Test"/>
+    <TextBlock Name="tbI2cReadInfoSend" FontWeight="Medium" TextWrapping="Wrap"/>
+    <TextBlock Name="tbI2cReadInfoRead" FontWeight="Medium" TextWrapping="Wrap"/>
+    <Border/>
+    
+    <!-- I2C Extension Board - PWM Test -->
+    <TextBlock Text="I2C Extension Board - PWM Test" FontWeight="Bold"/>
+    <TextBlock Name="tbPwmDesc"/>
+    <Button Name="btnPwm" Content="Start I²C PWM Test"/>
+    <TextBlock Name="tbPwmSend" FontWeight="Medium" TextWrapping="Wrap" Foreground="Blue"/>
+    <TextBlock Name="tbPwmRead" FontWeight="Medium" TextWrapping="Wrap"/>
     <Border/>
 
-    <DockPanel>
-      <TextBlock Name="tbInfo" FontWeight="Medium" TextWrapping="Wrap" Foreground="Blue"/>
-    </DockPanel>
-
   </StackPanel>
-
 </UserControl>

@@ -1,7 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using IoTLib_Test.Models;
-using System.Device.Gpio;
+using System.Threading;
 
 namespace IoTLib_Test.Views;
 
@@ -28,7 +28,10 @@ public partial class UserControl_Gpio : UserControl
 
     void BtnLedOn_Clicked(object sender, RoutedEventArgs args)
     {
-        GpioOut!.LedOn();
+        Thread ledOnThread = new(new ThreadStart(GpioOut.LedOn));
+        ledOnThread.Start();
+
+        //GpioOut!.LedOn();
 
         btnLedOn.IsEnabled = false;
         btnLedOff.IsEnabled = true;
@@ -37,7 +40,10 @@ public partial class UserControl_Gpio : UserControl
 
     void BtnLedOff_Clicked(object sender, RoutedEventArgs args)
     {
-        GpioOut!.LedOff();
+        Thread ledOffThread = new(new ThreadStart(GpioOut.LedOff));
+        ledOffThread.Start();
+
+        //GpioOut!.LedOff();
 
         btnLedOn.IsEnabled = true;
         btnLedOff.IsEnabled = false;
@@ -46,27 +52,35 @@ public partial class UserControl_Gpio : UserControl
 
     void BtnLedBlink_Clicked(object sender, RoutedEventArgs args)
     {
-        GpioOut!.LedBlink();
+        Thread ledBlinkThread = new(new ThreadStart(GpioOut.LedBlink));
+        ledBlinkThread.Start();
+
+        //GpioOut!.LedBlink();
+
         tbInfo.Text = "LED on Pin J11-8 is blinking";
     }
 
     void BtnStartInput_Clicked(object sender, RoutedEventArgs args)
     {
-        GpioOut!.ReadGpioInput();
+        Thread inputThread = new(new ThreadStart(GpioOut.ReadGpioInput));
+        inputThread.Start();
+
+        //GpioOut!.ReadGpioInput();
 
         btnStartInput.IsEnabled = false;
         btnStopInput.IsEnabled = true;
-        btnControl.IsVisible = true; //TODO: Grün, wenn Hardware Button geklickt, rot wenn released
         tbInfo.Text = "Waiting for Hardware-Button click";
     }
 
     void BtnStopInput_Clicked(object sender, RoutedEventArgs args)
     {
-        GpioOut!.StopGpioInput();
+        Thread inputStopThread = new(new ThreadStart(GpioOut.StopGpioInput));
+        inputStopThread.Start();
+
+        //GpioOut!.StopGpioInput();
 
         btnStartInput.IsEnabled = true;
         btnStopInput.IsEnabled = false;
-        btnControl.IsVisible = false;
         tbInfo.Text = "Hardware-Button deactivated";
     }
 }

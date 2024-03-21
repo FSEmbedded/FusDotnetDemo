@@ -1,7 +1,7 @@
 ﻿using Avalonia.Threading;
+using System.Threading;
 using System.Device.Gpio;
 using System.Device.Gpio.Drivers;
-using System.Threading;
 
 namespace IoTLib_Test.Models
 {
@@ -19,6 +19,8 @@ namespace IoTLib_Test.Models
         readonly int inputPin;
         GpioDriver? drvGpioInput;
         GpioController? inputController;
+
+        bool ledIsOn = false;
 
         public Gpio_Tests()
         {
@@ -40,6 +42,8 @@ namespace IoTLib_Test.Models
             using var controller = new GpioController(PinNumberingScheme.Logical, drvGpioLed);
             controller.OpenPin(ledPin, PinMode.Output);
             controller.Write(ledPin, PinValue.High);
+
+            ledIsOn = true;
         }
 
         public void LedOff()
@@ -48,6 +52,8 @@ namespace IoTLib_Test.Models
             using var controller = new GpioController(PinNumberingScheme.Logical, drvGpioLed);
             controller.OpenPin(ledPin, PinMode.Output);
             controller.Write(ledPin, PinValue.Low);
+
+            ledIsOn = false;
         }
 
         public void LedBlink()
@@ -56,14 +62,14 @@ namespace IoTLib_Test.Models
             using var controller = new GpioController(PinNumberingScheme.Logical, drvGpioLed);
             controller.OpenPin(ledPin, PinMode.Output);
 
-            bool ledOn = false;
+            
             int blinkCount = 0;
             /* Blink 5 times */
             while (blinkCount < 10)
             {
-                controller.Write(ledPin, ledOn ? PinValue.Low : PinValue.High);
+                controller.Write(ledPin, ledIsOn ? PinValue.Low : PinValue.High);
                 Thread.Sleep(500);
-                ledOn = !ledOn;
+                ledIsOn = !ledIsOn;
                 blinkCount++;
             }
         }
@@ -85,6 +91,12 @@ namespace IoTLib_Test.Models
                 inputPin,
                 PinEventTypes.Rising,
                 ButtonReleased);
+
+            ///* Set event for hardware button released */
+            //inputController.RegisterCallbackForPinValueChangedEvent(
+            //    inputPin,
+            //    PinEventTypes.Falling | PinEventTypes.Rising,
+            //    ButtonAction);
         }
 
         public void StopGpioInput()
@@ -96,8 +108,36 @@ namespace IoTLib_Test.Models
             }
         }
 
+        //void ButtonAction(object sender, PinValueChangedEventArgs args)
+        //{
+        //    Thread test;
+        //    Thread ledOnThread = new Thread(new ThreadStart(LedOn));
+        //    Thread ledOffThread = new Thread(new ThreadStart(LedOff));
+
+        //    test = args.ChangeType is PinEventTypes.Rising ? ledOffThread : ledOnThread;
+
+        //    test.Start();
+        //    //if(ledOnThread.ThreadState != ThreadState.Running && ledOffThread.ThreadState != ThreadState.Running)
+        //    //{
+        //    //    if (!ledIsOn)
+        //    //    {
+        //    //        ledOnThread.Start();
+        //    //    }
+        //    //    else if (ledIsOn)
+        //    //    {
+        //    //        ledOffThread.Start();
+        //    //    }
+        //    //}
+        //}
         async void ButtonClicked(object sender, PinValueChangedEventArgs args)
         {
+            //if (!ledIsOn)
+            //{
+            //    Thread ledOnThread = new Thread(new ThreadStart(LedOn));
+            //    ledOnThread.Start();
+            //}
+
+
             //TODO: Thread
             /* Only update text if LED switched from off to on */
             await Dispatcher.UIThread.InvokeAsync(async () =>
@@ -111,6 +151,13 @@ namespace IoTLib_Test.Models
 
         async void ButtonReleased(object sender, PinValueChangedEventArgs args)
         {
+            //if(ledIsOn)
+            //{
+            //    Thread ledOffThread = new Thread(new ThreadStart(LedOff));
+            //    ledOffThread.Start();
+            //}
+
+
             //TODO: Thread
             await Dispatcher.UIThread.InvokeAsync(async () =>
             {
@@ -121,6 +168,7 @@ namespace IoTLib_Test.Models
 
         void UpdateInfoText()
         {
+            //TODO
             //tbGpioIn.Text = "Button press detected. Count: " + buttonClickCount.ToString();
         }
         #endregion
