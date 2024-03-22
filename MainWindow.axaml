@@ -28,6 +28,9 @@
     <TabItem Header="I²C Test">
       <views:UserControl_I2c/>
     </TabItem>
+    <TabItem Header="SPI Test">
+      <views:UserControl_Spi/>
+    </TabItem>
   </TabControl>
   
 </Window>

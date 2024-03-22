@@ -12,16 +12,14 @@ namespace IoTLib_Test.Models
         byte valueRW2;
 
         #region I2CWrite
-        public void WriteLedValues(int _busId, int _deviceAddr)
+        public void WriteLedValues(int busId, int deviceAddr)
         {
             runLedTest = true;
             int sleep = 200;
 
             /* Create I2C Device */
-            int busId = _busId;
-            int deviceAddr = _deviceAddr;
             I2cConnectionSettings i2cSettings = new(busId, deviceAddr);
-            using I2cDevice i2cDevice = I2cDevice.Create(i2cSettings);
+            using var i2cDevice = I2cDevice.Create(i2cSettings);
 
             /* Set I2C Device to read mode */
             byte[] config = [0x06,  0x00,  0x00];
@@ -71,23 +69,21 @@ namespace IoTLib_Test.Models
         }
         #endregion
         #region I2CRead
-        public bool WriteData(int _busId, int _deviceAddr, int _value1, int _value2)
+        public bool WriteData(int busId, int deviceAddr, int _valueRW1, int _valueRW2)
         {
             byte[] dataToSend;
 
             /* Create I2C Device */
-            int busId = _busId;
-            int deviceAddr = _deviceAddr;
             I2cConnectionSettings i2cSettings = new(busId, deviceAddr);
-            using I2cDevice i2cDevice = I2cDevice.Create(i2cSettings);
+            using var i2cDevice = I2cDevice.Create(i2cSettings);
 
             /* Set I2C Device to read mode */
             byte[] config = [0x06, 0x00, 0x00];
             i2cDevice.Write(config);
 
             /* Write data */
-            valueRW1 = Convert.ToByte(_value1);
-            valueRW2 = Convert.ToByte(_value2);
+            valueRW1 = Convert.ToByte(_valueRW1);
+            valueRW2 = Convert.ToByte(_valueRW2);
 
             dataToSend = [0x02, valueRW1];
             i2cDevice.Write(dataToSend);
@@ -97,15 +93,13 @@ namespace IoTLib_Test.Models
 
             return true;
         }
-        public bool ReadData(int _busId, int _deviceAddr)
+        public bool ReadData(int busId, int deviceAddr)
         {
             byte dataRead;
 
             /* Create I2C Device */
-            int busId = _busId;
-            int deviceAddr = _deviceAddr;
             I2cConnectionSettings i2cSettings = new(busId, deviceAddr);
-            using I2cDevice i2cDevice = I2cDevice.Create(i2cSettings);
+            using var i2cDevice = I2cDevice.Create(i2cSettings);
 
             /* Read data */
             //i2cDevice.WriteByte(0x03);
@@ -122,13 +116,11 @@ namespace IoTLib_Test.Models
         }
         #endregion
         #region PWM
-        public bool SetPwm(int _busId, int _deviceAddr, bool toggleOn)
+        public bool SetPwm(int busId, int deviceAddr, bool toggleOn)
         {
             /* Create I2C Device */
-            int busId = _busId;
-            int deviceAddr = _deviceAddr;
             I2cConnectionSettings i2cSettings = new(busId, deviceAddr);
-            using I2cDevice i2cDevicePWM = I2cDevice.Create(i2cSettings);
+            using var i2cDevicePWM = I2cDevice.Create(i2cSettings);
 
             if (!toggleOn)
                 i2cDevicePWM!.Write([0x05, 0x0]);
@@ -138,17 +130,15 @@ namespace IoTLib_Test.Models
             return true;
         }
 
-        public double ReadADC(int _busId, int _deviceAddr)
+        public double ReadADC(int busId, int deviceAddr)
         {
             int value = 0;
             byte dataRead;
 
             //TODO: Spannung messen, J2-17 -> ADS7828 CH0
             /* Create I2C Device */
-            int busId = _busId;
-            int deviceAddr = _deviceAddr;
             I2cConnectionSettings i2cSettings = new(busId, deviceAddr);
-            using I2cDevice i2cDeviceADC = I2cDevice.Create(i2cSettings);
+            using var i2cDeviceADC = I2cDevice.Create(i2cSettings);
 
             // i2cget -y 5 0x63 0x00
             dataRead = i2cDeviceADC.ReadByte();

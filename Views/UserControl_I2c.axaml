@@ -17,6 +17,7 @@
       </Style>
       <Style Selector="TextBlock">
         <Setter Property="FontSize" Value="12"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
       </Style>
       <Style Selector="DockPanel">
         <Setter Property="VerticalAlignment" Value="Bottom"/>
