@@ -10,21 +10,23 @@ public partial class UserControl_I2c : UserControl
 {
     /* I²C functions are in separate class */
     private readonly I2c_Tests i2c;
+    private bool ledThreadStarted = false;
 
+    //TODO: Eingabe in UI
     public int busId = 0x5;
     public int deviceAddrLed = 0x23;
     public int deviceAddrStorage = 0x23;
-    public int deviceAddrPwm = 0x63; //TODO
-    public int value1 = 0xAA; //TODO: Eingabe in UI
-    public int value2 = 0x55; //TODO: Eingabe in UI
-    private bool I2cLedThreadStarted = false;
+    public int deviceAddrPwm = 0x63;
+    public int deviceAddrAdc = 0x63; //TODO
+    public int value1 = 0xAA;
+    public int value2 = 0x55;
 
     public UserControl_I2c()
     {
         InitializeComponent();
 
         /* button bindings */
-        btnI2cWrite.AddHandler(Button.ClickEvent, BtnI2c_Clicked!);
+        btnI2cWrite.AddHandler(Button.ClickEvent, BtnI2cWrite_Clicked!);
         btnI2cRead.AddHandler(Button.ClickEvent, BtnI2cRead_Clicked!);
         btnPwm.AddHandler(Button.ClickEvent, BtnPwm_Clicked!);
         /* Description Text */
@@ -34,15 +36,15 @@ public partial class UserControl_I2c : UserControl
         i2c = new I2c_Tests();
     }
 
-    void BtnI2c_Clicked(object sender, RoutedEventArgs args)
+    void BtnI2cWrite_Clicked(object sender, RoutedEventArgs args)
     {
-        if (!I2cLedThreadStarted)
+        if (!ledThreadStarted)
         {
             /* Create new Thread, start I2C Test */
             Thread I2cLedThread = new(() => i2c.WriteLedValues(busId, deviceAddrLed));
             I2cLedThread.Start();
-            I2cLedThreadStarted = true;
-            /* Change button */
+            ledThreadStarted = true;
+            /* Change UI */
             btnI2cWrite.Content = "Stop I²C";
             btnI2cWrite.Background = Brushes.Red;
             tbLedInfo.Text = "LEDs on I²C-Extension Board are blinking";
@@ -51,8 +53,8 @@ public partial class UserControl_I2c : UserControl
         {
             /* Stop the I2C Thread from running */
             i2c!.StopLed();
-            I2cLedThreadStarted = false;
-            /* Change button */
+            ledThreadStarted = false;
+            /* Change UI */
             btnI2cWrite.Content = "Start I²C";
             btnI2cWrite.Background = Brushes.LightGreen;
             tbLedInfo.Text = "LEDs on I²C-Extension Board are blinking";
@@ -61,12 +63,13 @@ public partial class UserControl_I2c : UserControl
 
     void BtnI2cRead_Clicked(object sender, RoutedEventArgs args)
     {
+        /* Send data to I2C Device */
         if(i2c.WriteData(busId, deviceAddrStorage, value1, value2))
         {
             tbI2cReadInfoSend.Text = $"Value {value1} sent to I²C Device";
             tbI2cReadInfoSend.Foreground = Brushes.Blue;
 
-
+            /* Read data from I2C Device, true if values match the data sent */
             if (i2c.ReadData(busId, deviceAddrStorage))
             {
                 tbI2cReadInfoRead.Text = $"Value {value1} read from I²C Device";
@@ -79,27 +82,32 @@ public partial class UserControl_I2c : UserControl
             }
         }
     }
+
     void BtnPwm_Clicked(object sender, RoutedEventArgs args)
     {
-        if(i2c.SetPwm(busId, deviceAddrPwm))
+        double returnVoltage;
+        int counter = 0;
+        bool toggleOn = true;
+
+        tbPwmSend.Text = $"PWM will toggle. See LED";
+
+        while(counter <= 9)
         {
-            tbPwmSend.Text = $"PWM will toggle. See LED";
-
-            Thread pwmThread = new(new ThreadStart(i2c.TogglePWM));
-            pwmThread.Start();
-
+            i2c.SetPwm(busId, deviceAddrPwm, toggleOn);
             //TODO: Read auswerten
-            double returnVoltage = i2c.ReadADC();
-
+            returnVoltage = i2c.ReadADC(busId, deviceAddrAdc);
             tbPwmRead.Text = $"ADC received {returnVoltage} V";
-            
-            //if( returnVoltage == voltage1)
-            //{
+            Thread.Sleep(1000);
 
-            //}
+            toggleOn = !toggleOn;
+            counter++;
         }
+
+        //if( returnVoltage == voltage1)
+        //{
+
+        //}
     }
 }
 
-//TODO: Read-Write auf I2C
 //TODO: Eingabefeld für busId und deviceAddr
