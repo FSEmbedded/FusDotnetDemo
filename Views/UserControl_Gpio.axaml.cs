@@ -1,14 +1,14 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using IoTLib_Test.Models;
 using System.Threading;
+using IoTLib_Test.Models;
 
 namespace IoTLib_Test.Views;
 
 public partial class UserControl_Gpio : UserControl
 {
     /* GPIO functions are in separate class */
-    private readonly Gpio_Tests GpioOut;
+    private readonly Gpio_Tests Gpio;
 
     public UserControl_Gpio()
     {
@@ -23,12 +23,15 @@ public partial class UserControl_Gpio : UserControl
         btnStartInput.AddHandler(Button.ClickEvent, BtnStartInput_Clicked!);
         btnStopInput.AddHandler(Button.ClickEvent, BtnStopInput_Clicked!);
 
-        GpioOut = new Gpio_Tests();
+        tbLedInfo.Text = "Connect LED to PcoreBBDSI Rev1.40 - J11-8 / J11-11";
+        tbInputInfo.Text = "Connect Button to PcoreBBDSI Rev1.40 - J11-18 / J11-27";
+
+        Gpio = new Gpio_Tests();
     }
 
     void BtnLedOn_Clicked(object sender, RoutedEventArgs args)
     {
-        Thread ledOnThread = new(new ThreadStart(GpioOut.LedOn));
+        Thread ledOnThread = new(new ThreadStart(Gpio.LedOn));
         ledOnThread.Start();
 
         //GpioOut!.LedOn();
@@ -40,7 +43,7 @@ public partial class UserControl_Gpio : UserControl
 
     void BtnLedOff_Clicked(object sender, RoutedEventArgs args)
     {
-        Thread ledOffThread = new(new ThreadStart(GpioOut.LedOff));
+        Thread ledOffThread = new(new ThreadStart(Gpio.LedOff));
         ledOffThread.Start();
 
         //GpioOut!.LedOff();
@@ -52,7 +55,7 @@ public partial class UserControl_Gpio : UserControl
 
     void BtnLedBlink_Clicked(object sender, RoutedEventArgs args)
     {
-        Thread ledBlinkThread = new(new ThreadStart(GpioOut.LedBlink));
+        Thread ledBlinkThread = new(new ThreadStart(Gpio.LedBlink));
         ledBlinkThread.Start();
 
         //GpioOut!.LedBlink();
@@ -62,7 +65,7 @@ public partial class UserControl_Gpio : UserControl
 
     void BtnStartInput_Clicked(object sender, RoutedEventArgs args)
     {
-        Thread inputThread = new(new ThreadStart(GpioOut.ReadGpioInput));
+        Thread inputThread = new(new ThreadStart(Gpio.ReadGpioInput));
         inputThread.Start();
 
         //GpioOut!.ReadGpioInput();
@@ -74,7 +77,7 @@ public partial class UserControl_Gpio : UserControl
 
     void BtnStopInput_Clicked(object sender, RoutedEventArgs args)
     {
-        Thread inputStopThread = new(new ThreadStart(GpioOut.StopGpioInput));
+        Thread inputStopThread = new(new ThreadStart(Gpio.StopGpioInput));
         inputStopThread.Start();
 
         //GpioOut!.StopGpioInput();

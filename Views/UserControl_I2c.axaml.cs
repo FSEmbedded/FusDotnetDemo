@@ -1,15 +1,15 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using IoTLib_Test.Models;
 using System.Threading;
+using IoTLib_Test.Models;
 
 namespace IoTLib_Test.Views;
 
 public partial class UserControl_I2c : UserControl
 {
     /* I²C functions are in separate class */
-    private readonly I2c_Tests i2c;
+    private readonly I2c_Tests I2c;
     private bool ledThreadStarted = false;
 
     //TODO: Eingabe in UI
@@ -33,7 +33,7 @@ public partial class UserControl_I2c : UserControl
         tbDesc.Text = "Connect BBDSI with I²C Extension Board: I2C_A_SCL = J11-16 -> J1-11, I2C_A_SDA = J11-17 -> J1-10, GND = J11-37 -> J1-16";
         tbPwmDesc.Text = "Connect I²C Extension Board Pins: J2-17 -> J2-27; Set S2-3 to ON";
 
-        i2c = new I2c_Tests();
+        I2c = new I2c_Tests();
     }
 
     void BtnI2cWrite_Clicked(object sender, RoutedEventArgs args)
@@ -41,7 +41,7 @@ public partial class UserControl_I2c : UserControl
         if (!ledThreadStarted)
         {
             /* Create new Thread, start I2C Test */
-            Thread I2cLedThread = new(() => i2c.WriteLedValues(busId, deviceAddrLed));
+            Thread I2cLedThread = new(() => I2c.WriteLedValues(busId, deviceAddrLed));
             I2cLedThread.Start();
             ledThreadStarted = true;
             /* Change UI */
@@ -52,7 +52,7 @@ public partial class UserControl_I2c : UserControl
         else
         {
             /* Stop the I2C Thread from running */
-            i2c!.StopLed();
+            I2c!.StopLed();
             ledThreadStarted = false;
             /* Change UI */
             btnI2cWrite.Content = "Start I²C";
@@ -64,13 +64,13 @@ public partial class UserControl_I2c : UserControl
     void BtnI2cRead_Clicked(object sender, RoutedEventArgs args)
     {
         /* Send data to I2C Device */
-        if(i2c.WriteData(busId, deviceAddrStorage, value1, value2))
+        if(I2c.WriteData(busId, deviceAddrStorage, value1, value2))
         {
             tbI2cReadInfoSend.Text = $"Value {value1} sent to I²C Device";
             tbI2cReadInfoSend.Foreground = Brushes.Blue;
 
             /* Read data from I2C Device, true if values match the data sent */
-            if (i2c.ReadData(busId, deviceAddrStorage))
+            if (I2c.ReadData(busId, deviceAddrStorage))
             {
                 tbI2cReadInfoRead.Text = $"Value {value1} read from I²C Device";
                 tbI2cReadInfoRead.Foreground = Brushes.Green;
@@ -93,9 +93,9 @@ public partial class UserControl_I2c : UserControl
 
         while(counter <= 9)
         {
-            i2c.SetPwm(busId, deviceAddrPwm, toggleOn);
+            I2c.SetPwm(busId, deviceAddrPwm, toggleOn);
             //TODO: Read auswerten
-            returnVoltage = i2c.ReadADC(busId, deviceAddrAdc);
+            returnVoltage = I2c.ReadADC(busId, deviceAddrAdc);
             tbPwmRead.Text = $"ADC received {returnVoltage} V";
             Thread.Sleep(1000);
 

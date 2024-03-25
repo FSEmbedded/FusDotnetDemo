@@ -2,16 +2,13 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using IoTLib_Test.Models;
-using System;
-using System.Threading;
-using static System.Runtime.InteropServices.Marshalling.IIUnknownCacheStrategy;
 
 namespace IoTLib_Test.Views;
 
 public partial class UserControl_Spi : UserControl
 {
     /* SPI functions are in separate class */
-    private readonly Spi_Tests spi;
+    private readonly Spi_Tests Spi;
     public int spidev = 0x1;
     byte register = 0x2b;
 
@@ -31,12 +28,12 @@ public partial class UserControl_Spi : UserControl
             "GND: ADP-16 -> J11-42; " +
             "+3V3: ADP-26 -> J11-1";
 
-        spi = new Spi_Tests();
+        Spi = new Spi_Tests();
     }
 
     void btnSpi_Clicked(object sender, RoutedEventArgs args)
     {
-        if(!spi.SpiStart(spidev, register))
+        if(!Spi.SpiStart(spidev, register))
         {
             tbSpiInfo.Text = "Data sent and data read are different";
             tbSpiInfo.Foreground = Brushes.Red;

@@ -1,5 +1,5 @@
 $localDir = "C:\Users\Bruegel\Source\CSharp\IoTLib_Test\bin\Debug\net8.0"
-$remotePath = "root@10.0.0.101:/home/root/IoTLib_Test"
+$remotePath = "root@10.0.0.56:/home/root/IoTLib_Test"
 $runtimesPath = "$localDir/runtimes"
 
 Get-ChildItem -Path $runtimesPath -Directory | Where-Object { $_.Name -ne "linux-arm64" } | Remove-Item -Recurse -Force

@@ -31,6 +31,10 @@
     <TabItem Header="SPI Test">
       <views:UserControl_Spi/>
     </TabItem>
+    <TabItem Header="CAN Test">
+      <views:UserControl_Can/>
+    </TabItem>
+
   </TabControl>
   
 </Window>

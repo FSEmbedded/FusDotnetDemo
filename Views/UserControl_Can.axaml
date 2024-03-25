@@ -2,18 +2,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             x:Class="IoTLib_Test.Views.UserControl_Spi">
+             x:Class="IoTLib_Test.Views.UserControl_Can">
 
   <UserControl.Styles>
     <StyleInclude Source="/Views/AppStyles.axaml"/>
   </UserControl.Styles>
-  
+
   <StackPanel>
-    <!-- SPI Test -->
-    <TextBlock Text="SPI Test" FontWeight="Bold"/>
+    <TextBlock Text="CAN Test" FontWeight="Bold"/>
     <TextBlock Name="tbDesc" FontSize="10"/>
-    <Button Name="btnSpi" Content="Start SPI Test" Background="LightGreen"/>
-    <TextBlock Name="tbSpiInfo" FontWeight="Medium" TextWrapping="Wrap" Foreground="Blue"/>
+    <Button Name="btnCan" Content="Can Test" Background="LightGreen"/>
+    <TextBlock Name="tbCanInfo" FontWeight="Medium" TextWrapping="Wrap" Foreground="Blue"/>
     <Border/>
   </StackPanel>
+  
 </UserControl>

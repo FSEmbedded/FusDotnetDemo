@@ -4,34 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Class="IoTLib_Test.Views.UserControl_Gpio">
 
-  <StackPanel Margin="5">
-    <StackPanel.Styles>
-      <Style Selector="Button">
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="Margin" Value="5"/>
-        <Setter Property="FontSize" Value="10"/>
-      </Style>
-      <Style Selector="StackPanel">
-        <Setter Property="Margin" Value="5"/>
-        <Setter Property="Grid.Row" Value="0"/>
-      </Style>
-      <Style Selector="TextBlock">
-        <Setter Property="FontSize" Value="12"/>
-        <Setter Property="TextWrapping" Value="Wrap"/>
-      </Style>
-      <Style Selector="DockPanel">
-        <Setter Property="VerticalAlignment" Value="Bottom"/>
-        <Setter Property="Margin" Value="5"/>
-      </Style>
-      <Style Selector="Border">
-        <Setter Property="BorderThickness" Value="0.6"/>
-        <Setter Property="BorderBrush" Value="Black"/>
-        <Setter Property="Margin" Value="0,0,0,3"/>
-      </Style>
-    </StackPanel.Styles>
+  <UserControl.Styles>
+    <StyleInclude Source="/Views/AppStyles.axaml"/>
+  </UserControl.Styles>
 
+  <StackPanel>
     <TextBlock Text="GPIO LED Test" FontWeight="Bold"/>
-    <TextBlock Text="Connect LED to PcoreBBDSI Rev1.40 - J11-8 / J11-11" FontSize="10"/>
+    <TextBlock Name="tbLedInfo" FontSize="10"/>
     <Grid>
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*"/>
@@ -45,7 +24,7 @@
     <Border/>
     
     <TextBlock Text="GPIO Input Test" FontWeight="Bold"/>
-    <TextBlock Text="Connect LED to PcoreBBDSI Rev1.40 - J11-18 / J11-27" FontSize="10"/>
+    <TextBlock Name="tbInputInfo" FontSize="10"/>
     <Grid>
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*"/>
