@@ -4,10 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Class="IoTLib_Test.Views.UserControl_I2c">
 
-  <UserControl.Styles>
-    <StyleInclude Source="/Views/AppStyles.axaml"/>
-  </UserControl.Styles>
-
   <StackPanel>
     <!-- I2C Extension Board - LED Test -->
     <TextBlock Text="I2C Extension Board - LED Test" FontWeight="Bold"/>

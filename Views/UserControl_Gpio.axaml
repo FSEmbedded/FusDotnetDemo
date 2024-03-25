@@ -4,42 +4,27 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Class="IoTLib_Test.Views.UserControl_Gpio">
 
-  <UserControl.Styles>
-    <StyleInclude Source="/Views/AppStyles.axaml"/>
-  </UserControl.Styles>
-
   <StackPanel>
-    <TextBlock Text="GPIO LED Test" FontWeight="Bold"/>
-    <TextBlock Name="tbLedInfo" FontSize="10"/>
+    <!-- LED Test -->
+    <TextBlock Text="GPIO LED Test" FontWeight="Bold" FontSize="14"/>
+    <TextBlock Name="tbLedDesc" Text="Placeholder"/>
     <Grid>
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*"/>
         <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
-      <Button Name="btnLedOn" Content="LED On" Grid.Column="0"/>
+      <Button Name="btnLedSwitch" Content="LED On" Grid.Column="0"/>
       <Button Name="btnLedBlink" Content="LED Blinking" Grid.Column="1"/>
-      <Button Name="btnLedOff" Content="LED Off" Grid.Column="2"/>
     </Grid>
+    <TextBlock Name="tbLedInfo" Foreground="Blue"/>
     <Border/>
-    
-    <TextBlock Text="GPIO Input Test" FontWeight="Bold"/>
-    <TextBlock Name="tbInputInfo" FontSize="10"/>
-    <Grid>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-      </Grid.ColumnDefinitions>
-      <Button Name="btnStartInput" Content="Start GPIO Input" Grid.Column="0"/>
-      <Button Name="btnStopInput" Content="Stop GPIO Input" Grid.Column="2"/>
-    </Grid>
+    <!-- Input Test -->
+    <TextBlock Text="GPIO Input Test" FontWeight="Bold" FontSize="14"/>
+    <TextBlock Name="tbInputDesc" Text="Placeholder"/>
+    <Button Name="btnGpioInput" Content="Start GPIO Input"/>
     <TextBlock Name="tbGpioIn" TextWrapping="Wrap" Grid.Column="1" Foreground="Blue"/>
+    <TextBlock Name="tbInputInfo" Foreground="Blue"/>
     <Border/>
-
-    <DockPanel>
-      <TextBlock Name="tbInfo" FontWeight="Medium" TextWrapping="Wrap" Foreground="Blue"/>
-    </DockPanel>
-    
   </StackPanel>
+  
 </UserControl>

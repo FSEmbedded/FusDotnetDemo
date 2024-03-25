@@ -4,10 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Class="IoTLib_Test.Views.UserControl_Can">
 
-  <UserControl.Styles>
-    <StyleInclude Source="/Views/AppStyles.axaml"/>
-  </UserControl.Styles>
-
   <StackPanel>
     <TextBlock Text="CAN Test" FontWeight="Bold"/>
     <TextBlock Name="tbDesc" FontSize="10"/>

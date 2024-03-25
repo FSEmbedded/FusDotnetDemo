@@ -106,5 +106,3 @@ namespace IoTLib_Test.Models
         }
     }
 }
-
-// BBDSI: CAN1H - J7-4, CAN1L - J7 -3 

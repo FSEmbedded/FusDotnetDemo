@@ -16,12 +16,6 @@
         ExtendClientAreaTitleBarHeightHint="0">
 
   <TabControl>
-    <TabControl.Styles>
-      <Style Selector="TabItem">
-        <Setter Property="FontSize" Value="12"/>
-        <Setter Property="FontWeight" Value="DemiBold"/>
-      </Style>
-    </TabControl.Styles>
     <TabItem Header="GPIO Test">
       <views:UserControl_Gpio/>
     </TabItem>
