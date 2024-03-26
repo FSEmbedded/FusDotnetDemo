@@ -51,7 +51,7 @@ public partial class UserControl_Can : UserControl
         if (tbBitrate.Text != "" && tbBitrate.Text != null)
             bitrate = tbBitrate.Text;
 
-        if (Can.StartCanTest(canDevice, bitrate))
+        if (Can.RunCanTest(canDevice, bitrate))
         {
             tbCanResult.Text = "CAN Test Success"; //TODO: Meldung verbessern
             tbCanResult.Foreground = Brushes.Green;

@@ -86,12 +86,12 @@ namespace IoTLib_Test.Models
             inputController.RegisterCallbackForPinValueChangedEvent(
                 inputPin,
                 PinEventTypes.Falling,
-                ButtonClicked);
+                ButtonPress);
             /* Set event for hardware button released */
             inputController.RegisterCallbackForPinValueChangedEvent(
                 inputPin,
                 PinEventTypes.Rising,
-                ButtonReleased);
+                ButtonRelease);
         }
 
         public void StopGpioInput()
@@ -103,7 +103,7 @@ namespace IoTLib_Test.Models
             }
         }
 
-        async void ButtonClicked(object sender, PinValueChangedEventArgs args)
+        async void ButtonPress(object sender, PinValueChangedEventArgs args)
         {
             await Dispatcher.UIThread.InvokeAsync(() =>
             {
@@ -112,7 +112,7 @@ namespace IoTLib_Test.Models
             });
         }
 
-        async void ButtonReleased(object sender, PinValueChangedEventArgs args)
+        async void ButtonRelease(object sender, PinValueChangedEventArgs args)
         {
             await Dispatcher.UIThread.InvokeAsync(LedOff);
         }
