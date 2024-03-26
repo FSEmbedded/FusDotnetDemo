@@ -8,36 +8,32 @@ namespace IoTLib_Test.Models
     internal class Gpio_Tests
     {
         /* GPIO_LED Pin Number*/
-        readonly int GPIO_J1_54 = 1; //TODO: Wert bei Initialisierung übergeben
-        readonly int ledBank;
-        readonly int ledPin;
+        int ledBank;
+        int ledPin;
         GpioDriver? drvGpioLed;
 
         /* GPIO_Input Pin Number */
-        readonly int GPIO_J1_52 = 78; //TODO: Wert bei Initialisierung übergeben
-        readonly int inputbank;
-        readonly int inputPin;
+        int inputBank;
+        int inputPin;
         GpioDriver? drvGpioInput;
         GpioController? inputController;
 
         bool ledIsOn = false;
 
-        public Gpio_Tests()
+        public Gpio_Tests(int _ledBank, int _ledPin, int _inputBank, int _inputPin)
         {
-            /* GPIO_LED */
-            ledBank = PinConverter.GetGpioBank(GPIO_J1_54);
-            ledPin = PinConverter.GetGpioPin(GPIO_J1_54);
-            drvGpioLed = new LibGpiodDriver(ledBank);
-
-            /* GPIO_Input */
-            inputbank = PinConverter.GetGpioBank(GPIO_J1_52);
-            inputPin = PinConverter.GetGpioPin(GPIO_J1_52);
-            drvGpioInput = new LibGpiodDriver(inputbank);
+            ledBank = _ledBank;
+            ledPin = _ledPin;
+            inputBank = _inputBank;
+            inputPin = _inputPin;
         }
 
         #region GPIO_LED
-        public void LedOn()
+        public void LedOn(int bank, int pin)
         {
+            ledBank = bank;
+            ledPin = pin;
+
             drvGpioLed = new LibGpiodDriver(ledBank);
             using var controller = new GpioController(PinNumberingScheme.Logical, drvGpioLed);
             controller.OpenPin(ledPin, PinMode.Output);
@@ -56,13 +52,15 @@ namespace IoTLib_Test.Models
             ledIsOn = false;
         }
 
-        public void LedBlink()
+        public void LedBlink(int bank, int pin)
         {
+            ledBank = bank;
+            ledPin = pin;
+
             drvGpioLed = new LibGpiodDriver(ledBank);
             using var controller = new GpioController(PinNumberingScheme.Logical, drvGpioLed);
             controller.OpenPin(ledPin, PinMode.Output);
 
-            
             int blinkCount = 0;
             /* Blink 5 times */
             while (blinkCount < 10)
@@ -75,9 +73,12 @@ namespace IoTLib_Test.Models
         }
         #endregion
         #region GPIO_Input
-        public void ReadGpioInput()
+        public void ReadGpioInput(int bank, int pin)
         {
-            drvGpioInput = new LibGpiodDriver(inputbank);
+            inputBank = bank;
+            inputPin = pin;
+
+            drvGpioInput = new LibGpiodDriver(inputBank);
             inputController = new GpioController(PinNumberingScheme.Logical, drvGpioInput);
             inputController.OpenPin(inputPin, PinMode.InputPullUp);
 
@@ -91,12 +92,6 @@ namespace IoTLib_Test.Models
                 inputPin,
                 PinEventTypes.Rising,
                 ButtonReleased);
-
-            ///* Set event for hardware button released */
-            //inputController.RegisterCallbackForPinValueChangedEvent(
-            //    inputPin,
-            //    PinEventTypes.Falling | PinEventTypes.Rising,
-            //    ButtonAction);
         }
 
         public void StopGpioInput()
@@ -108,68 +103,18 @@ namespace IoTLib_Test.Models
             }
         }
 
-        //void ButtonAction(object sender, PinValueChangedEventArgs args)
-        //{
-        //    Thread test;
-        //    Thread ledOnThread = new Thread(new ThreadStart(LedOn));
-        //    Thread ledOffThread = new Thread(new ThreadStart(LedOff));
-
-        //    test = args.ChangeType is PinEventTypes.Rising ? ledOffThread : ledOnThread;
-
-        //    test.Start();
-        //    //if(ledOnThread.ThreadState != ThreadState.Running && ledOffThread.ThreadState != ThreadState.Running)
-        //    //{
-        //    //    if (!ledIsOn)
-        //    //    {
-        //    //        ledOnThread.Start();
-        //    //    }
-        //    //    else if (ledIsOn)
-        //    //    {
-        //    //        ledOffThread.Start();
-        //    //    }
-        //    //}
-        //}
         async void ButtonClicked(object sender, PinValueChangedEventArgs args)
         {
-            //if (!ledIsOn)
-            //{
-            //    Thread ledOnThread = new Thread(new ThreadStart(LedOn));
-            //    ledOnThread.Start();
-            //}
-
-
-            //TODO: Thread
-            /* Only update text if LED switched from off to on */
-            await Dispatcher.UIThread.InvokeAsync(async () =>
+            await Dispatcher.UIThread.InvokeAsync(() =>
             {
-                LedOn();
-                UpdateInfoText();
-                //TODO: Feedback in UI!
+                LedOn(ledBank, ledPin);
 
             });
         }
 
         async void ButtonReleased(object sender, PinValueChangedEventArgs args)
         {
-            //if(ledIsOn)
-            //{
-            //    Thread ledOffThread = new Thread(new ThreadStart(LedOff));
-            //    ledOffThread.Start();
-            //}
-
-
-            //TODO: Thread
-            await Dispatcher.UIThread.InvokeAsync(async () =>
-            {
-                LedOff();
-                //TODO: Feedback in UI!
-            });
-        }
-
-        void UpdateInfoText()
-        {
-            //TODO
-            //tbGpioIn.Text = "Button press detected. Count: " + buttonClickCount.ToString();
+            await Dispatcher.UIThread.InvokeAsync(LedOff);
         }
         #endregion
     }

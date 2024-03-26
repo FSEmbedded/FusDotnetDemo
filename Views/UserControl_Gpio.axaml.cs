@@ -3,6 +3,9 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using System.Threading;
 using IoTLib_Test.Models;
+using static System.Runtime.InteropServices.Marshalling.IIUnknownCacheStrategy;
+using System;
+using Avalonia.Input;
 
 namespace IoTLib_Test.Views;
 
@@ -12,6 +15,15 @@ public partial class UserControl_Gpio : UserControl
     private readonly Gpio_Tests Gpio;
     private bool ledIsOn = false;
     private bool buttonIsActive = false;
+
+    /* GPIO Pin # */
+    int gpioNoLed;
+    int ledBank;
+    int ledPin;
+    int gpioNoInput;
+    int inputBank;
+    int inputPin;
+
 
     public UserControl_Gpio()
     {
@@ -24,18 +36,42 @@ public partial class UserControl_Gpio : UserControl
         /* GPIO_Input button bindings */
         btnGpioInput.AddHandler(Button.ClickEvent, BtnGpioInput_Clicked!);
 
-        tbLedDesc.Text = "Connect LED to PcoreBBDSI Rev1.40 - J11-8 / J11-11";
-        tbInputDesc.Text = "Connect Button to PcoreBBDSI Rev1.40 - J11-18 / J11-27";
+        /* Write standard GPIO pins in textbox */
+        tbLedPin.Text = "1"; // GPIO_J1_54
+        tbInputPin.Text = "78"; // GPIO_J1_52
 
-        Gpio = new Gpio_Tests();
+        /* Handler to only allow number inputs */
+        tbLedPin.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
+        tbInputPin.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
+
+        tbLedDesc.Text = "Connect LED to PcoreBBDSI Rev1.40 - J11-8 / J11-11"; // GPIO_J1_54
+        tbInputDesc.Text = "Connect Button to PcoreBBDSI Rev1.40 - J11-18 / J11-27"; // GPIO_J1_52
+        tbLedInfo.Text = "";
+        tbInputInfo.Text = "";
+
+        /* Convert GPIO Pin # to gpio bank and pin */
+        gpioNoLed = Convert.ToInt32(tbLedPin.Text);
+        ledBank = PinConverter.GetGpioBank(gpioNoLed);
+        ledPin = PinConverter.GetGpioPin(gpioNoLed);
+        /* Convert GPIO Pin # to gpio bank and pin */
+        gpioNoInput = Convert.ToInt32(tbInputPin.Text);
+        inputBank = PinConverter.GetGpioBank(gpioNoInput);
+        inputPin = PinConverter.GetGpioPin(gpioNoInput);
+
+        Gpio = new Gpio_Tests(ledBank, ledPin, inputBank, inputPin);
     }
 
     void BtnLedSwitch_Clicked(object sender, RoutedEventArgs args)
     {
-        if(!ledIsOn)
+        /* Convert GPIO Pin # to gpio bank and pin */
+        gpioNoLed = Convert.ToInt32(tbLedPin.Text);
+        ledBank = PinConverter.GetGpioBank(gpioNoLed);
+        ledPin = PinConverter.GetGpioPin(gpioNoLed);
+
+        if (!ledIsOn)
         {
             /* Create new thread, light up LED */
-            Thread ledOnThread = new(new ThreadStart(Gpio.LedOn));
+            Thread ledOnThread = new(() => Gpio.LedOn(ledBank, ledPin));
             ledOnThread.Start();
             ledIsOn = true;
             /* Change UI */
@@ -58,19 +94,25 @@ public partial class UserControl_Gpio : UserControl
 
     void BtnLedBlink_Clicked(object sender, RoutedEventArgs args)
     {
-        /* Create new thread, switch LED on and off */
-        Thread ledBlinkThread = new(new ThreadStart(Gpio.LedBlink));
-        ledBlinkThread.Start();
+        /* Convert GPIO Pin # to gpio bank and pin */
+        gpioNoLed = Convert.ToInt32(tbLedPin.Text);
+        ledBank = PinConverter.GetGpioBank(gpioNoLed);
+        ledPin = PinConverter.GetGpioPin(gpioNoLed);
 
-        tbLedInfo.Text = "LED on Pin J11-8 is blinking";
+        Gpio.LedBlink(ledBank, ledPin);
     }
 
     void BtnGpioInput_Clicked(object sender, RoutedEventArgs args)
     {
+        /* Convert GPIO Pin # to gpio bank and pin */
+        gpioNoInput = Convert.ToInt32(tbInputPin.Text);
+        inputBank = PinConverter.GetGpioBank(gpioNoInput);
+        inputPin = PinConverter.GetGpioPin(gpioNoInput);
+
         if (!buttonIsActive)
         {
             /* Create new thread, turn off LED */
-            Thread inputThread = new(new ThreadStart(Gpio.ReadGpioInput));
+            Thread inputThread = new(() => Gpio.ReadGpioInput(inputBank, inputPin));
             inputThread.Start();
             buttonIsActive = true;
             /* Change UI */
@@ -90,6 +132,14 @@ public partial class UserControl_Gpio : UserControl
             tbInputInfo.Text = "Hardware-Button deactivated";
         }
     }
-}
 
-//TODO: Abfrage, welcher GPIO genutzt wird - Gpio an Test-Klasse geben, Info über Anschlusspins anzeigen
+    void TextBox_KeyDown(object sender, KeyEventArgs e)
+    {
+        /* Check if the pressed key is a control character (like Backspace) or a digit */
+        if (!char.IsControl(Convert.ToChar(e.KeySymbol!)) && !char.IsDigit(Convert.ToChar(e.KeySymbol!)))
+        {
+            /* If it's not, prevent the character from being entered */
+            e.Handled = true;
+        }
+    }
+}

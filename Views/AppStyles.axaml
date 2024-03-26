@@ -10,7 +10,6 @@
   <Style Selector="TabControl">
     <Setter Property="FontSize" Value="45"/>
     <Setter Property="FontWeight" Value="Bold"/>
-    <Setter Property="VerticalAlignment" Value="Top"/>
   </Style>
   <Style Selector="TabItem">
     <Setter Property="Height" Value="40"/>
@@ -20,7 +19,6 @@
   </Style>
   <Style Selector="StackPanel">
     <Setter Property="Margin" Value="8"/>
-    <Setter Property="VerticalAlignment" Value="Top"/>
   </Style>
   <Style Selector="Button">
     <Setter Property="Margin" Value="5"/>
@@ -29,23 +27,29 @@
     <Setter Property="MinWidth" Value="120"/>
     <Setter Property="MinHeight" Value="50"/>
     <Setter Property="HorizontalAlignment" Value="Center"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
     <Setter Property="VerticalContentAlignment" Value="Center"/>
     <Setter Property="HorizontalContentAlignment" Value="Center"/>
     <Setter Property="CornerRadius" Value="8"/>
     <Setter Property="Background" Value="LightGreen"/>
   </Style>
-  <Style Selector="TextBlock">
+  <Style Selector="TextBox">
+    <Setter Property="Margin" Value="5"/>
     <Setter Property="FontSize" Value="12"/>
+    <Setter Property="FontWeight" Value="DemiBold"/>
+    <Setter Property="MinWidth" Value="120"/>
+    <Setter Property="MinHeight" Value="30"/>
+    <Setter Property="HorizontalAlignment" Value="Center"/>
+    <Setter Property="VerticalAlignment" Value="Bottom"/>
+    <Setter Property="VerticalContentAlignment" Value="Top"/>
+    <Setter Property="CornerRadius" Value="8"/>
+  </Style>
+  <Style Selector="TextBlock">
+    <Setter Property="FontSize" Value="14"/>
     <Setter Property="FontWeight" Value="DemiBold"/>
     <Setter Property="TextWrapping" Value="Wrap"/>
   </Style>
-  <Style Selector="DockPanel">
-    <Setter Property="VerticalAlignment" Value="Bottom"/>
-    <Setter Property="Margin" Value="5"/>
-  </Style>
   <Style Selector="Border">
-    <Setter Property="BorderThickness" Value="0.6"/>
     <Setter Property="BorderBrush" Value="Black"/>
-    <Setter Property="Margin" Value="0,5,0,20"/>
   </Style>
 </Styles>
