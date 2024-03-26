@@ -1,11 +1,10 @@
+using System;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Input;
 using System.Threading;
 using IoTLib_Test.Models;
-using static System.Runtime.InteropServices.Marshalling.IIUnknownCacheStrategy;
-using System;
-using Avalonia.Input;
 
 namespace IoTLib_Test.Views;
 
@@ -17,10 +16,10 @@ public partial class UserControl_Gpio : UserControl
     private bool buttonIsActive = false;
 
     /* GPIO Pin # */
-    int gpioNoLed;
+    int gpioNoLed = 1; // GPIO_J1_54
     int ledBank;
     int ledPin;
-    int gpioNoInput;
+    int gpioNoInput = 78; // GPIO_J1_52
     int inputBank;
     int inputPin;
 
@@ -37,8 +36,8 @@ public partial class UserControl_Gpio : UserControl
         btnGpioInput.AddHandler(Button.ClickEvent, BtnGpioInput_Clicked!);
 
         /* Write standard GPIO pins in textbox */
-        tbLedPin.Text = "1"; // GPIO_J1_54
-        tbInputPin.Text = "78"; // GPIO_J1_52
+        tbLedPin.Text = Convert.ToString(gpioNoLed);
+        tbInputPin.Text = Convert.ToString(gpioNoInput);
 
         /* Handler to only allow number inputs */
         tbLedPin.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
@@ -50,11 +49,9 @@ public partial class UserControl_Gpio : UserControl
         tbInputInfo.Text = "";
 
         /* Convert GPIO Pin # to gpio bank and pin */
-        gpioNoLed = Convert.ToInt32(tbLedPin.Text);
         ledBank = PinConverter.GetGpioBank(gpioNoLed);
         ledPin = PinConverter.GetGpioPin(gpioNoLed);
         /* Convert GPIO Pin # to gpio bank and pin */
-        gpioNoInput = Convert.ToInt32(tbInputPin.Text);
         inputBank = PinConverter.GetGpioBank(gpioNoInput);
         inputPin = PinConverter.GetGpioPin(gpioNoInput);
 

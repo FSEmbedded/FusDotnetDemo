@@ -5,11 +5,26 @@
              x:Class="IoTLib_Test.Views.UserControl_Can">
 
   <StackPanel>
-    <TextBlock Text="CAN Test" FontWeight="Bold"/>
-    <TextBlock Name="tbDesc" FontSize="10"/>
-    <Button Name="btnCan" Content="Can Test" Background="LightGreen"/>
-    <TextBlock Name="tbCanInfo" FontWeight="Medium" TextWrapping="Wrap" Foreground="Blue"/>
-    <Border/>
+    <TextBlock Text="CAN Test" FontWeight="Bold" FontSize="16"/>
+    <TextBlock Name="tbDesc" Text="Placeholder"/>
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <StackPanel Grid.Column="0">
+        <TextBlock Text="CAN device:" FontWeight="Normal" HorizontalAlignment="Center"/>
+        <TextBox Name="tbCanDev"/>
+      </StackPanel>
+      <StackPanel Grid.Column="1">
+        <TextBlock Text="Bitrate:" FontWeight="Normal" HorizontalAlignment="Center"/>
+        <TextBox Name="tbBitrate"/>
+      </StackPanel>
+      <Button Name="btnCan" Content="CAN Test" Grid.Column="2"/>
+    </Grid>
+    <TextBlock Name="tbCanInfo" Foreground="Blue" HorizontalAlignment="Center" Text="Placeholder"/>
+    <TextBlock Name="tbCanResult" Foreground="Blue" HorizontalAlignment="Center" Text="Placeholder"/>
   </StackPanel>
   
 </UserControl>

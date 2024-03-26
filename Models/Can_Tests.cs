@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Diagnostics;
 using System.Threading;
 using Iot.Device.SocketCan;
 
@@ -8,101 +8,159 @@ namespace IoTLib_Test.Models
     internal class Can_Tests
     {
         private bool runCanTest;
-        private CanId canId;
+        private bool testSuccess = false;
+        private string? canDev;
+        private string? bitrate;
 
-        public void CanStart()
+        private CanId canOutId;
+        private CanId canReturnId;
+
+        /* Value to send over CAN */
+        private readonly byte[] valueSend = [1, 2, 3, 40, 50, 60, 70, 80];
+        private byte[]? valueRead;
+
+        #region RunTest
+        public bool StartCanTest(string _canDev, string _bitrate)
         {
+            canDev = "can" + _canDev;
+            bitrate = _bitrate;
             runCanTest = true;
-            canId = new CanId()
+            testSuccess = false;
+            /* Reset compare values */
+            canReturnId = new CanId();
+            valueRead = null;
+
+            /* Check if CAN device is up */
+            if (!IsCanDevUp())
+            {
+                /* Activate canDev */
+                ActivateCanDev();
+                /* Throw exception if canDev couldn't be activated */
+                if (!IsCanDevUp())
+                {
+                    //TODO: Exception testen
+                    throw new Exception($"Could not activate CAN device {canDev}");
+                }
+            }
+
+            canOutId = new CanId()
             {
                 Standard = 0x1A
             };
 
-            Thread writeThread = new Thread(() => { CanWrite(); });
+            /* Start write processes */
+            Thread writeThread = new(CanWrite);
             writeThread.Start();
 
-            Thread readThread = new Thread(() => { CanRead(); });
-            readThread.Start();
-        }
+            int maxTestRuns = 0;
 
-        public void CanStop() 
-        { 
-            runCanTest = false;
-        }
-
-        public void CanRead() 
-        {
-            try
+            while (runCanTest)
             {
-                using (CanRaw can = new CanRaw("can1"))
+                // CanRead returns true, if anything was read
+                if (CanRead())
                 {
-                    byte[] buffer = new byte[8];
-                    // to scope to specific id
-                    // can.Filter(id);
-
-                    while (runCanTest)
+                    /* Compare CAN IDs & valueRead / valueSend */
+                    if (canReturnId.Value != canOutId.Value && ByteArraysEqual(valueRead!, valueSend))
                     {
-                        try
-                        {
-                            if (can.TryReadFrame(buffer, out int frameLength, out CanId id))
-                            {
-                                Span<byte> data = new Span<byte>(buffer, 0, frameLength);
-                                string type = id.ExtendedFrameFormat ? "EFF" : "SFF";
-                                string dataAsHex = string.Join("", data.ToArray().Select((x) => x.ToString("X2")));
-                                Console.WriteLine($"Id: 0x{id.Value:X2} [{type}]: {dataAsHex}");
-                            }
-                            else
-                            {
-                                Console.WriteLine($"Invalid frame received!");
-                            }
-                        }
-                        catch(Exception ex)
-                        {
-                            //TODO
-                        }
+                        testSuccess = true;
+                        runCanTest = false;
                     }
+                    /* Automatically end CAN Test */
+                    else if (maxTestRuns == 10)
+                    {
+                        testSuccess = false;
+                        runCanTest = false;
+                    }
+                    maxTestRuns++;
                 }
             }
-            catch (Exception ex)
-            {
-                //TODO
-            }
+            return testSuccess;
         }
-
+        #endregion
+        #region RW_Test
         public void CanWrite()
         {
-            try
-            {
-                using CanRaw can = new CanRaw();
-                byte[][] buffers = new byte[][]
-                {
-                new byte[8] { 1, 2, 3, 40, 50, 60, 70, 80 },
-                new byte[7] { 1, 2, 3, 40, 50, 60, 70 },
-                new byte[0] { },
-                new byte[1] { 254 },
-                };
+            using CanRaw can = new(canDev!);
+            Span<byte> bytes = new(valueSend);
 
-                if (!canId.IsValid)
-                {
-                    // This is more form of the self-test rather than actual part of the sample
-                    throw new Exception("Id is invalid");
-                }
-
-                while (runCanTest)
-                {
-                    foreach (byte[] buffer in buffers)
-                    {
-                        can.WriteFrame(buffer, canId);
-                        string dataAsHex = string.Join(string.Empty, buffer.Select((x) => x.ToString("X2")));
-                        Console.WriteLine($"Sending: {dataAsHex}");
-                        Thread.Sleep(1000);
-                    }
-                }
-            }
-            catch(Exception ex)
+            while(runCanTest)
             {
-                //TODO
+                /* Write data */
+                can.WriteFrame(bytes, canOutId);
+                Thread.Sleep(1000);
             }
         }
+
+        public bool CanRead()
+        {
+            using (CanRaw can = new CanRaw(canDev!))
+            {
+                /* buffer needs to be the same length as valueSend */
+                byte[] buffer = new byte[valueSend.Length];
+
+                if (can.TryReadFrame(buffer, out int frameLength, out canReturnId))
+                {
+                    Span<byte> bytesRead = new Span<byte>(buffer, 0, frameLength);
+                    valueRead = bytesRead.ToArray();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool ByteArraysEqual(byte[] b1, byte[] b2)
+        {
+            if (b1 == b2) return true;
+            if (b1 == null || b2 == null) return false;
+            if (b1.Length != b2.Length) return false;
+            for (int i = 0; i < b1.Length; i++)
+            {
+                if (b1[i] != b2[i]) return false;
+            }
+            return true;
+        }
+        #endregion
+        #region ActivateCanDev
+        public bool IsCanDevUp()
+        {
+            /* Check if CAN device is up */
+            /* Run shell command */
+            string argument = $"-c \"ip link show {canDev} | grep -q 'state UP'\"";
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = "/bin/bash",
+                Arguments = argument,
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using (Process process = Process.Start(startInfo)!)
+            {
+                process.WaitForExit();
+                /* ExitCode is 0 if canDev is up */
+                if (process.ExitCode == 0)
+                    return true;
+            }
+            return false;
+        }
+
+        public void ActivateCanDev()
+        {
+            /* Activate canDev and setup bitrate */
+            string argument = $"-c \"ip link set {canDev} up type can bitrate {bitrate} && ifconfig {canDev} up\"";
+
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = "/bin/bash",
+                Arguments = argument,
+            };
+
+            using (Process process = Process.Start(startInfo)!)
+            {
+                process.WaitForExit();
+            }
+        }
+        #endregion
     }
 }
