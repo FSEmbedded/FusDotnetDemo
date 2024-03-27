@@ -1,11 +1,9 @@
+using System;
+using Avalonia.Input;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using System.Threading;
 using IoTLib_Test.Models;
-using UnitsNet;
-using System;
-using Avalonia.Input;
 
 namespace IoTLib_Test.Views;
 

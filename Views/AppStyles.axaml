@@ -42,12 +42,13 @@
     <Setter Property="Margin" Value="5"/>
     <Setter Property="FontSize" Value="12"/>
     <Setter Property="FontWeight" Value="DemiBold"/>
-    <Setter Property="MinWidth" Value="120"/>
+    <Setter Property="MinWidth" Value="40"/>
     <Setter Property="MinHeight" Value="30"/>
     <Setter Property="HorizontalAlignment" Value="Center"/>
     <Setter Property="VerticalAlignment" Value="Bottom"/>
     <Setter Property="VerticalContentAlignment" Value="Top"/>
     <Setter Property="CornerRadius" Value="8"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
   </Style>
   <Style Selector="TextBlock">
     <Setter Property="FontSize" Value="14"/>

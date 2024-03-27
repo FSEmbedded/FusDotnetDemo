@@ -17,18 +17,24 @@
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0">
           <TextBlock Text="I²C Bus ID:" FontWeight="Normal" HorizontalAlignment="Center"/>
-          <TextBox Name="tbBusIdLed"/>
+          <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
+            <TextBlock Text="0x" VerticalAlignment="Center"/>
+            <TextBox Name="tbBusIdLed"/>
+          </StackPanel>
         </StackPanel>
         <StackPanel Grid.Column="1">
           <TextBlock Text="Address LED:" FontWeight="Normal" HorizontalAlignment="Center"/>
-          <TextBox Name="tbDevAddrLed"/>
+          <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
+            <TextBlock Text="0x" VerticalAlignment="Center"/>
+            <TextBox Name="tbDevAddrLed"/>
+          </StackPanel>
         </StackPanel>
-        <Button Name="btnI2cWrite" Content="Start I²C LED Test" Grid.Column="2"/>
+        <Button Name="btnI2cLed" Content="Start LED Test" Grid.Column="2"/>
       </Grid>
       <TextBlock Name="txInfoLed" Foreground="Blue" HorizontalAlignment="Center" Text="Placeholder"/>
       <Border BorderThickness="0.6" Margin="0,5,0,20"/>
-      <!-- I2C Extension Board - Read Test -->
-      <TextBlock Text="I2C Extension Board - Read Test" FontWeight="Bold" FontSize="16"/>
+      <!-- RW Test -->
+      <TextBlock Text="Read / Write Test" FontWeight="Bold" FontSize="16"/>
       <TextBlock Name="txDescStorage" Text="Placeholder"/>
       <Grid>
         <Grid.ColumnDefinitions>
@@ -39,24 +45,51 @@
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Column="0" Grid.Row="0">
           <TextBlock Text="I²C Bus ID:" FontWeight="Normal" HorizontalAlignment="Center"/>
-          <TextBox Name="tbBusIdStorage"/>
+          <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
+            <TextBlock Text="0x" VerticalAlignment="Center"/>
+            <TextBox Name="tbBusIdStorage"/>
+          </StackPanel>
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="0">
           <TextBlock Text="Address Storage:" FontWeight="Normal" HorizontalAlignment="Center"/>
-          <TextBox Name="tbDevAddrStorage"/>
+          <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
+            <TextBlock Text="0x" VerticalAlignment="Center"/>
+            <TextBox Name="tbDevAddrStorage"/>
+          </StackPanel>
         </StackPanel>
         <StackPanel Grid.Column="0" Grid.Row="1">
           <TextBlock Text="Value 1:" FontWeight="Normal" HorizontalAlignment="Center"/>
-          <TextBox Name="tbValue1"/>
+          <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
+            <TextBlock Text="0x" VerticalAlignment="Center"/>
+            <TextBox Name="tbValue1"/>
+          </StackPanel>
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="1">
           <TextBlock Text="Value 2:" FontWeight="Normal" HorizontalAlignment="Center"/>
-          <TextBox Name="tbValue2"/>
+          <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
+            <TextBlock Text="0x" VerticalAlignment="Center"/>
+            <TextBox Name="tbValue2"/>
+          </StackPanel>
         </StackPanel>
-        <Button Name="btnI2cRead" Content="Start I²C Read Test" Grid.Column="2" Grid.Row="1"/>
+        <StackPanel Grid.Column="0" Grid.Row="2">
+          <TextBlock Text="Register 1:" FontWeight="Normal" HorizontalAlignment="Center"/>
+          <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
+            <TextBlock Text="0x" VerticalAlignment="Center"/>
+            <TextBox Name="tbReg1"/>
+          </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="2">
+          <TextBlock Text="Register 2:" FontWeight="Normal" HorizontalAlignment="Center"/>
+          <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
+            <TextBlock Text="0x" VerticalAlignment="Center"/>
+            <TextBox Name="tbReg2"/>
+          </StackPanel>
+        </StackPanel>
+        <Button Name="btnI2cRead" Content="Start RW Test" Grid.Column="2" Grid.Row="2"/>
       </Grid>
       <TextBlock Name="txInfoWrite" Foreground="Blue"  HorizontalAlignment="Center" Text="Placeholder"/>
       <TextBlock Name="txInfoRead" HorizontalAlignment="Center" Text="Placeholder"/>
@@ -76,21 +109,33 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Column="0" Grid.Row="0">
           <TextBlock Text="I²C Bus ID - PWM:" FontWeight="Normal" HorizontalAlignment="Center"/>
-          <TextBox Name="tbBusIdPwm"/>
+          <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
+            <TextBlock Text="0x" VerticalAlignment="Center"/>
+            <TextBox Name="tbBusIdPwm"/>
+          </StackPanel>
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="0">
           <TextBlock Text="Address PWM:" FontWeight="Normal" HorizontalAlignment="Center"/>
-          <TextBox Name="tbDevAddrPwm"/>
+          <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
+            <TextBlock Text="0x" VerticalAlignment="Center"/>
+            <TextBox Name="tbDevAddrPwm"/>
+          </StackPanel>
         </StackPanel>
         <StackPanel Grid.Column="0" Grid.Row="1">
           <TextBlock Text="I²C Bus ID - ADC:" FontWeight="Normal" HorizontalAlignment="Center"/>
-          <TextBox Name="tbBusIdAdc"/>
+          <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
+            <TextBlock Text="0x" VerticalAlignment="Center"/>
+            <TextBox Name="tbBusIdAdc"/>
+          </StackPanel>
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="1">
           <TextBlock Text="Address ADC:" FontWeight="Normal" HorizontalAlignment="Center"/>
-          <TextBox Name="tbDevAddrAdc"/>
+          <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
+            <TextBlock Text="0x" VerticalAlignment="Center"/>
+            <TextBox Name="tbDevAddrAdc"/>
+          </StackPanel>
         </StackPanel>
-        <Button Name="btnPwm" Content="Start I²C PWM Test" Grid.Column="2" Grid.Row="1"/>
+        <Button Name="btnI2cPwm" Content="Start I²C PWM Test" Grid.Column="2" Grid.Row="1"/>
       </Grid>
       <TextBlock Name="txPwmSend" Foreground="Blue" HorizontalAlignment="Center" Text="Placeholder"/>
       <TextBlock Name="txPwmRead" Foreground="Blue" HorizontalAlignment="Center" Text="Placeholder"/>

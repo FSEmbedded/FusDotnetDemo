@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading;
+using System.Diagnostics;
 using Iot.Device.SocketCan;
 
 namespace IoTLib_Test.Models
@@ -12,8 +12,8 @@ namespace IoTLib_Test.Models
         private string? canDev;
         private string? bitrate;
 
-        private CanId canOutId;
-        private CanId canReturnId;
+        private CanId canIdSend;
+        private CanId canIdReturn;
 
         /* Value to send over CAN */
         private readonly byte[] valueSend = [1, 2, 3, 40, 50, 60, 70, 80];
@@ -27,7 +27,7 @@ namespace IoTLib_Test.Models
             runCanTest = true;
             testSuccess = false;
             /* Reset compare values */
-            canReturnId = new CanId();
+            canIdReturn = new CanId();
             valueRead = null;
 
             /* Check if CAN device is up */
@@ -43,7 +43,7 @@ namespace IoTLib_Test.Models
                 }
             }
 
-            canOutId = new CanId()
+            canIdSend = new CanId()
             {
                 Standard = 0x1A
             };
@@ -60,7 +60,7 @@ namespace IoTLib_Test.Models
                 if (CanRead())
                 {
                     /* Compare CAN IDs & valueRead / valueSend */
-                    if (canReturnId.Value != canOutId.Value && ByteArraysEqual(valueRead!, valueSend))
+                    if (canIdReturn.Value != canIdSend.Value && ByteArraysEqual(valueRead!, valueSend))
                     {
                         testSuccess = true;
                         runCanTest = false;
@@ -86,7 +86,7 @@ namespace IoTLib_Test.Models
             while(runCanTest)
             {
                 /* Write data */
-                can.WriteFrame(bytes, canOutId);
+                can.WriteFrame(bytes, canIdSend);
                 Thread.Sleep(1000);
             }
         }
@@ -98,7 +98,7 @@ namespace IoTLib_Test.Models
                 /* buffer needs to be the same length as valueSend */
                 byte[] buffer = new byte[valueSend.Length];
 
-                if (can.TryReadFrame(buffer, out int frameLength, out canReturnId))
+                if (can.TryReadFrame(buffer, out int frameLength, out canIdReturn))
                 {
                     Span<byte> bytesRead = new Span<byte>(buffer, 0, frameLength);
                     valueRead = bytesRead.ToArray();
@@ -118,9 +118,6 @@ namespace IoTLib_Test.Models
             {
                 FileName = "/bin/bash",
                 Arguments = argument,
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
             };
 
             using (Process process = Process.Start(startInfo)!)
@@ -163,3 +160,5 @@ namespace IoTLib_Test.Models
         }
     }
 }
+
+//TODO: try-catch - Gegenstelle CAN nicht aktiviert führt zu Absturz
