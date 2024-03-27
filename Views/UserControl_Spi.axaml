@@ -4,12 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Class="IoTLib_Test.Views.UserControl_Spi">
 
-  <StackPanel>
-    <!-- SPI Test -->
-    <TextBlock Text="SPI Test" FontWeight="Bold"/>
-    <TextBlock Name="tbDesc" FontSize="10"/>
-    <Button Name="btnSpi" Content="Start SPI Test" Background="LightGreen"/>
-    <TextBlock Name="tbSpiInfo" FontWeight="Medium" TextWrapping="Wrap" Foreground="Blue"/>
-    <Border/>
-  </StackPanel>
+  <ScrollViewer>
+    <StackPanel>
+      <!-- SPI Test -->
+      <TextBlock Text="SPI Test" FontWeight="Bold"/>
+      <TextBlock Name="tbDesc" FontSize="10"/>
+      <Button Name="btnSpi" Content="Start SPI Test" Background="LightGreen"/>
+      <TextBlock Name="tbSpiInfo" FontWeight="Medium" TextWrapping="Wrap" Foreground="Blue"/>
+      <Border/>
+    </StackPanel>
+  </ScrollViewer>
 </UserControl>

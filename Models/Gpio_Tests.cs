@@ -22,6 +22,7 @@ namespace IoTLib_Test.Models
 
         public Gpio_Tests(int _ledBank, int _ledPin, int _inputBank, int _inputPin)
         {
+            /* Set standard values */
             ledBank = _ledBank;
             ledPin = _ledPin;
             inputBank = _inputBank;

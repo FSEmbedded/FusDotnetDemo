@@ -23,7 +23,7 @@ public partial class UserControl_Can : UserControl
 
         /* Button bindings */
         btnCan.AddHandler(Button.ClickEvent, btnCan_Clicked!);
-        tbDesc.Text = "Connect second board, CAN_L - CAN_L & CAN_H - CAN_H\r\n" +
+        txDescCan.Text = "Connect second board, CAN_L - CAN_L & CAN_H - CAN_H\r\n" +
             "On second device , run following comand under Linux to activate can0:\r\n" +
             "ip link set can0 up type can bitrate 1000000 && ifconfig can0 up\r\n" +
             "Run this command while CAN test is running to return the received value:\r\n" +
@@ -37,8 +37,8 @@ public partial class UserControl_Can : UserControl
         tbCanDev.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
         tbBitrate.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
 
-        tbCanInfo.Text = "";
-        tbCanResult.Text = "";
+        txInfoCan.Text = "";
+        txCanResult.Text = "";
 
         Can = new Can_Tests();
     }
@@ -53,14 +53,14 @@ public partial class UserControl_Can : UserControl
 
         if (Can.RunCanTest(canDevice, bitrate))
         {
-            tbCanResult.Text = "CAN Test Success"; //TODO: Meldung verbessern
-            tbCanResult.Foreground = Brushes.Green;
+            txCanResult.Text = "CAN Test Success"; //TODO: Meldung verbessern
+            txCanResult.Foreground = Brushes.Green;
         }
         else
         {
-            tbCanResult.Text = "CAN Test Failed\r\n" +
+            txCanResult.Text = "CAN Test Failed\r\n" +
                 "Is receiving device connected and CAN activated?";
-            tbCanResult.Foreground = Brushes.Red;
+            txCanResult.Foreground = Brushes.Red;
         }
     }
 

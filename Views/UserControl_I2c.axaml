@@ -4,36 +4,96 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Class="IoTLib_Test.Views.UserControl_I2c">
 
-  <StackPanel>
-    <!-- I2C Extension Board - LED Test -->
-    <TextBlock Text="I2C Extension Board - LED Test" FontWeight="Bold"/>
-    <TextBlock Name="tbDesc" FontSize="10"/>
-    <StackPanel Orientation="Horizontal">
-      <TextBlock Text="I²C Bus ID: "/>
-      <TextBox Name="tbBusId"/>
+  <ScrollViewer>
+    <StackPanel>
+      <!-- I2C Extension Board - LED Test -->
+      <TextBlock Text="I2C Extension Board - LED Test" FontWeight="Bold" FontSize="16"/>
+      <TextBlock Name="txDescLed" Text="Placeholder"/>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+          <TextBlock Text="I²C Bus ID:" FontWeight="Normal" HorizontalAlignment="Center"/>
+          <TextBox Name="tbBusIdLed"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1">
+          <TextBlock Text="Address LED:" FontWeight="Normal" HorizontalAlignment="Center"/>
+          <TextBox Name="tbDevAddrLed"/>
+        </StackPanel>
+        <Button Name="btnI2cWrite" Content="Start I²C LED Test" Grid.Column="2"/>
+      </Grid>
+      <TextBlock Name="txInfoLed" Foreground="Blue" HorizontalAlignment="Center" Text="Placeholder"/>
+      <Border BorderThickness="0.6" Margin="0,5,0,20"/>
+      <!-- I2C Extension Board - Read Test -->
+      <TextBlock Text="I2C Extension Board - Read Test" FontWeight="Bold" FontSize="16"/>
+      <TextBlock Name="txDescStorage" Text="Placeholder"/>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Column="0" Grid.Row="0">
+          <TextBlock Text="I²C Bus ID:" FontWeight="Normal" HorizontalAlignment="Center"/>
+          <TextBox Name="tbBusIdStorage"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="0">
+          <TextBlock Text="Address Storage:" FontWeight="Normal" HorizontalAlignment="Center"/>
+          <TextBox Name="tbDevAddrStorage"/>
+        </StackPanel>
+        <StackPanel Grid.Column="0" Grid.Row="1">
+          <TextBlock Text="Value 1:" FontWeight="Normal" HorizontalAlignment="Center"/>
+          <TextBox Name="tbValue1"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="1">
+          <TextBlock Text="Value 2:" FontWeight="Normal" HorizontalAlignment="Center"/>
+          <TextBox Name="tbValue2"/>
+        </StackPanel>
+        <Button Name="btnI2cRead" Content="Start I²C Read Test" Grid.Column="2" Grid.Row="1"/>
+      </Grid>
+      <TextBlock Name="txInfoWrite" Foreground="Blue"  HorizontalAlignment="Center" Text="Placeholder"/>
+      <TextBlock Name="txInfoRead" HorizontalAlignment="Center" Text="Placeholder"/>
+      <Border BorderThickness="0.6" Margin="0,5,0,20"/>
+      <!-- I2C Extension Board - PWM Test -->
+      <TextBlock Text="I2C Extension Board - PWM Test" FontWeight="Bold" FontSize="16"/>
+      <TextBlock Name="txDescPwm" Text="Placeholder"/>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Column="0" Grid.Row="0">
+          <TextBlock Text="I²C Bus ID - PWM:" FontWeight="Normal" HorizontalAlignment="Center"/>
+          <TextBox Name="tbBusIdPwm"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="0">
+          <TextBlock Text="Address PWM:" FontWeight="Normal" HorizontalAlignment="Center"/>
+          <TextBox Name="tbDevAddrPwm"/>
+        </StackPanel>
+        <StackPanel Grid.Column="0" Grid.Row="1">
+          <TextBlock Text="I²C Bus ID - ADC:" FontWeight="Normal" HorizontalAlignment="Center"/>
+          <TextBox Name="tbBusIdAdc"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="1">
+          <TextBlock Text="Address ADC:" FontWeight="Normal" HorizontalAlignment="Center"/>
+          <TextBox Name="tbDevAddrAdc"/>
+        </StackPanel>
+        <Button Name="btnPwm" Content="Start I²C PWM Test" Grid.Column="2" Grid.Row="1"/>
+      </Grid>
+      <TextBlock Name="txPwmSend" Foreground="Blue" HorizontalAlignment="Center" Text="Placeholder"/>
+      <TextBlock Name="txPwmRead" Foreground="Blue" HorizontalAlignment="Center" Text="Placeholder"/>
     </StackPanel>
-    <StackPanel Orientation="Horizontal">
-      <TextBlock Text="I²C Device Address: " />
-      <TextBox Name="tbDevAddr"/>
-    </StackPanel>
-    <Button Name="btnI2cWrite" Content="Start I²C LED Test" Background="LightGreen"/>
-    <TextBlock Name="tbLedInfo" FontWeight="Medium" TextWrapping="Wrap" Foreground="Blue"/>
-    <Border/>
-    
-    <!-- I2C Extension Board - Read Test -->
-    <TextBlock Text="I2C Extension Board - Read Test" FontWeight="Bold"/>
-    <Button Name="btnI2cRead" Content="Start I²C Read Test"/>
-    <TextBlock Name="tbI2cReadInfoSend" FontWeight="Medium" TextWrapping="Wrap"/>
-    <TextBlock Name="tbI2cReadInfoRead" FontWeight="Medium" TextWrapping="Wrap"/>
-    <Border/>
-    
-    <!-- I2C Extension Board - PWM Test -->
-    <TextBlock Text="I2C Extension Board - PWM Test" FontWeight="Bold"/>
-    <TextBlock Name="tbPwmDesc"/>
-    <Button Name="btnPwm" Content="Start I²C PWM Test"/>
-    <TextBlock Name="tbPwmSend" FontWeight="Medium" TextWrapping="Wrap" Foreground="Blue"/>
-    <TextBlock Name="tbPwmRead" FontWeight="Medium" TextWrapping="Wrap"/>
-    <Border/>
-
-  </StackPanel>
+  </ScrollViewer>
 </UserControl>

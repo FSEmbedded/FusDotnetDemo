@@ -35,7 +35,7 @@ public partial class UserControl_Gpio : UserControl
         /* GPIO_Input button bindings */
         btnGpioInput.AddHandler(Button.ClickEvent, BtnGpioInput_Clicked!);
 
-        /* Write standard GPIO pins in textbox */
+        /* Write standard GPIO pins in textboxes */
         tbLedPin.Text = Convert.ToString(gpioNoLed);
         tbInputPin.Text = Convert.ToString(gpioNoInput);
 
@@ -43,10 +43,10 @@ public partial class UserControl_Gpio : UserControl
         tbLedPin.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
         tbInputPin.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
 
-        tbLedDesc.Text = "Connect LED to PcoreBBDSI Rev1.40 - J11-8 / J11-11"; // GPIO_J1_54
-        tbInputDesc.Text = "Connect Button to PcoreBBDSI Rev1.40 - J11-18 / J11-27"; // GPIO_J1_52
-        tbLedInfo.Text = "";
-        tbInputInfo.Text = "";
+        txDescLed.Text = "Connect LED to PcoreBBDSI Rev1.40 - J11-8 / J11-11"; // GPIO_J1_54
+        txDescInput.Text = "Connect Button to PcoreBBDSI Rev1.40 - J11-18 / J11-27"; // GPIO_J1_52
+        txInfoLed.Text = "";
+        txInfoInput.Text = "";
 
         /* Convert GPIO Pin # to gpio bank and pin */
         ledBank = PinConverter.GetGpioBank(gpioNoLed);
@@ -74,7 +74,7 @@ public partial class UserControl_Gpio : UserControl
             /* Change UI */
             btnLedSwitch.Content = "LED Off";
             btnLedSwitch.Background = Brushes.Red;
-            tbLedInfo.Text = "LED on Pin J11-8 is on";
+            txInfoLed.Text = "LED on Pin J11-8 is on";
         }
         else
         {
@@ -85,7 +85,7 @@ public partial class UserControl_Gpio : UserControl
             /* Change UI */
             btnLedSwitch.Content = "LED On";
             btnLedSwitch.Background = Brushes.LightGreen;
-            tbLedInfo.Text = "LED on Pin J11-8 is off";
+            txInfoLed.Text = "LED on Pin J11-8 is off";
         }
     }
 
@@ -115,7 +115,7 @@ public partial class UserControl_Gpio : UserControl
             /* Change UI */
             btnGpioInput.Content = "Stop GPIO Input";
             btnGpioInput.Background = Brushes.Red;
-            tbInputInfo.Text = "Waiting for Hardware-Button click";
+            txInfoInput.Text = "Waiting for Hardware-Button click";
         }
         else
         {
@@ -126,7 +126,7 @@ public partial class UserControl_Gpio : UserControl
             /* Change UI */
             btnGpioInput.Content = "Start GPIO Input";
             btnGpioInput.Background = Brushes.LightGreen;
-            tbInputInfo.Text = "Hardware-Button deactivated";
+            txInfoInput.Text = "Hardware-Button deactivated";
         }
     }
 

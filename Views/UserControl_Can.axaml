@@ -4,27 +4,28 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Class="IoTLib_Test.Views.UserControl_Can">
 
-  <StackPanel>
-    <TextBlock Text="CAN Test" FontWeight="Bold" FontSize="16"/>
-    <TextBlock Name="tbDesc" Text="Placeholder"/>
-    <Grid>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-      </Grid.ColumnDefinitions>
-      <StackPanel Grid.Column="0">
-        <TextBlock Text="CAN device:" FontWeight="Normal" HorizontalAlignment="Center"/>
-        <TextBox Name="tbCanDev"/>
-      </StackPanel>
-      <StackPanel Grid.Column="1">
-        <TextBlock Text="Bitrate:" FontWeight="Normal" HorizontalAlignment="Center"/>
-        <TextBox Name="tbBitrate"/>
-      </StackPanel>
-      <Button Name="btnCan" Content="CAN Test" Grid.Column="2"/>
-    </Grid>
-    <TextBlock Name="tbCanInfo" Foreground="Blue" HorizontalAlignment="Center" Text="Placeholder"/>
-    <TextBlock Name="tbCanResult" Foreground="Blue" HorizontalAlignment="Center" Text="Placeholder"/>
-  </StackPanel>
-  
+  <ScrollViewer>
+    <StackPanel>
+      <TextBlock Text="CAN Test" FontWeight="Bold" FontSize="16"/>
+      <TextBlock Name="txDescCan" Text="Placeholder"/>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+          <TextBlock Text="CAN device:" FontWeight="Normal" HorizontalAlignment="Center"/>
+          <TextBox Name="tbCanDev"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1">
+          <TextBlock Text="Bitrate:" FontWeight="Normal" HorizontalAlignment="Center"/>
+          <TextBox Name="tbBitrate"/>
+        </StackPanel>
+        <Button Name="btnCan" Content="CAN Test" Grid.Column="2"/>
+      </Grid>
+      <TextBlock Name="txInfoCan" Foreground="Blue" HorizontalAlignment="Center" Text="Placeholder"/>
+      <TextBlock Name="txCanResult" Foreground="Blue" HorizontalAlignment="Center" Text="Placeholder"/>
+    </StackPanel>
+  </ScrollViewer>
 </UserControl>

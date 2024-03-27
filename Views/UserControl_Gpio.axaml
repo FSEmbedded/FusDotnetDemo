@@ -4,42 +4,42 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Class="IoTLib_Test.Views.UserControl_Gpio">
 
-  <StackPanel>
-    <!-- LED Test -->
-    <TextBlock Text="GPIO LED Test" FontWeight="Bold" FontSize="16"/>
-    <TextBlock Name="tbLedDesc" Text="Placeholder"/>
-    <Grid>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-      </Grid.ColumnDefinitions>
-      <StackPanel Grid.Column="0">
-        <TextBlock Text="GPIO Pin:" FontWeight="Normal" HorizontalAlignment="Center"/>
-        <TextBox Name="tbLedPin"/>
-      </StackPanel>
-      <Button Name="btnLedSwitch" Content="LED On" Grid.Column="1"/>
-      <Button Name="btnLedBlink" Content="LED Blinking" Grid.Column="2"/>
-    </Grid>
-    <TextBlock Name="tbLedInfo" Foreground="Blue" HorizontalAlignment="Center" Text="Placeholder"/>
-    <Border BorderThickness="0.6" Margin="0,5,0,20"/>
-    <!-- Input Test -->
-    <TextBlock Text="GPIO Input Test" FontWeight="Bold" FontSize="16"/>
-    <TextBlock Name="tbInputDesc" Text="Placeholder"/>
-    <Grid>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-      </Grid.ColumnDefinitions>
-      <StackPanel Grid.Column="0">
-        <TextBlock Text="GPIO Pin:" FontWeight="Normal" HorizontalAlignment="Center"/>
-        <TextBox Name="tbInputPin"/>
-      </StackPanel>
-      <Button Name="btnGpioInput" Content="Start GPIO Input" Grid.Column="1"/>
-    </Grid>
-    <TextBlock Name="tbGpioIn" TextWrapping="Wrap" Foreground="Blue"/>
-    <TextBlock Name="tbInputInfo" Foreground="Blue"  HorizontalAlignment="Center" Text="Placeholder"/>
-  </StackPanel>
-
+  <ScrollViewer>
+    <StackPanel>
+      <!-- LED Test -->
+      <TextBlock Text="GPIO LED Test" FontWeight="Bold" FontSize="16"/>
+      <TextBlock Name="txDescLed" Text="Placeholder"/>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+          <TextBlock Text="GPIO Pin:" FontWeight="Normal" HorizontalAlignment="Center"/>
+          <TextBox Name="tbLedPin"/>
+        </StackPanel>
+        <Button Name="btnLedSwitch" Content="LED On" Grid.Column="1"/>
+        <Button Name="btnLedBlink" Content="LED Blinking" Grid.Column="2"/>
+      </Grid>
+      <TextBlock Name="txInfoLed" Foreground="Blue" HorizontalAlignment="Center" Text="Placeholder"/>
+      <Border BorderThickness="0.6" Margin="0,5,0,20"/>
+      <!-- Input Test -->
+      <TextBlock Text="GPIO Input Test" FontWeight="Bold" FontSize="16"/>
+      <TextBlock Name="txDescInput" Text="Placeholder"/>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+          <TextBlock Text="GPIO Pin:" FontWeight="Normal" HorizontalAlignment="Center"/>
+          <TextBox Name="tbInputPin"/>
+        </StackPanel>
+        <Button Name="btnGpioInput" Content="Start GPIO Input" Grid.Column="1"/>
+      </Grid>
+      <TextBlock Name="txInfoInput" Foreground="Blue"  HorizontalAlignment="Center" Text="Placeholder"/>
+    </StackPanel>
+  </ScrollViewer>
 </UserControl>

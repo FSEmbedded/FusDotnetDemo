@@ -3,6 +3,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using System.Threading;
 using IoTLib_Test.Models;
+using System;
 
 namespace IoTLib_Test.Views;
 
@@ -11,15 +12,18 @@ public partial class UserControl_I2c : UserControl
     /* I²C functions are in separate class */
     private readonly I2c_Tests I2c;
     private bool ledThreadStarted = false;
-
-    //TODO: Eingabe in UI
-    public int busId = 0x5;
-    public int deviceAddrLed = 0x23;
-    public int deviceAddrStorage = 0x23;
-    public int deviceAddrPwm = 0x63;
-    public int deviceAddrAdc = 0x63; //TODO
-    public int value1 = 0xAA;
-    public int value2 = 0x55;
+    /* Standard IDs and addresses */
+    private int busIdLed = 0x5;
+    private int devAddrLed = 0x23;
+    private int busIdStorage = 0x5;
+    private int devAddrStorage = 0x23;
+    private int busIdPwm = 0x5;
+    private int devAddrPwm = 0x63;
+    private int busIdAdc = 0x5;
+    private int devAddrAdc = 0x63; //TODO
+    /* Values to write on I2C storage */
+    private int valueWrite1 = 0xAA;
+    private int valueWrite2 = 0x55;
 
     public UserControl_I2c()
     {
@@ -29,9 +33,30 @@ public partial class UserControl_I2c : UserControl
         btnI2cWrite.AddHandler(Button.ClickEvent, BtnI2cWrite_Clicked!);
         btnI2cRead.AddHandler(Button.ClickEvent, BtnI2cRead_Clicked!);
         btnPwm.AddHandler(Button.ClickEvent, BtnPwm_Clicked!);
+
+        /* Write standard values in textboxes*/
+        //TODO: Werte als hex anzeigen!
+        tbBusIdLed.Text = Convert.ToString(busIdLed);
+        tbDevAddrLed.Text = Convert.ToString(devAddrLed);
+        tbBusIdStorage.Text = Convert.ToString(busIdStorage);
+        tbDevAddrStorage.Text = Convert.ToString(devAddrStorage);
+        tbValue1.Text = Convert.ToString(valueWrite1);
+        tbValue2.Text = Convert.ToString(valueWrite2);
+        tbBusIdPwm.Text = Convert.ToString(busIdPwm);
+        tbDevAddrPwm.Text = Convert.ToString(devAddrPwm);
+        tbBusIdAdc.Text = Convert.ToString(busIdAdc);
+        tbDevAddrAdc.Text = Convert.ToString(devAddrAdc);
+
         /* Description Text */
-        tbDesc.Text = "Connect BBDSI with I²C Extension Board: I2C_A_SCL = J11-16 -> J1-11, I2C_A_SDA = J11-17 -> J1-10, GND = J11-37 -> J1-16";
-        tbPwmDesc.Text = "Connect I²C Extension Board Pins: J2-17 -> J2-27; Set S2-3 to ON";
+        txDescLed.Text = "Connect BBDSI with I²C Extension Board: I2C_A_SCL = J11-16 -> J1-11, I2C_A_SDA = J11-17 -> J1-10, GND = J11-37 -> J1-16";
+        txDescStorage.Text = ""; //TODO
+        txDescPwm.Text = "Connect I²C Extension Board Pins: J2-17 -> J2-27; Set S2-3 to ON";
+
+        txInfoLed.Text = "";
+        txInfoWrite.Text = "";
+        txInfoRead.Text = "";
+        txPwmSend.Text = "";
+        txPwmRead.Text = "";
 
         I2c = new I2c_Tests();
     }
@@ -41,13 +66,13 @@ public partial class UserControl_I2c : UserControl
         if (!ledThreadStarted)
         {
             /* Create new Thread, start I2C Test */
-            Thread I2cLedThread = new(() => I2c.WriteLedValues(busId, deviceAddrLed));
+            Thread I2cLedThread = new(() => I2c.WriteLedValues(busIdLed, devAddrLed));
             I2cLedThread.Start();
             ledThreadStarted = true;
             /* Change UI */
             btnI2cWrite.Content = "Stop I²C";
             btnI2cWrite.Background = Brushes.Red;
-            tbLedInfo.Text = "LEDs on I²C-Extension Board are blinking";
+            txInfoLed.Text = "LEDs on I²C-Extension Board are blinking";
         }
         else
         {
@@ -57,28 +82,28 @@ public partial class UserControl_I2c : UserControl
             /* Change UI */
             btnI2cWrite.Content = "Start I²C";
             btnI2cWrite.Background = Brushes.LightGreen;
-            tbLedInfo.Text = "LEDs on I²C-Extension Board are blinking";
+            txInfoLed.Text = "LEDs on I²C-Extension Board are blinking";
         }
     }
 
     void BtnI2cRead_Clicked(object sender, RoutedEventArgs args)
     {
         /* Send data to I2C Device */
-        if(I2c.WriteData(busId, deviceAddrStorage, value1, value2))
+        if(I2c.WriteData(busIdLed, devAddrStorage, valueWrite1, valueWrite2))
         {
-            tbI2cReadInfoSend.Text = $"Value {value1} sent to I²C Device";
-            tbI2cReadInfoSend.Foreground = Brushes.Blue;
+            txInfoWrite.Text = $"Value {valueWrite1} sent to I²C Device";
+            txInfoWrite.Foreground = Brushes.Blue;
 
             /* Read data from I2C Device, true if values match the data sent */
-            if (I2c.ReadData(busId, deviceAddrStorage))
+            if (I2c.ReadData(busIdLed, devAddrStorage))
             {
-                tbI2cReadInfoRead.Text = $"Value {value1} read from I²C Device";
-                tbI2cReadInfoRead.Foreground = Brushes.Green;
+                txInfoRead.Text = $"Value {valueWrite1} read from I²C Device";
+                txInfoRead.Foreground = Brushes.Green;
             }
             else
             {
-                tbI2cReadInfoRead.Text = $"Value {value1} doesn't match the value read from I²C Device";
-                tbI2cReadInfoRead.Foreground = Brushes.Red;
+                txInfoRead.Text = $"Value {valueWrite1} doesn't match the value read from I²C Device";
+                txInfoRead.Foreground = Brushes.Red;
             }
         }
     }
@@ -89,14 +114,14 @@ public partial class UserControl_I2c : UserControl
         int counter = 0;
         bool toggleOn = true;
 
-        tbPwmSend.Text = $"PWM will toggle. See LED";
+        txPwmSend.Text = $"PWM will toggle. See LED";
 
         while(counter <= 9)
         {
-            I2c.SetPwm(busId, deviceAddrPwm, toggleOn);
+            I2c.SetPwm(busIdLed, devAddrPwm, toggleOn);
             //TODO: Read auswerten
-            returnVoltage = I2c.ReadADC(busId, deviceAddrAdc);
-            tbPwmRead.Text = $"ADC received {returnVoltage} V";
+            returnVoltage = I2c.ReadADC(busIdLed, devAddrAdc);
+            txPwmRead.Text = $"ADC received {returnVoltage} V";
             Thread.Sleep(1000);
 
             toggleOn = !toggleOn;
@@ -109,5 +134,3 @@ public partial class UserControl_I2c : UserControl
         //}
     }
 }
-
-//TODO: Eingabefeld für busId und deviceAddr
