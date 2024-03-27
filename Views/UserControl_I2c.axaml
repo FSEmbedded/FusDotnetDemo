@@ -89,7 +89,7 @@
             <TextBox Name="tbReg2"/>
           </StackPanel>
         </StackPanel>
-        <Button Name="btnI2cRead" Content="Start RW Test" Grid.Column="2" Grid.Row="2"/>
+        <Button Name="btnI2cRW" Content="Start RW Test" Grid.Column="2" Grid.Row="2"/>
       </Grid>
       <TextBlock Name="txInfoWrite" Foreground="Blue"  HorizontalAlignment="Center" Text="Placeholder"/>
       <TextBlock Name="txInfoRead" HorizontalAlignment="Center" Text="Placeholder"/>
