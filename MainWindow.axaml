@@ -22,7 +22,7 @@
 
     <StackPanel Classes.ClassHeader="true" Grid.Row="0">
       <Image Margin="5" Source="/Assets/fs_logo.png"/>
-      <TextBlock Classes.ClassHeader="true" Text="IoT Library Test"/>
+      <TextBlock Classes.ClassHeader="true" Text="IoT Library Demo"/>
     </StackPanel>
     
     <TabControl Grid.Row="1">

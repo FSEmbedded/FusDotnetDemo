@@ -27,13 +27,13 @@ public partial class UserControl_Spi : UserControl
     {
         if(!Spi.SpiStart(spidev, register))
         {
-            tbSpiInfo.Text = "Data sent and data read are different";
-            tbSpiInfo.Foreground = Brushes.Red;
+            txInfoSpi.Text = "Data sent and data read are different";
+            txInfoSpi.Foreground = Brushes.Red;
         }
         else
         {
-            tbSpiInfo.Text = "Data sent and data read are equal";
-            tbSpiInfo.Foreground = Brushes.Green;
+            txInfoSpi.Text = "Data sent and data read are equal";
+            txInfoSpi.Foreground = Brushes.Green;
         }
     }
 
