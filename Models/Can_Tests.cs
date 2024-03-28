@@ -2,31 +2,34 @@
 using System.Threading;
 using System.Diagnostics;
 using Iot.Device.SocketCan;
+using System.Threading.Tasks;
+using Avalonia.Controls;
 
 namespace IoTLib_Test.Models
 {
     internal class Can_Tests
     {
-        private bool runCanTest;
-        private bool testSuccess = false;
         private string? canDev;
         private string? bitrate;
-
-        private CanId canIdSend;
-        private CanId canIdReturn;
+        private CanId canIdWrite;
+        private CanId canIdRead;
 
         /* Value to send over CAN */
         private readonly byte[] valueSend = [1, 2, 3, 40, 50, 60, 70, 80];
         private byte[]? valueRead;
 
+        private bool runRwProcesses;
+        private bool canRwSuccess = false;
+        private readonly int maxRunCount = 10;
+
         public bool StartCanRWTest(string _canDev, string _bitrate)
         {
             canDev = "can" + _canDev;
             bitrate = _bitrate;
-            runCanTest = true;
-            testSuccess = false;
+            runRwProcesses = true;
+            canRwSuccess = false;
             /* Reset compare values */
-            canIdReturn = new CanId();
+            canIdRead = new CanId();
             valueRead = null;
 
             /* Check if CAN device is up */
@@ -37,71 +40,99 @@ namespace IoTLib_Test.Models
                 /* Throw exception if canDev couldn't be activated */
                 if (!IsCanDevUp())
                 {
-                    //TODO: Exception testen
+                    runRwProcesses = false;
                     throw new Exception($"Exception: Could not activate CAN device {canDev}");
                 }
             }
 
-            canIdSend = new CanId()
+            canIdWrite = new CanId()
             {
                 Standard = 0x1A
             };
 
-            /* Start write processes */
-            Thread writeThread = new(CanWrite);
+            try
+            {
+                /* Start single write processes to check if it's working */
+                CanWrite(1);
+            }
+            catch (Exception ex)
+            {
+                runRwProcesses = false;
+                throw new Exception(ex.Message);
+            }
+
+            /* Start write thread */
+            Thread writeThread = new(() => CanWrite(maxRunCount));
             writeThread.Start();
 
-            int maxTestRuns = 0;
+            int runCount = 0;
 
-            while (runCanTest)
+            while (runRwProcesses && runCount < maxRunCount)
             {
-                // CanRead returns true, if anything was read
-                if (CanRead())
+                /* Let CanRead run as Task, otherwise it won't timeout if it there is nothing to read */
+                var readTask = Task.Run(CanRead);
+                if (readTask.Wait(TimeSpan.FromSeconds(1)))
                 {
-                    /* Compare CAN IDs & valueRead / valueSend */
-                    if (canIdReturn.Value != canIdSend.Value && ByteArraysEqual(valueRead!, valueSend))
+                    /* CanRead returns true, if anything was read */
+                    if (readTask.Result == true)
                     {
-                        testSuccess = true;
-                        runCanTest = false;
+                        /* Compare CAN IDs & valueRead / valueSend */
+                        if (canIdRead.Value != canIdWrite.Value && ByteArraysEqual(valueRead!, valueSend))
+                        {
+                            canRwSuccess = true;
+                            runRwProcesses = false;
+                        }
                     }
-                    /* Automatically end CAN Test */
-                    else if (maxTestRuns == 10)
-                    {
-                        testSuccess = false;
-                        runCanTest = false;
-                    }
-                    maxTestRuns++;
                 }
+                runCount++;
             }
-            return testSuccess;
+            runRwProcesses = false;
+            return canRwSuccess;
         }
+
         #region RW_Test
-        public void CanWrite()
+        public void CanWrite(int maxWriteCount)
         {
             using CanRaw can = new(canDev!);
             Span<byte> bytes = new(valueSend);
+            int runCount = 0;
 
-            while(runCanTest)
+            while (runRwProcesses && runCount < maxWriteCount)
             {
-                /* Write data */
-                can.WriteFrame(bytes, canIdSend);
-                Thread.Sleep(1000);
+                try
+                {
+                    /* Write data */
+                    can.WriteFrame(bytes, canIdWrite);
+                    runCount++;
+                    Thread.Sleep(1000);
+                }
+                catch (Exception ex)
+                {
+                    runRwProcesses = false;
+                    throw new Exception("CAN Write Exception: " + ex.Message);
+                }
             }
         }
 
         public bool CanRead()
         {
-            using (CanRaw can = new CanRaw(canDev!))
-            {
-                /* buffer needs to be the same length as valueSend */
-                byte[] buffer = new byte[valueSend.Length];
+            using CanRaw can = new(canDev!);
+            /* buffer needs to be the same length as valueSend */
+            byte[] buffer = new byte[valueSend.Length];
 
-                if (can.TryReadFrame(buffer, out int frameLength, out canIdReturn))
+            try
+            {
+                if (can.TryReadFrame(buffer, out int frameLength, out canIdRead))
                 {
                     Span<byte> bytesRead = new Span<byte>(buffer, 0, frameLength);
                     valueRead = bytesRead.ToArray();
                     return true;
                 }
+            }
+            catch (Exception ex)
+            {
+                runRwProcesses = false;
+                throw new Exception("CAN Read Exception: " + ex.Message);
             }
             return false;
         }
@@ -160,5 +191,3 @@ namespace IoTLib_Test.Models
         }
     }
 }
-
-//TODO: try-catch - Gegenstelle CAN nicht aktiviert führt zu Absturz

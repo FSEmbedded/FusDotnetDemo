@@ -35,9 +35,23 @@ public partial class UserControl_Can : UserControl
         if (tbBitrate.Text != "" && tbBitrate.Text != null)
             bitrate = tbBitrate.Text;
 
-        if (Can.StartCanRWTest(canDevice, bitrate))
+        bool canRWTestSuccess;
+        try
         {
-            txInfoCan.Text = "CAN Test Success"; //TODO: Meldung verbessern
+            /* Run Read / Write test */
+            canRWTestSuccess = Can.StartCanRWTest(canDevice, bitrate);
+        }
+        catch (Exception ex)
+        {
+            /* Show exception */
+            txInfoCan.Text = ex.Message;
+            txInfoCan.Foreground = Brushes.Red;
+            return;
+        }
+
+        if (canRWTestSuccess)
+        {
+            txInfoCan.Text = "CAN Test Success: value send and value read are equal, CAN ID of returned message is different from sent message"; //TODO: Meldung verbessern
             txInfoCan.Foreground = Brushes.Green;
         }
         else
