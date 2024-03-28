@@ -63,7 +63,7 @@ public partial class UserControl_I2c : UserControl
             }
 
             /* Create new Thread, start I2C Test */
-            Thread I2cLedThread = new(() => I2c!.WriteLedValues());
+            Thread I2cLedThread = new(() => I2c!.WriteValuesLed());
             I2cLedThread.Start();
             ledThreadStarted = true;
             /* Change UI */
@@ -75,7 +75,7 @@ public partial class UserControl_I2c : UserControl
         else
         {
             /* Stop the I2C Thread from running */
-            I2c!.StopLed();
+            I2c!.StopLedLoop();
             ledThreadStarted = false;
             /* Change UI */
             btnI2cLed.Content = "Start LED Test";
@@ -112,8 +112,8 @@ public partial class UserControl_I2c : UserControl
         bool writeSuccess = false;
         try
         {
-            writeSuccess = I2c!.WriteData(register1, valueWrite1);
-            writeSuccess = I2c!.WriteData(register2, valueWrite2);
+            writeSuccess = I2c!.WriteValueToRegister(register1, valueWrite1);
+            writeSuccess = I2c!.WriteValueToRegister(register2, valueWrite2);
         }
         catch (Exception ex)
         {
@@ -130,8 +130,8 @@ public partial class UserControl_I2c : UserControl
             txInfoWrite.Foreground = Brushes.Blue;
 
             /* Read values from I2C Device */
-            byte valueRead1 = I2c.ReadData(register1);
-            byte valueRead2 = I2c.ReadData(register2);
+            byte valueRead1 = I2c.ReadValueFromRegister(register1);
+            byte valueRead2 = I2c.ReadValueFromRegister(register2);
 
             /* Check if values read and write are equal */
             if (valueRead1 == valueWrite1 && valueRead2 == valueWrite2)
@@ -188,7 +188,7 @@ public partial class UserControl_I2c : UserControl
 
         while(counter < 10)
         {
-            I2cPwm!.SetPwm(toggleOn);
+            I2cPwm!.WritePwm(toggleOn);
             //TODO: Read auswerten
             returnVoltage = I2cAdc!.ReadADC();
             txPwmRead.Text = $"ADC received {returnVoltage} V";
@@ -228,7 +228,7 @@ public partial class UserControl_I2c : UserControl
 
     int ConvertStringToHex(string? Input, int Output)
     {
-        if (Input != "" && Input != String.Empty && Input != null)
+        if (Input != "" && Input != string.Empty && Input != null)
             Output = int.Parse(Input, NumberStyles.HexNumber);
 
         return Output;
@@ -236,7 +236,7 @@ public partial class UserControl_I2c : UserControl
 
     void AddButtonHandlers()
     {
-        /* button bindings */
+        /* Button bindings */
         btnI2cLed.AddHandler(Button.ClickEvent, BtnI2cLed_Clicked!);
         btnI2cRW.AddHandler(Button.ClickEvent, BtnI2cRW_Clicked!);
         btnI2cPwm.AddHandler(Button.ClickEvent, BtnI2cPwm_Clicked!);

@@ -15,18 +15,10 @@ public partial class UserControl_Spi : UserControl
     public UserControl_Spi()
     {
         InitializeComponent();
-
-        /* button bindings */
-        btnSpi.AddHandler(Button.ClickEvent, btnSpi_Clicked!);
-        /* Description Text */
-        tbDesc.Text = "Connect BBDSI with SPI: " +
-            "SCLK: ADP-2 -> J11-3; " +
-            "MOSI: ADP-3 -> J11-6; " +
-            "MISO: ADP-4 -> J11-5; " +
-            "CS: ADP-6 -> J11-4; " +
-            "RESET: ADP-8 -> J11-39; " +
-            "GND: ADP-16 -> J11-42; " +
-            "+3V3: ADP-26 -> J11-1";
+        AddButtonHandlers();
+        AddTextBoxHandlers();
+        WriteStandardValuesInTextBox();
+        FillTextBlockWithText();
 
         Spi = new Spi_Tests();
     }
@@ -43,5 +35,38 @@ public partial class UserControl_Spi : UserControl
             tbSpiInfo.Text = "Data sent and data read are equal";
             tbSpiInfo.Foreground = Brushes.Green;
         }
+    }
+
+    void AddButtonHandlers()
+    {
+        /* Button bindings */
+        btnSpi.AddHandler(Button.ClickEvent, btnSpi_Clicked!);
+    }
+
+    void WriteStandardValuesInTextBox()
+    {
+        /* Write standard values in textboxes*/
+        
+        //TODO
+    }
+
+    void AddTextBoxHandlers()
+    {
+        /* Add handler to only allow hex value inputs */
+
+        //TODO
+    }
+
+    void FillTextBlockWithText()
+    {
+        /* Description Text */
+        txDesc.Text = "Connect BBDSI with SPI: " +
+            "SCLK: ADP-2 -> J11-3; " +
+            "MOSI: ADP-3 -> J11-6; " +
+            "MISO: ADP-4 -> J11-5; " +
+            "CS: ADP-6 -> J11-4; " +
+            "RESET: ADP-8 -> J11-39; " +
+            "GND: ADP-16 -> J11-42; " +
+            "+3V3: ADP-26 -> J11-1";
     }
 }

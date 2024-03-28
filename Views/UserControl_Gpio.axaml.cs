@@ -27,28 +27,12 @@ public partial class UserControl_Gpio : UserControl
     public UserControl_Gpio()
     {
         InitializeComponent();
+        AddButtonHandlers();
+        AddTextBoxHandlers();
+        WriteStandardValuesInTextBox();
+        FillTextBlockWithText();
 
-        /* GPIO_LED button bindings */
-        btnLedSwitch.AddHandler(Button.ClickEvent, BtnLedSwitch_Clicked!);
-        btnLedBlink.AddHandler(Button.ClickEvent, BtnLedBlink_Clicked!);
-
-        /* GPIO_Input button bindings */
-        btnGpioInput.AddHandler(Button.ClickEvent, BtnGpioInput_Clicked!);
-
-        /* Write standard GPIO pins in textboxes */
-        tbLedPin.Text = Convert.ToString(gpioNoLed);
-        tbInputPin.Text = Convert.ToString(gpioNoInput);
-
-        /* Handler to only allow number inputs */
-        tbLedPin.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
-        tbInputPin.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
-
-        txDescLed.Text = "Connect LED to PcoreBBDSI Rev1.40 - J11-8 / J11-11"; // GPIO_J1_54
-        txDescInput.Text = "Connect Button to PcoreBBDSI Rev1.40 - J11-18 / J11-27"; // GPIO_J1_52
-        txInfoLed.Text = "";
-        txInfoInput.Text = "";
-
-        /* Convert GPIO Pin # to gpio bank and pin */
+        /* Convert GPIO Pin number to gpio bank and pin */
         ledBank = PinConverter.GetGpioBank(gpioNoLed);
         ledPin = PinConverter.GetGpioPin(gpioNoLed);
         /* Convert GPIO Pin # to gpio bank and pin */
@@ -68,7 +52,7 @@ public partial class UserControl_Gpio : UserControl
         if (!ledIsOn)
         {
             /* Create new thread, light up LED */
-            Thread ledOnThread = new(() => Gpio.LedOn(ledBank, ledPin));
+            Thread ledOnThread = new(() => Gpio.TurnOnLed(ledBank, ledPin));
             ledOnThread.Start();
             ledIsOn = true;
             /* Change UI */
@@ -79,7 +63,7 @@ public partial class UserControl_Gpio : UserControl
         else
         {
             /* Create new thread, turn off LED */
-            Thread ledOffThread = new(new ThreadStart(Gpio.LedOff));
+            Thread ledOffThread = new(new ThreadStart(Gpio.TurnOffLed));
             ledOffThread.Start();
             ledIsOn = false;
             /* Change UI */
@@ -96,7 +80,7 @@ public partial class UserControl_Gpio : UserControl
         ledBank = PinConverter.GetGpioBank(gpioNoLed);
         ledPin = PinConverter.GetGpioPin(gpioNoLed);
 
-        Gpio.LedBlink(ledBank, ledPin);
+        Gpio.BlinkLed(ledBank, ledPin);
     }
 
     void BtnGpioInput_Clicked(object sender, RoutedEventArgs args)
@@ -109,7 +93,7 @@ public partial class UserControl_Gpio : UserControl
         if (!buttonIsActive)
         {
             /* Create new thread, turn off LED */
-            Thread inputThread = new(() => Gpio.ReadGpioInput(inputBank, inputPin));
+            Thread inputThread = new(() => Gpio.ActivateButtonInput(inputBank, inputPin));
             inputThread.Start();
             buttonIsActive = true;
             /* Change UI */
@@ -120,7 +104,7 @@ public partial class UserControl_Gpio : UserControl
         else
         {
             /* Create new thread, turn off LED */
-            Thread inputStopThread = new(new ThreadStart(Gpio.StopGpioInput));
+            Thread inputStopThread = new(new ThreadStart(Gpio.StopButtonInput));
             inputStopThread.Start();
             buttonIsActive = false;
             /* Change UI */
@@ -138,5 +122,36 @@ public partial class UserControl_Gpio : UserControl
             /* If it's not, prevent the character from being entered */
             e.Handled = true;
         }
+    }
+
+    void AddButtonHandlers()
+    {
+        /* GPIO_LED button bindings */
+        btnLedSwitch.AddHandler(Button.ClickEvent, BtnLedSwitch_Clicked!);
+        btnLedBlink.AddHandler(Button.ClickEvent, BtnLedBlink_Clicked!);
+        /* GPIO_Input button bindings */
+        btnGpioInput.AddHandler(Button.ClickEvent, BtnGpioInput_Clicked!);
+    }
+
+    void WriteStandardValuesInTextBox()
+    {
+        /* Write standard GPIO pins in textboxes */
+        tbLedPin.Text = Convert.ToString(gpioNoLed);
+        tbInputPin.Text = Convert.ToString(gpioNoInput);
+    }
+
+    void AddTextBoxHandlers()
+    {
+        /* Handler to only allow number inputs */
+        tbLedPin.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
+        tbInputPin.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
+    }
+
+    void FillTextBlockWithText()
+    {
+        txDescLed.Text = "Connect LED to PcoreBBDSI Rev1.40 - J11-8 / J11-11"; // GPIO_J1_54
+        txDescInput.Text = "Connect Button to PcoreBBDSI Rev1.40 - J11-18 / J11-27"; // GPIO_J1_52
+        txInfoLed.Text = "";
+        txInfoInput.Text = "";
     }
 }

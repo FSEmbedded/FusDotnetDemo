@@ -25,7 +25,6 @@
         <Button Name="btnCan" Content="CAN Test" Grid.Column="2"/>
       </Grid>
       <TextBlock Name="txInfoCan" Foreground="Blue" HorizontalAlignment="Center" Text="Placeholder"/>
-      <TextBlock Name="txCanResult" Foreground="Blue" HorizontalAlignment="Center" Text="Placeholder"/>
     </StackPanel>
   </ScrollViewer>
 </UserControl>

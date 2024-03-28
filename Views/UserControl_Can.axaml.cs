@@ -11,33 +11,19 @@ public partial class UserControl_Can : UserControl
 {
     /* CAN functions are in separate class */
     private readonly Can_Tests Can;
-
+    /* Standard values */
     private string canDevice = "0"; //can0
     private string bitrate = "1000000";
 
     public UserControl_Can()
     {
         InitializeComponent();
+        AddButtonHandlers();
+        AddTextBoxHandlers();
+        WriteStandardValuesInTextBox();
+        FillTextBlockWithText();
 
-        /* Button bindings */
-        btnCan.AddHandler(Button.ClickEvent, btnCan_Clicked!);
-        txDescCan.Text = "Connect second board, CAN_L - CAN_L & CAN_H - CAN_H\r\n" +
-            "On second device , run following comand under Linux to activate can0:\r\n" +
-            "ip link set can0 up type can bitrate 1000000 && ifconfig can0 up\r\n" +
-            "Run this command while CAN test is running to return the received value:\r\n" +
-            "STRING=$(candump can0 -L -n1 | cut -d '#' -f2) && cansend can0 01b#${STRING}";
-
-        /* Write standard values in textbox */
-        tbCanDev.Text = Convert.ToString(canDevice);
-        tbBitrate.Text = Convert.ToString(bitrate);
-
-        /* Handler to only allow number inputs */
-        tbCanDev.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
-        tbBitrate.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
-
-        txInfoCan.Text = "";
-        txCanResult.Text = "";
-
+        /* Create new Can_Tests */
         Can = new Can_Tests();
     }
 
@@ -49,16 +35,16 @@ public partial class UserControl_Can : UserControl
         if (tbBitrate.Text != "" && tbBitrate.Text != null)
             bitrate = tbBitrate.Text;
 
-        if (Can.RunCanTest(canDevice, bitrate))
+        if (Can.StartCanRWTest(canDevice, bitrate))
         {
-            txCanResult.Text = "CAN Test Success"; //TODO: Meldung verbessern
-            txCanResult.Foreground = Brushes.Green;
+            txInfoCan.Text = "CAN Test Success"; //TODO: Meldung verbessern
+            txInfoCan.Foreground = Brushes.Green;
         }
         else
         {
-            txCanResult.Text = "CAN Test Failed\r\n" +
+            txInfoCan.Text = "CAN Test Failed\r\n" +
                 "Is receiving device connected and CAN activated?";
-            txCanResult.Foreground = Brushes.Red;
+            txInfoCan.Foreground = Brushes.Red;
         }
     }
 
@@ -70,5 +56,37 @@ public partial class UserControl_Can : UserControl
             /* If it's not, prevent the character from being entered */
             e.Handled = true;
         }
+    }
+
+    void AddButtonHandlers()
+    {
+        /* Button bindings */
+        btnCan.AddHandler(Button.ClickEvent, btnCan_Clicked!);
+    }
+
+    void WriteStandardValuesInTextBox()
+    {
+        /* Write standard values in textboxes*/
+        tbCanDev.Text = Convert.ToString(canDevice);
+        tbBitrate.Text = Convert.ToString(bitrate);
+    }
+
+    void AddTextBoxHandlers()
+    {
+        /* Handler to only allow number inputs */
+        tbCanDev.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
+        tbBitrate.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
+    }
+
+    void FillTextBlockWithText()
+    {
+        /* Description Text */
+        txDescCan.Text = "Connect second board, CAN_L - CAN_L & CAN_H - CAN_H\r\n" +
+            "On second device , run following comand under Linux to activate can0:\r\n" +
+            "ip link set can0 up type can bitrate 1000000 && ifconfig can0 up\r\n" +
+            "Run this command while CAN test is running to return the received value:\r\n" +
+            "STRING=$(candump can0 -L -n1 | cut -d '#' -f2) && cansend can0 01b#${STRING}";
+
+        txInfoCan.Text = "";
     }
 }

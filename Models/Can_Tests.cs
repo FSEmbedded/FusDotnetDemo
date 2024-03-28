@@ -19,8 +19,7 @@ namespace IoTLib_Test.Models
         private readonly byte[] valueSend = [1, 2, 3, 40, 50, 60, 70, 80];
         private byte[]? valueRead;
 
-        #region RunTest
-        public bool RunCanTest(string _canDev, string _bitrate)
+        public bool StartCanRWTest(string _canDev, string _bitrate)
         {
             canDev = "can" + _canDev;
             bitrate = _bitrate;
@@ -39,7 +38,7 @@ namespace IoTLib_Test.Models
                 if (!IsCanDevUp())
                 {
                     //TODO: Exception testen
-                    throw new Exception($"Could not activate CAN device {canDev}");
+                    throw new Exception($"Exception: Could not activate CAN device {canDev}");
                 }
             }
 
@@ -76,7 +75,6 @@ namespace IoTLib_Test.Models
             }
             return testSuccess;
         }
-        #endregion
         #region RW_Test
         public void CanWrite()
         {
@@ -147,8 +145,10 @@ namespace IoTLib_Test.Models
             }
         }
         #endregion
+
         public static bool ByteArraysEqual(byte[] b1, byte[] b2)
         {
+            /* Compare byte arrays, return true if equal */
             if (b1 == b2) return true;
             if (b1 == null || b2 == null) return false;
             if (b1.Length != b2.Length) return false;
