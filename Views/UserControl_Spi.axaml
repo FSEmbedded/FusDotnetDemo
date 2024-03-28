@@ -7,10 +7,10 @@
   <ScrollViewer>
     <StackPanel>
       <!-- SPI Test -->
-      <TextBlock Text="SPI Test" FontWeight="Bold"/>
-      <TextBlock Name="txDesc" FontSize="10"/>
+      <TextBlock Text="SPI Test" Classes.ClassName="true"/>
+      <TextBlock Name="txDescSpi" Classes.ClassDescription="true"/>
       <Button Name="btnSpi" Content="Start SPI Test" Background="LightGreen"/>
-      <TextBlock Name="tbSpiInfo" FontWeight="Medium" TextWrapping="Wrap" Foreground="Blue"/>
+      <TextBlock Name="txInfoSpi" Classes.ClassInfo="true"/>
       <Border/>
     </StackPanel>
   </ScrollViewer>

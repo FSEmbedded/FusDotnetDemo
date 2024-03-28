@@ -23,13 +23,9 @@
     <PackageReference Include="System.Device.Gpio" Version="3.1.0" />
   </ItemGroup>
 
-
   <ItemGroup>
-    <Compile Update="Views\UserControl_I2c.axaml.cs">
-      <DependentUpon>UserControl_I2c.axaml</DependentUpon>
-    </Compile>
+    <AvaloniaResource Include="Assets\**"/>
   </ItemGroup>
-
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="powershell.exe .\copy_to_board.ps1" />

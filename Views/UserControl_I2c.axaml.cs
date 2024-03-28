@@ -109,7 +109,7 @@ public partial class UserControl_I2c : UserControl
             return;
         }
 
-        bool writeSuccess = false;
+        bool writeSuccess;
         try
         {
             writeSuccess = I2c!.WriteValueToRegister(register1, valueWrite1);

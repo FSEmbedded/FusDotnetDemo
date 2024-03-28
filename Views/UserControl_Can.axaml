@@ -6,8 +6,8 @@
 
   <ScrollViewer>
     <StackPanel>
-      <TextBlock Text="CAN Test" FontWeight="Bold" FontSize="16"/>
-      <TextBlock Name="txDescCan" Text="Placeholder"/>
+      <TextBlock Text="CAN Test" Classes.ClassName="true"/>
+      <TextBlock Name="txDescCan" Classes.ClassDescription="true"/>
       <Grid>
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="*"/>
@@ -15,16 +15,16 @@
           <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0">
-          <TextBlock Text="CAN device:" FontWeight="Normal" HorizontalAlignment="Center"/>
+          <TextBlock Text="CAN device:" Classes.ClassContentinfo="true"/>
           <TextBox Name="tbCanDev"/>
         </StackPanel>
         <StackPanel Grid.Column="1">
-          <TextBlock Text="Bitrate:" FontWeight="Normal" HorizontalAlignment="Center"/>
+          <TextBlock Text="Bitrate:" Classes.ClassContentinfo="true"/>
           <TextBox Name="tbBitrate" Width="120"/>
         </StackPanel>
         <Button Name="btnCan" Content="CAN Test" Grid.Column="2"/>
       </Grid>
-      <TextBlock Name="txInfoCan" Foreground="Blue" HorizontalAlignment="Center" Text="Placeholder"/>
+      <TextBlock Name="txInfoCan" Classes.ClassInfo="true"/>
     </StackPanel>
   </ScrollViewer>
 </UserControl>

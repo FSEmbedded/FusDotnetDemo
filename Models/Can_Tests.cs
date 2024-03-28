@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Diagnostics;
-using Iot.Device.SocketCan;
 using System.Threading.Tasks;
-using Avalonia.Controls;
+using Iot.Device.SocketCan;
 
 namespace IoTLib_Test.Models
 {

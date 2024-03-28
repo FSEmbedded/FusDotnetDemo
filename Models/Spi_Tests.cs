@@ -68,6 +68,8 @@ namespace IoTLib_Test.Models
     }
 }
 
+//TODO: Tests überarbeiten
+
 /* Read values from all adresses */
 //Array addresses = Enum.GetValues(typeof(Address));
 //Mcp2515 mcp25xxx = new Mcp2515(spiDevice);

@@ -31,9 +31,3 @@ namespace IoTLib_Test
         }
     }
 }
-
-//TODO: Pwm_Tests
-//TODO: Adc_Tests
-//TODO: Led_Tests
-//TODO: Audio_Tests
-//TODO: Video_Tests

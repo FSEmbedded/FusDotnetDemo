@@ -14,19 +14,72 @@
         ExtendClientAreaChromeHints="NoChrome"
         ExtendClientAreaTitleBarHeightHint="0">
 
-  <TabControl>
-    <TabItem Header="GPIO Test">
-      <views:UserControl_Gpio/>
-    </TabItem>
-    <TabItem Header="I²C Test">
-      <views:UserControl_I2c/>
-    </TabItem>
-    <TabItem Header="SPI Test">
-      <views:UserControl_Spi/>
-    </TabItem>
-    <TabItem Header="CAN Test">
-      <views:UserControl_Can/>
-    </TabItem>
-  </TabControl>
-  
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="40"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <StackPanel Classes.ClassHeader="true" Grid.Row="0">
+      <Image Margin="5" Source="/Assets/fs_logo.png"/>
+      <TextBlock Classes.ClassHeader="true" Text="IoT Library Test"/>
+    </StackPanel>
+    
+    <TabControl Grid.Row="1">
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock Text="GPIO" Classes.ClassTab="true"/>
+        </TabItem.Header>
+        <views:UserControl_Gpio/>
+      </TabItem>
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock Text="I²C" Classes.ClassTab="true"/>
+        </TabItem.Header>
+        <views:UserControl_I2c/>
+      </TabItem>
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock Text="SPI" Classes.ClassTab="true"/>
+        </TabItem.Header>
+        <views:UserControl_Spi/>
+      </TabItem>
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock Text="CAN" Classes.ClassTab="true"/>
+        </TabItem.Header>
+        <views:UserControl_Can/>
+      </TabItem>
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock Text="PWM" Classes.ClassTab="true"/>
+        </TabItem.Header>
+        <views:UserControl_Pwm/>
+      </TabItem>
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock Text="ADC" Classes.ClassTab="true"/>
+        </TabItem.Header>
+        <views:UserControl_Adc/>
+      </TabItem>
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock Text="LED" Classes.ClassTab="true"/>
+        </TabItem.Header>
+        <views:UserControl_Led/>
+      </TabItem>
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock Text="Audio" Classes.ClassTab="true"/>
+        </TabItem.Header>
+        <views:UserControl_Audio/>
+      </TabItem>
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock Text="Video" Classes.ClassTab="true"/>
+        </TabItem.Header>
+        <views:UserControl_Video/>
+      </TabItem>
+    </TabControl>
+  </Grid>
 </Window>

@@ -60,7 +60,7 @@ public partial class UserControl_Spi : UserControl
     void FillTextBlockWithText()
     {
         /* Description Text */
-        txDesc.Text = "Connect BBDSI with SPI: " +
+        txDescSpi.Text = "Connect BBDSI with SPI: " +
             "SCLK: ADP-2 -> J11-3; " +
             "MOSI: ADP-3 -> J11-6; " +
             "MISO: ADP-4 -> J11-5; " +
@@ -68,5 +68,9 @@ public partial class UserControl_Spi : UserControl
             "RESET: ADP-8 -> J11-39; " +
             "GND: ADP-16 -> J11-42; " +
             "+3V3: ADP-26 -> J11-1";
+
+        txInfoSpi.Text = "";
     }
 }
+
+//TODO: UI verbessern
