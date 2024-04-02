@@ -114,16 +114,6 @@ public partial class UserControl_Gpio : UserControl
         }
     }
 
-    void TextBox_KeyDown(object sender, KeyEventArgs e)
-    {
-        /* Check if the pressed key is a control character (like Backspace) or a digit */
-        if (!char.IsControl(Convert.ToChar(e.KeySymbol!)) && !char.IsDigit(Convert.ToChar(e.KeySymbol!)))
-        {
-            /* If it's not, prevent the character from being entered */
-            e.Handled = true;
-        }
-    }
-
     void AddButtonHandlers()
     {
         /* GPIO_LED button bindings */
@@ -142,9 +132,9 @@ public partial class UserControl_Gpio : UserControl
 
     void AddTextBoxHandlers()
     {
-        /* Handler to only allow number inputs */
-        tbLedPin.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
-        tbInputPin.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
+        /* Handler to only allow decimal value inputs */
+        tbLedPin.AddHandler(KeyDownEvent, InputControl.TextBox_DecimalInput!, RoutingStrategies.Tunnel);
+        tbInputPin.AddHandler(KeyDownEvent, InputControl.TextBox_DecimalInput!, RoutingStrategies.Tunnel);
     }
 
     void FillTextBlockWithText()

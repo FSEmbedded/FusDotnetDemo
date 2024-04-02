@@ -52,7 +52,7 @@ public partial class UserControl_Spi : UserControl
 
     void AddTextBoxHandlers()
     {
-        /* Add handler to only allow hex value inputs */
+        /* Add handler to only allow decimal value inputs */
 
         //TODO
     }

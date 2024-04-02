@@ -22,7 +22,7 @@
   <!-- TabControl -->
   <Style Selector="TabControl">
     <Setter Property="TabStripPlacement" Value="Left"/>
-    <Setter Property="Background" Value="#fcfdfe"/> <!-- Use Color3 -->
+    <Setter Property="Background" Value="White"/> <!-- Use Color3 -->
   </Style>
   <Style Selector="TabControl WrapPanel">
     <Setter Property="ItemHeight" Value="38"/>

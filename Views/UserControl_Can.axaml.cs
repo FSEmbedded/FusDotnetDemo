@@ -62,16 +62,6 @@ public partial class UserControl_Can : UserControl
         }
     }
 
-    void TextBox_KeyDown(object sender, KeyEventArgs e)
-    {
-        /* Check if the pressed key is a control character (like Backspace) or a digit */
-        if (!char.IsControl(Convert.ToChar(e.KeySymbol!)) && !char.IsDigit(Convert.ToChar(e.KeySymbol!)))
-        {
-            /* If it's not, prevent the character from being entered */
-            e.Handled = true;
-        }
-    }
-
     void AddButtonHandlers()
     {
         /* Button bindings */
@@ -87,9 +77,9 @@ public partial class UserControl_Can : UserControl
 
     void AddTextBoxHandlers()
     {
-        /* Handler to only allow number inputs */
-        tbCanDev.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
-        tbBitrate.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
+        /* Handler to only allow decimal value inputs */
+        tbCanDev.AddHandler(KeyDownEvent, InputControl.TextBox_DecimalInput!, RoutingStrategies.Tunnel);
+        tbBitrate.AddHandler(KeyDownEvent, InputControl.TextBox_DecimalInput!, RoutingStrategies.Tunnel);
     }
 
     void FillTextBlockWithText()

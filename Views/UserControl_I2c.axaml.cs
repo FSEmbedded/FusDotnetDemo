@@ -204,28 +204,6 @@ public partial class UserControl_I2c : UserControl
         //}
     }
 
-    void TextBox_KeyDown(object sender, KeyEventArgs e)
-    {
-        if (sender is TextBox textBox)
-        {
-            /* Check if the pressed key is a control character (like Backspace) or a hexadecimal character (0-9, a-f, A-F) */
-            if (!char.IsControl(Convert.ToChar(e.KeySymbol!)) &&
-                !char.IsDigit(Convert.ToChar(e.KeySymbol!)) &&
-                !(Convert.ToChar(e.KeySymbol!) >= 'a' && Convert.ToChar(e.KeySymbol!) <= 'f') &&
-                !(Convert.ToChar(e.KeySymbol!) >= 'A' && Convert.ToChar(e.KeySymbol!) <= 'F'))
-            {
-                /* If it's not, prevent the character from being entered */
-                e.Handled = true;
-            }
-            /* Check if the TextBox already has 2 characters */
-            else if (!char.IsControl(Convert.ToChar(e.KeySymbol!)) && textBox.Text != null && textBox.Text.Length >= 2)
-            {
-                /* Prevent further characters from being entered */
-                e.Handled = true;
-            }
-        }
-    }
-
     int ConvertStringToHex(string? Input, int Output)
     {
         if (Input != "" && Input != string.Empty && Input != null)
@@ -262,18 +240,18 @@ public partial class UserControl_I2c : UserControl
     void AddTextBoxHandlers()
     {
         /* Add handler to only allow hex value inputs */
-        tbBusIdLed.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
-        tbDevAddrLed.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
-        tbBusIdStorage.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
-        tbDevAddrStorage.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
-        tbValue1.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
-        tbValue2.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
-        tbReg1.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
-        tbReg2.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
-        tbBusIdPwm.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
-        tbDevAddrPwm.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
-        tbBusIdAdc.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
-        tbDevAddrAdc.AddHandler(KeyDownEvent, TextBox_KeyDown!, RoutingStrategies.Tunnel);
+        tbBusIdLed.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
+        tbDevAddrLed.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
+        tbBusIdStorage.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
+        tbDevAddrStorage.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
+        tbValue1.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
+        tbValue2.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
+        tbReg1.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
+        tbReg2.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
+        tbBusIdPwm.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
+        tbDevAddrPwm.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
+        tbBusIdAdc.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
+        tbDevAddrAdc.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
     }
 
     void FillTextBlockWithText()

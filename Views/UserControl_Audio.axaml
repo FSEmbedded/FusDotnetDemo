@@ -4,5 +4,37 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="IoTLib_Test.Views.UserControl_Audio">
-  Welcome to Avalonia!
+  <ScrollViewer>
+    <!-- Audio Output Test -->
+    <StackPanel>
+      <TextBlock Text="Audio Out Test" Classes.ClassName="true"/>
+      <TextBlock Name="txDescAudioOut" Classes.ClassDescription="true"/>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Button Name="btnAudioOut" Content="Play Audio" Grid.Column="1"/>
+      </Grid>
+      <TextBlock Name="txInfoOut" Classes.ClassInfo="true"/>
+      <Border BorderThickness="0.6" Margin="0,5,0,20"/>
+      <!-- Audio Input Test -->
+      <TextBlock Text="Audio Input Test" Classes.ClassName="true"/>
+      <TextBlock Name="txDescAudioIn" Classes.ClassDescription="true"/>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+          <TextBlock Text="Recording Time (s):" Classes.ClassContentinfo="true"/>
+          <TextBox Name="tbAudioInTime"/>
+        </StackPanel>
+        <Button Name="btnAudioIn" Content="Record Audio" Grid.Column="1"/>
+      </Grid>
+      <TextBlock Name="txInfoIn" Classes.ClassInfo="true"/>
+    </StackPanel>
+  </ScrollViewer>
 </UserControl>
