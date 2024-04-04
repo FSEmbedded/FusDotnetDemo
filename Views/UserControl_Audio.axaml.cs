@@ -13,10 +13,11 @@ public partial class UserControl_Audio : UserControl
     /* Audio functions are in separate class */
     private readonly Audio_Tests Audio;
     private bool speakerIsOn = false;
-    private uint recordTime = 5;
-    private uint passthroughTime = 10;
-    private readonly string audio_testfile = "IoTLib_Test/Assets/Audio_Test.wav"; //TODO: Pfad vereinfachen, Datei zuverlässig auf Board kopieren
-    private readonly string audio_recording = "/home/root/record.wav";
+    private bool isRecording = false;
+    private uint recDuration = 5; // seconds
+    private readonly string audioTestfile = "IoTLib_Test/Assets/Audio_Test.wav"; // comes with this tool
+    private readonly string recFileCont = "/home/root/record_continuous.wav"; // is created from software
+    private readonly string recFileDur = "/home/root/record_fixedduration.wav"; // is created from software
 
     public UserControl_Audio()
     {
@@ -33,107 +34,124 @@ public partial class UserControl_Audio : UserControl
     {
         if (!speakerIsOn)
         {
-            /* Create new thread, play sound */
-            Thread audioOutThread = new(() => Audio.PlayAudio(audio_testfile));
+            /* Create new thread, play sound in Loop until manually stopped */
+            Thread audioOutThread = new(() => Audio.PlayInLoop(audioTestfile));
             audioOutThread.Start();
             speakerIsOn = true;
             /* Change UI */
             btnAudioOut.Content = "Stop Audio";
             btnAudioOut.Background = Brushes.Red;
-            txInfoOut.Text = "Speaker should play music";
+            txInfoAudioOut.Text = "Speaker should play music";
         }
         else
         {
-            //TODO: Audio schneller beenden
-
             /* Create new thread, stop sound */
-            Thread stopAudioOutThread = new(new ThreadStart(Audio.StopAudio));
+            Thread stopAudioOutThread = new(new ThreadStart(Audio.StopPlayInLoop));
             stopAudioOutThread.Start();
             speakerIsOn = false;
             /* Change UI */
             btnAudioOut.Content = "Play Audio";
             btnAudioOut.Background = Brushes.LightGreen;
-            txInfoOut.Text = "Speaker is off";
+            txInfoAudioOut.Text = "Speaker is off";
         }
     }
 
-    void BtnAudioIn_Clicked(object sender, RoutedEventArgs args)
+    void BtnAudioInCont_Clicked(object sender, RoutedEventArgs args)
     {
-        //TODO
-        recordTime = Convert.ToUInt32(tbAudioInTime.Text);
-
-        Audio.RecordAudio(audio_recording, recordTime);
-        //bool recordingSuccess = false;
-
-        //if (!recording)
-        //{
-        //    /* Create new thread, light up LED */
-        //    Thread recordThread = new(() => recordingSuccess = Audio.RecordAudio(recordTime));
-        //    recordThread.Start();
-        //    //recordThread.Join();
-        //    recording = true;
-        //    /* Change UI */
-        //    btnAudioIn.Content = "Recording";
-        //    btnAudioIn.Background = Brushes.Red;
-        //    txInfoOut.Text = "Speaker should play music after recording finished";
-        //}
-        //if (recordingSuccess == true)
-        //{
-        //    ///* Create new thread, turn off LED */
-        //    //Thread stopRecordThread = new(new ThreadStart(Audio.StopRecord));
-        //    //stopRecordThread.Start();
-        //    //Audio.StopRecord();
-        //    recording = false;
-        //    /* Change UI */
-        //    btnAudioIn.Content = "Record Audio";
-        //    btnAudioIn.Background = Brushes.LightGreen;
-        //    txInfoOut.Text = "Input is off";
-        //}
-
-        if (!(bool)cbKeepFile.IsChecked!)
+        if (!isRecording)
         {
-            /* Delete recording testfile */
-            File.Delete(audio_recording);
+            /* Start Recording */
+            Audio.RecordContinuous(recFileCont);
+            isRecording = true;
+            /* Change UI */
+            btnAudioInCont.Content = "Stop Recording";
+            btnAudioInCont.Background = Brushes.Red;
+            txInfoAudioInCont.Text = "Device is recording";
+        }
+        else
+        {
+            /* Stop Recording */
+            if (Audio.StopRecordContinuous())
+            {
+                isRecording = false;
+                /* Change UI */
+                btnAudioInCont.Content = "Start Recording";
+                btnAudioInCont.Background = Brushes.LightGreen;
+                txInfoAudioInCont.Text = "Recording finished";
+                /* Play recorded file */
+                Audio.PlayAudioFile(recFileCont);
+
+                if (!(bool)cbKeepFileCont.IsChecked!)
+                {
+                    /* Delete recorded file */
+                    File.Delete(recFileCont);
+                }
+                else
+                {
+                    txInfoAudioInCont.Text += $"\r\nFile is stored at {recFileCont}";
+                }
+            }
         }
     }
 
-    void BtnPassthrough_Clicked(object sender, RoutedEventArgs args)
+    void BtnAudioInDur_Clicked(object sender, RoutedEventArgs args)
     {
-        //TODO
+        /* Stop if device is already recording */
+        if (isRecording)
+            return;
+        /* Get duration from TextBox */
+        recDuration = Convert.ToUInt32(tbAudioInDur.Text);
+        /* Start recording */
+        if (Audio.RecordFixedDuration(recFileDur, recDuration))
+        {
+            /* Play recorded file */
+            Audio.PlayAudioFile(recFileDur);
+            txInfoAudioInDur.Text = "Recording success";
+        }
+        else
+        {
+            txInfoAudioInDur.Text = "Recording failed";
+            return;
+        }
 
-        passthroughTime = Convert.ToUInt32(tbPassthrougTime.Text);
-
-        Audio.AudioPassThrough(passthroughTime);
+        if (!(bool)cbKeepFileDur.IsChecked!)
+        {
+            /* Delete recorded file */
+            File.Delete(recFileDur);
+        }
+        else
+        {
+            txInfoAudioInDur.Text += $"\r\nFile is stored at {recFileDur}";
+        }
     }
 
     void AddButtonHandlers()
     {
         /* Button bindings */
         btnAudioOut.AddHandler(Button.ClickEvent, BtnAudioOut_Clicked!);
-        btnAudioIn.AddHandler(Button.ClickEvent, BtnAudioIn_Clicked!);
-        btnPassthrough.AddHandler(Button.ClickEvent, BtnPassthrough_Clicked!);
+        btnAudioInCont.AddHandler(Button.ClickEvent, BtnAudioInCont_Clicked!);
+        btnAudioInDur.AddHandler(Button.ClickEvent, BtnAudioInDur_Clicked!);
     }
 
     void WriteStandardValuesInTextBox()
     {
-        ///* Write standard values in textboxes */
-        tbAudioInTime.Text = Convert.ToString(recordTime);
-        tbPassthrougTime.Text = Convert.ToString(passthroughTime);
+        /* Write standard values in textboxes */
+        tbAudioInDur.Text = Convert.ToString(recFileDur);
     }
 
     void AddTextBoxHandlers()
     {
         /* Handler to only allow decimal value inputs */
-        tbAudioInTime.AddHandler(KeyDownEvent, InputControl.TextBox_DecimalInput!, RoutingStrategies.Tunnel);
+        tbAudioInDur.AddHandler(KeyDownEvent, InputControl.TextBox_DecimalInput!, RoutingStrategies.Tunnel);
     }
 
     void FillTextBlockWithText()
     {
         txDescAudioOut.Text = "Connect Speaker to PcoreBBDSI Rev1.40 - AUDIO_A_LOUT_L - J11-49, AUDIO_A_LOUT_R - J11-45, GND - J11-47";
-        txDescAudioIn.Text = "Connect Button to PcoreBBDSI Rev1.40 - AUDIO_A_LIN_L - J11-48, AUDIO_A_LIN_R - J11-44, GND - J11-46";
-        txDescPassthrough.Text = "This test will record to a stream and play this stream simultaneous";
-        txInfoOut.Text = "";
-        txInfoIn.Text = "";
-        txInfoPassthrough.Text = "";
+        txDescAudioInCont.Text = "This test will record audio until you stop it.\r\nConnect Line In to PcoreBBDSI Rev1.40 - AUDIO_A_LIN_L - J11-48, AUDIO_A_LIN_R - J11-44, GND - J11-46";
+        txDescAudioInDur.Text = "This test will record audio for a defined time.\r\nConnect Line In to PcoreBBDSI Rev1.40 - AUDIO_A_LIN_L - J11-48, AUDIO_A_LIN_R - J11-44, GND - J11-46";
+        txInfoAudioOut.Text = "";
+        txInfoAudioInCont.Text = "";
+        txInfoAudioInDur.Text = "";
     }
 }

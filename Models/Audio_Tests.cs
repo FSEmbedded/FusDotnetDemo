@@ -1,91 +1,101 @@
 ﻿using System;
 using System.IO;
+using System.IO.Pipelines;
 using System.Threading;
+using Iot.Device.FtCommon;
 using Iot.Device.Media;
 
 namespace IoTLib_Test.Models
 {
     internal class Audio_Tests
     {
-        //TODO: Audio Tests
-        // include alsa-dev to yocto release
+        private readonly SoundConnectionSettings playbackSettings;
+        private readonly SoundConnectionSettings recordingSettings;
+        private readonly SoundDevice playbackDevice;
+        private readonly SoundDevice recordingDevice;
+        private bool inPlaybackLoop;
+        private bool isRecording;
+        /* Unmute SoundDevice? */
+        readonly bool unmute = true;
 
-        private bool playAudio;
-
-        public void PlayAudio(string audio_testfile)
+        public Audio_Tests()
         {
-            playAudio = true;
-
-            SoundConnectionSettings settings = new();
-            using SoundDevice device = SoundDevice.Create(settings);
-
-            while (playAudio)
+            /* Create Playback Device with standard values */
+            playbackSettings = new();
+            playbackDevice = SoundDevice.Create(playbackSettings);
+            /* Different settings for Recording Device */
+            recordingSettings = new()
             {
-                device.Play(audio_testfile);
-            }            
-        }
-
-        public void StopAudio()
-        {
-            playAudio = false;
-        }
-
-        public bool RecordAudio(string audio_recording, uint recordTime)
-        {
-            //TODO: ALSA Einstellungen aus C# anpassen?
-            // alsamixer - capture -> mute, LINE_IN
-
-            /* Unmute SoundDevice? */
-            bool unmute = true;
-
-            /* Define settings for recording */
-            SoundConnectionSettings settings = new()
-            {
+                //MixerDeviceName = "Capture Mux",
+                //RecordingDeviceName = "hw:0,1",
                 RecordingSampleRate = 48000,
                 RecordingChannels = 2,
                 RecordingBitsPerSample = 16
             };
+            /* Unmute the recording device on creation */
+            recordingDevice = SoundDevice.Create(recordingSettings, unmute);
 
-            /* Create SoundDevice with defined settings, unmute */
-            using SoundDevice device = SoundDevice.Create(settings, unmute);
+            //TODO: ALSA Einstellungen aus C# anpassen?
+            // alsamixer - capture -> mute, LINE_IN
+        }
 
-            /* Start recording for defined time, save as file */
-            device.Record(recordTime, audio_recording);
-            Thread.Sleep(50);
+        #region Playback
+        public void PlayAudioFile(string audioFile)
+        {
+            /* Play .wav audiofile */
+            playbackDevice.Play(audioFile);
+        }
 
-            /* Playback of the recording */
-            device.Play(audio_recording);
+        public void PlayInLoop(string audiofile)
+        {
+            inPlaybackLoop = true;
+            /* Play .wav audiofile until stopped */
+            while (inPlaybackLoop)
+            {
+                PlayAudioFile(audiofile);
+            }
+        }
 
+        public void StopPlayInLoop()
+        {
+            /* End while-loop */
+            inPlaybackLoop = false;
+        }
+        #endregion
+        #region Recording
+        public void RecordContinuous(string outputFile)
+        {
+            /* Stop if device is already recording */
+            if (isRecording)
+                return;
+
+            /* Records until StopRecording() is called, save to audioFile */
+            recordingDevice.StartRecording(outputFile);
+            isRecording = true;
+        }
+
+        public bool StopRecordContinuous()
+        {
+            /* Stop continuous recording */
+            recordingDevice.StopRecording();
+            isRecording = false;
             return true;
         }
 
-        public void AudioPassThrough(uint recordTime)
+        public bool RecordFixedDuration(string outputFile, uint duration)
         {
-            /* Unmute SoundDevice? */
-            bool unmute = true;
+            /* Stop if device is already recording */
+            if (isRecording)
+                return false;
 
-            using Stream stream = new MemoryStream();
+            isRecording = true;
+            /* Start recording for defined duration, save as file */
+            recordingDevice.Record(duration, outputFile);
+            /* false after recording finished */
+            isRecording = false;
 
-            /* Define settings for recording */
-            SoundConnectionSettings settings = new()
-            {
-                //RecordingSampleRate = 48000,
-                //RecordingChannels = 2,
-                RecordingBitsPerSample = 16
-            };
-
-            /* Create SoundDevice with defined settings, unmute */
-            using SoundDevice recDevice = SoundDevice.Create(settings, unmute);
-            //Thread recordThread = new(() => recDevice.Record(recordTime, stream));
-
-            using SoundDevice playDevice = SoundDevice.Create(settings);
-            //Thread playThread = new(() => playDevice.Play(stream));
-
-            //recordThread.Start();
-            //playThread.Start();
-
-            recDevice.Record(recordTime, stream);
-            playDevice.Play(stream);
+            return true;
         }
+        #endregion
     }
 }

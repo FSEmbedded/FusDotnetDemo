@@ -17,11 +17,28 @@
         </Grid.ColumnDefinitions>
         <Button Name="btnAudioOut" Content="Play Audio" Grid.Column="1"/>
       </Grid>
-      <TextBlock Name="txInfoOut" Classes.ClassInfo="true"/>
+      <TextBlock Name="txInfoAudioOut" Classes.ClassInfo="true"/>
       <Border BorderThickness="0.6" Margin="0,5,0,20"/>
-      <!-- Audio Input Test -->
+      <!-- Audio Record Test -->
       <TextBlock Text="Audio Input Test" Classes.ClassName="true"/>
-      <TextBlock Name="txDescAudioIn" Classes.ClassDescription="true"/>
+      <TextBlock Name="txDescAudioInCont" Classes.ClassDescription="true"/>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+          <TextBlock Text="Keep file:" Classes.ClassContentinfo="true"/>
+          <CheckBox Name="cbKeepFileCont"/>
+        </StackPanel>
+        <Button Name="btnAudioInCont" Content="Start Recording" Grid.Column="1"/>
+      </Grid>
+      <TextBlock Name="txInfoAudioInCont" Classes.ClassInfo="true"/>
+      <Border BorderThickness="0.6" Margin="0,5,0,20"/>
+      <!-- Audio Record Timer Test -->
+      <TextBlock Text="Audio Input Test" Classes.ClassName="true"/>
+      <TextBlock Name="txDescAudioInDur" Classes.ClassDescription="true"/>
       <Grid>
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="*"/>
@@ -30,32 +47,15 @@
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0">
           <TextBlock Text="Recording Time (s):" Classes.ClassContentinfo="true"/>
-          <TextBox Name="tbAudioInTime"/>
+          <TextBox Name="tbAudioInDur"/>
         </StackPanel>
         <StackPanel Grid.Column="1">
           <TextBlock Text="Keep file:" Classes.ClassContentinfo="true"/>
-          <CheckBox Name="cbKeepFile"/>
+          <CheckBox Name="cbKeepFileDur"/>
         </StackPanel>
-        <Button Name="btnAudioIn" Content="Record Audio" Grid.Column="2"/>
+        <Button Name="btnAudioInDur" Content="Record Audio" Grid.Column="2"/>
       </Grid>
-      <TextBlock Name="txInfoIn" Classes.ClassInfo="true"/>
-      <Border BorderThickness="0.6" Margin="0,5,0,20"/>
-      <!-- Audio Passthrough Test -->
-      <TextBlock Text="Audio Passthrough Test" Classes.ClassName="true"/>
-      <TextBlock Name="txDescPassthrough" Classes.ClassDescription="true"/>
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0">
-          <TextBlock Text="Recording Time (s):" Classes.ClassContentinfo="true"/>
-          <TextBox Name="tbPassthrougTime"/>
-        </StackPanel>
-        <Button Name="btnPassthrough" Content="Start Passthrough" Grid.Column="1"/>
-      </Grid>
-      <TextBlock Name="txInfoPassthrough" Classes.ClassInfo="true"/>
+      <TextBlock Name="txInfoAudioInDur" Classes.ClassInfo="true"/>
     </StackPanel>
   </ScrollViewer>
 </UserControl>
