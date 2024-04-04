@@ -1,5 +1,4 @@
 using System;
-using Avalonia.Input;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -27,7 +26,7 @@ public partial class UserControl_Can : UserControl
         Can = new Can_Tests();
     }
 
-    void btnCan_Clicked(object sender, RoutedEventArgs args)
+    void BtnCan_Clicked(object sender, RoutedEventArgs args)
     {
         /* Convert GPIO Pin # to gpio bank and pin */
         if(tbCanDev.Text != "" && tbCanDev.Text != null)
@@ -65,7 +64,7 @@ public partial class UserControl_Can : UserControl
     void AddButtonHandlers()
     {
         /* Button bindings */
-        btnCan.AddHandler(Button.ClickEvent, btnCan_Clicked!);
+        btnCan.AddHandler(Button.ClickEvent, BtnCan_Clicked!);
     }
 
     void WriteStandardValuesInTextBox()

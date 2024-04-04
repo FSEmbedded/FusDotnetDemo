@@ -55,12 +55,12 @@ namespace IoTLib_Test.Models
         public byte SpiRead(SpiDevice spiDevice, byte address)
         {
             const byte dontCare = 0x00;
-            ReadOnlySpan<byte> writeBuffer = stackalloc byte[]
-            {
+            ReadOnlySpan<byte> writeBuffer =
+            [
                 (byte)0x3,
-                (byte)address,
+                address,
                 dontCare
-            };
+            ];
             Span<byte> readBuffer = stackalloc byte[3];
             spiDevice.TransferFullDuplex(writeBuffer, readBuffer);
             return readBuffer[2];

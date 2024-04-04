@@ -4,5 +4,24 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="IoTLib_Test.Views.UserControl_Pwm">
-  Welcome to Avalonia!
+  <ScrollViewer>
+    <StackPanel>
+      <!-- PWM Test -->
+      <TextBlock Text="PWM Test" Classes.ClassName="true"/>
+      <TextBlock Name="txDescPwm" Classes.ClassDescription="true"/>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+          <TextBlock Text="PWM GPIO Pin:" Classes.ClassContentinfo="true"/>
+          <TextBox Name="tbPwmPin"/>
+        </StackPanel>
+        <Button Name="btnPwm" Content="Toggle PWM" Grid.Column="1"/>
+      </Grid>
+      <TextBlock Name="txInfoPwm" Classes.ClassInfo="true"/>
+    </StackPanel>
+  </ScrollViewer>
 </UserControl>

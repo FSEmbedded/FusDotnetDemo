@@ -104,6 +104,9 @@
     <Setter Property="FontWeight" Value="DemiBold"/>
     <Setter Property="VerticalAlignment" Value="Center"/>
   </Style>
+  <Style Selector="CheckBox">
+    <Setter Property="HorizontalAlignment" Value="Center"/>
+  </Style>
   <Style Selector="Border">
     <Setter Property="BorderBrush" Value="Black"/>
   </Style>

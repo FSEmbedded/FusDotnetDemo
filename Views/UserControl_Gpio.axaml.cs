@@ -3,7 +3,6 @@ using System.Threading;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using Avalonia.Input;
 using IoTLib_Test.Models;
 
 namespace IoTLib_Test.Views;

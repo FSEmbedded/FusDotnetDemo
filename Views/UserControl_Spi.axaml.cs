@@ -9,8 +9,8 @@ public partial class UserControl_Spi : UserControl
 {
     /* SPI functions are in separate class */
     private readonly Spi_Tests Spi;
-    public int spidev = 0x1;
-    byte register = 0x2b;
+    private readonly int spidev = 0x1;
+    private readonly byte register = 0x2b;
 
     public UserControl_Spi()
     {
@@ -23,7 +23,7 @@ public partial class UserControl_Spi : UserControl
         Spi = new Spi_Tests();
     }
 
-    void btnSpi_Clicked(object sender, RoutedEventArgs args)
+    void BtnSpi_Clicked(object sender, RoutedEventArgs args)
     {
         if(!Spi.SpiStart(spidev, register))
         {
@@ -40,7 +40,7 @@ public partial class UserControl_Spi : UserControl
     void AddButtonHandlers()
     {
         /* Button bindings */
-        btnSpi.AddHandler(Button.ClickEvent, btnSpi_Clicked!);
+        btnSpi.AddHandler(Button.ClickEvent, BtnSpi_Clicked!);
     }
 
     void WriteStandardValuesInTextBox()

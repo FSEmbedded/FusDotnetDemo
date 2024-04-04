@@ -123,7 +123,7 @@ namespace IoTLib_Test.Models
             {
                 if (can.TryReadFrame(buffer, out int frameLength, out canIdRead))
                 {
-                    Span<byte> bytesRead = new Span<byte>(buffer, 0, frameLength);
+                    Span<byte> bytesRead = new(buffer, 0, frameLength);
                     valueRead = bytesRead.ToArray();
                     return true;
                 }
@@ -142,18 +142,18 @@ namespace IoTLib_Test.Models
             /* Check if CAN device is up */
             /* Run shell command */
             string argument = $"-c \"ip link show {canDev} | grep -q 'state UP'\"";
-            ProcessStartInfo startInfo = new ProcessStartInfo
+            ProcessStartInfo startInfo = new()
             {
                 FileName = "/bin/bash",
                 Arguments = argument,
             };
 
-            using (Process process = Process.Start(startInfo)!)
+            using Process process = Process.Start(startInfo)!;
+            process.WaitForExit();
+            /* ExitCode is 0 if canDev is up */
+            if (process.ExitCode == 0)
             {
-                process.WaitForExit();
-                /* ExitCode is 0 if canDev is up */
-                if (process.ExitCode == 0)
-                    return true;
+                return true;
             }
             return false;
         }
@@ -163,16 +163,14 @@ namespace IoTLib_Test.Models
             /* Activate canDev and setup bitrate */
             string argument = $"-c \"ip link set {canDev} up type can bitrate {bitrate} && ifconfig {canDev} up\"";
 
-            ProcessStartInfo startInfo = new ProcessStartInfo
+            ProcessStartInfo startInfo = new()
             {
                 FileName = "/bin/bash",
                 Arguments = argument,
             };
 
-            using (Process process = Process.Start(startInfo)!)
-            {
-                process.WaitForExit();
-            }
+            using Process process = Process.Start(startInfo)!;
+            process.WaitForExit();
         }
         #endregion
 

@@ -1,44 +1,28 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
-using System.Diagnostics;
-using System.Threading.Tasks;
 using Iot.Device.Media;
-using Avalonia.Metadata;
-using Iot.Device.FtCommon;
-using System.Transactions;
-using System.ComponentModel;
 
 namespace IoTLib_Test.Models
 {
     internal class Audio_Tests
     {
         //TODO: Audio Tests
-
-        // https://github.com/dotnet/iot/tree/ab3f910a76568d8a0c234aee0227c65705729da8/src/devices/Media#usage
-        // https://www.nuget.org/packages/Alsa.Net
-        // https://github.com/omegaframe/alsa.net
-        // https://github.com/mobiletechtracker/NetCoreAudio
-
-        // Pins: AUDIO_A_LOUT_L - J11-49, AUDIO_A_LOUT_R - J11-45, GND - J11-47
-        // AUDIO_A_MIC - J11-41, GND - J11-42
-        // AUDIO_A_LIN_L - J11-48, AUDIO_A_LIN_R - J11-44, GND - J11-46
-        
         // include alsa-dev to yocto release
 
         private bool playAudio;
-        private bool recordAudio;
 
-        public void PlayAudio()
+        public void PlayAudio(string audio_testfile)
         {
             playAudio = true;
 
-            SoundConnectionSettings settings = new SoundConnectionSettings();
+            SoundConnectionSettings settings = new();
             using SoundDevice device = SoundDevice.Create(settings);
 
-            while(playAudio)
+            while (playAudio)
             {
-                device.Play("IoTLib_Test/Assets/Audio_Test.wav"); //TODO: Pfad vereinfachen, Datei zuverlässig auf Board kopieren
-            }
+                device.Play(audio_testfile);
+            }            
         }
 
         public void StopAudio()
@@ -46,21 +30,62 @@ namespace IoTLib_Test.Models
             playAudio = false;
         }
 
-        public bool RecordAudio(uint recordTime)
+        public bool RecordAudio(string audio_recording, uint recordTime)
         {
             //TODO: ALSA Einstellungen aus C# anpassen?
-            recordAudio = true;
+            // alsamixer - capture -> mute, LINE_IN
 
-            SoundConnectionSettings settings = new SoundConnectionSettings{ RecordingSampleRate = 48000 };
-            using SoundDevice device = SoundDevice.Create(settings);
+            /* Unmute SoundDevice? */
+            bool unmute = true;
 
-            device.Record(recordTime, "/home/root/record.wav");
+            /* Define settings for recording */
+            SoundConnectionSettings settings = new()
+            {
+                RecordingSampleRate = 48000,
+                RecordingChannels = 2,
+                RecordingBitsPerSample = 16
+            };
 
+            /* Create SoundDevice with defined settings, unmute */
+            using SoundDevice device = SoundDevice.Create(settings, unmute);
+
+            /* Start recording for defined time, save as file */
+            device.Record(recordTime, audio_recording);
             Thread.Sleep(50);
 
-            device.Play("/home/root/record.wav");
+            /* Playback of the recording */
+            device.Play(audio_recording);
 
             return true;
+        }
+
+        public void AudioPassThrough(uint recordTime)
+        {
+            /* Unmute SoundDevice? */
+            bool unmute = true;
+
+            using Stream stream = new MemoryStream();
+
+            /* Define settings for recording */
+            SoundConnectionSettings settings = new()
+            {
+                //RecordingSampleRate = 48000,
+                //RecordingChannels = 2,
+                RecordingBitsPerSample = 16
+            };
+
+            /* Create SoundDevice with defined settings, unmute */
+            using SoundDevice recDevice = SoundDevice.Create(settings, unmute);
+            //Thread recordThread = new(() => recDevice.Record(recordTime, stream));
+
+            using SoundDevice playDevice = SoundDevice.Create(settings);
+            //Thread playThread = new(() => playDevice.Play(stream));
+
+            //recordThread.Start();
+            //playThread.Start();
+
+            recDevice.Record(recordTime, stream);
+            playDevice.Play(stream);
         }
     }
 }

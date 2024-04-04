@@ -4,5 +4,26 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="IoTLib_Test.Views.UserControl_Video">
-  Welcome to Avalonia!
+  <ScrollViewer>
+    <!-- Audio Output Test -->
+    <StackPanel>
+      <TextBlock Text="Camera  Test" Classes.ClassName="true"/>
+      <TextBlock Name="txDescCamera" Classes.ClassDescription="true"/>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+          <TextBlock Text="Keep file:" Classes.ClassContentinfo="true"/>
+          <CheckBox Name="cbKeepFile"/>
+        </StackPanel>
+        <Button Name="btnCamera" Content="Capture Camera" Grid.Column="1"/>
+      </Grid>
+      <TextBlock Name="txInfoCamera" Classes.ClassInfo="true"/>
+      <!-- Picture Preview -->
+      <Image Name="imgCamCapture"/>
+    </StackPanel>
+  </ScrollViewer>
 </UserControl>

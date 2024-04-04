@@ -32,9 +32,30 @@
           <TextBlock Text="Recording Time (s):" Classes.ClassContentinfo="true"/>
           <TextBox Name="tbAudioInTime"/>
         </StackPanel>
-        <Button Name="btnAudioIn" Content="Record Audio" Grid.Column="1"/>
+        <StackPanel Grid.Column="1">
+          <TextBlock Text="Keep file:" Classes.ClassContentinfo="true"/>
+          <CheckBox Name="cbKeepFile"/>
+        </StackPanel>
+        <Button Name="btnAudioIn" Content="Record Audio" Grid.Column="2"/>
       </Grid>
       <TextBlock Name="txInfoIn" Classes.ClassInfo="true"/>
+      <Border BorderThickness="0.6" Margin="0,5,0,20"/>
+      <!-- Audio Passthrough Test -->
+      <TextBlock Text="Audio Passthrough Test" Classes.ClassName="true"/>
+      <TextBlock Name="txDescPassthrough" Classes.ClassDescription="true"/>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+          <TextBlock Text="Recording Time (s):" Classes.ClassContentinfo="true"/>
+          <TextBox Name="tbPassthrougTime"/>
+        </StackPanel>
+        <Button Name="btnPassthrough" Content="Start Passthrough" Grid.Column="1"/>
+      </Grid>
+      <TextBlock Name="txInfoPassthrough" Classes.ClassInfo="true"/>
     </StackPanel>
   </ScrollViewer>
 </UserControl>

@@ -2,7 +2,6 @@ using System;
 using System.Globalization;
 using System.Threading;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using IoTLib_Test.Models;

@@ -5,35 +5,26 @@ using System.Device.Gpio.Drivers;
 
 namespace IoTLib_Test.Models
 {
-    internal class Gpio_Tests
+    internal class Gpio_Tests(int _bankLed, int _pinLed, int _bankButton, int _pinButton)
     {
         /* GPIO_LED Pin Number*/
-        int bankLed;
-        int pinLed;
-        GpioDriver? drvGpioLed;
+        private int bankLed = _bankLed;
+        private int pinLed = _pinLed;
+        private GpioDriver? drvGpioLed;
 
         /* GPIO_Input Pin Number */
-        int bankButton;
-        int pinButton;
-        GpioDriver? drvGpioButton;
-        GpioController? controllerButton;
+        private int bankButton = _bankButton;
+        private int pinButton = _pinButton;
+        private GpioDriver? drvGpioButton;
+        private GpioController? controllerButton;
 
-        bool ledIsOn = false;
-
-        public Gpio_Tests(int _bankLed, int _pinLed, int _bankButton, int _pinButton)
-        {
-            /* Set standard values */
-            bankLed = _bankLed;
-            pinLed = _pinLed;
-            bankButton = _bankButton;
-            pinButton = _pinButton;
-        }
+        private bool ledIsOn;
 
         #region GPIO_LED
-        public void TurnOnLed(int bank, int pin)
+        public void TurnOnLed(int _bank, int _pin)
         {
-            bankLed = bank;
-            pinLed = pin;
+            bankLed = _bank;
+            pinLed = _pin;
 
             drvGpioLed = new LibGpiodDriver(bankLed);
             using var controller = new GpioController(PinNumberingScheme.Logical, drvGpioLed);
@@ -53,10 +44,10 @@ namespace IoTLib_Test.Models
             ledIsOn = false;
         }
 
-        public void BlinkLed(int bank, int pin)
+        public void BlinkLed(int _bank, int _pin)
         {
-            bankLed = bank;
-            pinLed = pin;
+            bankLed = _bank;
+            pinLed = _pin;
 
             drvGpioLed = new LibGpiodDriver(bankLed);
             using var controller = new GpioController(PinNumberingScheme.Logical, drvGpioLed);
@@ -74,10 +65,10 @@ namespace IoTLib_Test.Models
         }
         #endregion
         #region GPIO_Input
-        public void ActivateButtonInput(int bank, int pin)
+        public void ActivateButtonInput(int _bank, int _pin)
         {
-            bankButton = bank;
-            pinButton = pin;
+            bankButton = _bank;
+            pinButton = _pin;
 
             drvGpioButton = new LibGpiodDriver(bankButton);
             controllerButton = new GpioController(PinNumberingScheme.Logical, drvGpioButton);
