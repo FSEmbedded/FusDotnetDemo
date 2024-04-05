@@ -22,7 +22,7 @@ public partial class UserControl_I2c : UserControl
     private int busIdPwm = 0x5;
     private int devAddrPwm = 0x63;
     private int busIdAdc = 0x5;
-    private int devAddrAdc = 0x63;
+    private int devAddrAdc = 0x4b;
     /* Values to write on I2C storage */
     private int valueWrite1 = 0xAA;
     private int valueWrite2 = 0x55;
@@ -179,28 +179,37 @@ public partial class UserControl_I2c : UserControl
             return;
         }
 
-        double returnVoltage;
+        byte returnValue;
         int counter = 0;
         bool toggleOn = true;
 
-        txPwmSend.Text = $"PWM will toggle. See LED";
-
-        while(counter < 10)
+        while(counter < 6)
         {
             I2cPwm!.WritePwm(toggleOn);
-            //TODO: Read auswerten
-            returnVoltage = I2cAdc!.ReadADC();
-            txPwmRead.Text = $"ADC received {returnVoltage} V";
-            Thread.Sleep(1000);
-
             toggleOn = !toggleOn;
+            returnValue = I2cAdc!.ReadADC();
+            /* calculate voltage from return value */
+            double voltage = (double)returnValue / (double)0xff * 100;
+            /* When LED is on, returnValue should be 0 */
+            if (!toggleOn && returnValue != 0)
+            {
+                txPwmRead.Foreground = Brushes.Red;
+                txPwmRead.Text += $"LED is off, Voltage should be 0V. ADC detected {voltage:F2}V\r\n";
+            }
+            else if (!toggleOn && returnValue == 0)
+            {
+                txPwmRead.Foreground = Brushes.Green;
+                txPwmRead.Text += $"LED is on, ADC detected: {voltage:F2}V\r\n";
+            }
+            else
+            {
+                
+                txPwmRead.Foreground = Brushes.Green;
+                txPwmRead.Text += $"LED is off, ADC detected: {voltage:F2}V\r\n";
+            }
             counter++;
+            Thread.Sleep(1000);
         }
-
-        //if( returnVoltage == voltage1)
-        //{
-
-        //}
     }
 
     private void AddButtonHandlers()

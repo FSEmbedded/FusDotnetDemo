@@ -39,39 +39,39 @@
             <TextBox Name="tbBusIdStorage"/>
           </StackPanel>
         </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="0">
+        <StackPanel Grid.Column="0" Grid.Row="1">
           <TextBlock Text="Address Storage:" Classes.ClassContentinfo="true"/>
           <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
             <TextBlock Text="0x" Classes.Class0x="true"/>
             <TextBox Name="tbDevAddrStorage"/>
           </StackPanel>
         </StackPanel>
-        <StackPanel Grid.Column="0" Grid.Row="1">
-          <TextBlock Text="Value 1:" Classes.ClassContentinfo="true"/>
-          <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
-            <TextBlock Text="0x" Classes.Class0x="true"/>
-            <TextBox Name="tbValue1"/>
-          </StackPanel>
-        </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="1">
-          <TextBlock Text="Value 2:" Classes.ClassContentinfo="true"/>
-          <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
-            <TextBlock Text="0x" Classes.Class0x="true"/>
-            <TextBox Name="tbValue2"/>
-          </StackPanel>
-        </StackPanel>
-        <StackPanel Grid.Column="0" Grid.Row="2">
+        <StackPanel Grid.Column="1" Grid.Row="0">
           <TextBlock Text="Register 1:" Classes.ClassContentinfo="true"/>
           <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
             <TextBlock Text="0x" Classes.Class0x="true"/>
             <TextBox Name="tbReg1"/>
           </StackPanel>
         </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="2">
+        <StackPanel Grid.Column="1" Grid.Row="1">
           <TextBlock Text="Register 2:" Classes.ClassContentinfo="true"/>
           <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
             <TextBlock Text="0x" Classes.Class0x="true"/>
             <TextBox Name="tbReg2"/>
+          </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Column="2" Grid.Row="0">
+          <TextBlock Text="Value 1:" Classes.ClassContentinfo="true"/>
+          <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
+            <TextBlock Text="0x" Classes.Class0x="true"/>
+            <TextBox Name="tbValue1"/>
+          </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Column="2" Grid.Row="1">
+          <TextBlock Text="Value 2:" Classes.ClassContentinfo="true"/>
+          <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
+            <TextBlock Text="0x" Classes.Class0x="true"/>
+            <TextBox Name="tbValue2"/>
           </StackPanel>
         </StackPanel>
         <Button Name="btnI2cRW" Content="Start RW Test" Grid.Row="2"/>
@@ -79,8 +79,8 @@
       <TextBlock Name="txInfoWrite" Classes.ClassInfo="true"/>
       <TextBlock Name="txInfoRead" Classes.ClassInfo="true"/>
       <Border BorderThickness="0.6" Margin="0,5,0,20"/>
-      <!-- I2C Extension Board - PWM Test -->
-      <TextBlock Text="I2C Extension Board - PWM Test" Classes.ClassName="true"/>
+      <!-- I2C Extension Board - PWM/ADC Test -->
+      <TextBlock Text="I2C Extension Board - PWM / ADC Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescPwm" Classes.ClassDescription="true"/>
       <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto">
         <StackPanel Grid.Column="0" Grid.Row="0">
@@ -90,14 +90,14 @@
             <TextBox Name="tbBusIdPwm"/>
           </StackPanel>
         </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="0">
+        <StackPanel Grid.Column="0" Grid.Row="1">
           <TextBlock Text="Address PWM:" Classes.ClassContentinfo="true"/>
           <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
             <TextBlock Text="0x" Classes.Class0x="true"/>
             <TextBox Name="tbDevAddrPwm"/>
           </StackPanel>
         </StackPanel>
-        <StackPanel Grid.Column="0" Grid.Row="1">
+        <StackPanel Grid.Column="1" Grid.Row="0">
           <TextBlock Text="I²C Bus ID - ADC:" Classes.ClassContentinfo="true"/>
           <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
             <TextBlock Text="0x" Classes.Class0x="true"/>

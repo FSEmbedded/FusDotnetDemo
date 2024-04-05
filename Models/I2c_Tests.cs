@@ -10,14 +10,16 @@ namespace IoTLib_Test.Models
         private bool runLedTest;
         private readonly I2cDevice i2cDevice;
 
-        private readonly byte pwmAdress = 0x05;
+        private readonly byte busId;
         private readonly byte pwmOn = 0x0;
         private readonly byte pwmOff = 0x1;
 
-        public I2c_Tests(int busId, int devAddr)
+        public I2c_Tests(int _busId, int _devAddr)
         {
+            busId = (byte)_busId;
+
             /* Create I2C Device */
-            I2cConnectionSettings i2cSettings = new(busId, devAddr);
+            I2cConnectionSettings i2cSettings = new(_busId, _devAddr);
             try
             {
                 i2cDevice = I2cDevice.Create(i2cSettings);
@@ -129,7 +131,7 @@ namespace IoTLib_Test.Models
 
             /* Set address to register first */
             i2cDevice.WriteByte(register);
-            /* Read data from set register */
+            /* Read data from last used register */
             byte valueRead = i2cDevice.ReadByte();
 
             return valueRead;
@@ -138,29 +140,23 @@ namespace IoTLib_Test.Models
         #region PWM
         public bool WritePwm(bool toggleOn)
         {
+            /* Write value to PWM device */
             if (!toggleOn)
-                i2cDevice!.Write([pwmAdress, pwmOn]);
+                i2cDevice!.Write([busId, pwmOn]);
             else
-                i2cDevice!.Write([pwmAdress, pwmOff]);
+                i2cDevice!.Write([busId, pwmOff]);
 
             return true;
         }
 
-        public double ReadADC()
+        public byte ReadADC()
         {
-            int value = 0;
-            byte dataRead;
+            /* Set address to register first */
+            i2cDevice.WriteByte(0x00);
+            /* Read value from last used register of ADC device */
+            byte valueRead = i2cDevice.ReadByte();
 
-            //TODO: Spannung messen, J2-17 -> ADS7828 CH0
-            
-            // i2cget -y 5 0x63 0x00
-            dataRead = i2cDevice.ReadByte();
-
-
-            //Liest Spannung: 100% = 3,3V
-            //12bit -> 100% = 4095 / 0xFFF / 0b1111 1111 1111
-            
-            return value;
+            return valueRead;
         }
         #endregion
     }

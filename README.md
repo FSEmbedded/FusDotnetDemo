@@ -12,3 +12,6 @@ STRING=$(candump can0 -L -n1 | cut -d '#' -f2) && cansend can0 01b#${STRING}
 include alsa-dev to yocto release
 
 # Video
+
+
+//TODO: Pins aufschreiben
