@@ -10,6 +10,10 @@ namespace IoTLib_Test.Models
         private bool runLedTest;
         private readonly I2cDevice i2cDevice;
 
+        private readonly byte pwmAdress = 0x05;
+        private readonly byte pwmOn = 0x0;
+        private readonly byte pwmOff = 0x1;
+
         public I2c_Tests(int busId, int devAddr)
         {
             /* Create I2C Device */
@@ -40,31 +44,7 @@ namespace IoTLib_Test.Models
                 i2cDevice.Write(config);
 
                 /* Values to send to I2C Extension Board */
-                byte[] value01 = [0x02, 0x00, 0x00]; // All Off
-                byte[] value02 = [0x02, 0x01, 0x00]; // LED 1
-                byte[] value03 = [0x02, 0x02, 0x00]; // LED 2
-                byte[] value04 = [0x02, 0x04, 0x00]; // LED 3
-                byte[] value05 = [0x02, 0x08, 0x00]; // LED 4
-                byte[] value06 = [0x02, 0x10, 0x00]; // LED 5
-                byte[] value07 = [0x02, 0x20, 0x00]; // LED 6
-                byte[] value08 = [0x02, 0x40, 0x00]; // LED 7
-                byte[] value09 = [0x02, 0x80, 0x00]; // LED 8
-                byte[] value10 = [0x03, 0x01, 0x00]; // LED 9
-                byte[] value11 = [0x03, 0x02, 0x00]; // LED 10
-                byte[] value12 = [0x03, 0x04, 0x00]; // LED 11
-                byte[] value13 = [0x03, 0x08, 0x00]; // LED 12
-                byte[] value14 = [0x03, 0x10, 0x00]; // LED 13
-                byte[] value15 = [0x03, 0x20, 0x00]; // LED 14
-                byte[] value16 = [0x03, 0x40, 0x00]; // LED 15
-                byte[] value17 = [0x03, 0x80, 0x00]; // LED 16
-                byte[] value18 = [0x02, 0xff, 0xff]; // All On
-
-                List<byte[]> bytes = [value01, value02, value03,
-                            value04, value05, value06,
-                            value07, value08, value09,
-                            value10, value11, value12,
-                            value13, value14, value15,
-                            value16, value17, value18];
+                List<byte[]> bytes = GetLedValues();
 
                 /* Run LED lights until StopI2C() is called */
                 while (runLedTest)
@@ -83,6 +63,38 @@ namespace IoTLib_Test.Models
         public void StopLedLoop()
         {
             runLedTest = false;
+        }
+
+        private List<byte[]> GetLedValues()
+        {
+            /* Values to send to I2C Extension Board */
+            byte[] value01 = [0x02, 0x00, 0x00]; // All Off
+            byte[] value02 = [0x02, 0x01, 0x00]; // LED 1
+            byte[] value03 = [0x02, 0x02, 0x00]; // LED 2
+            byte[] value04 = [0x02, 0x04, 0x00]; // LED 3
+            byte[] value05 = [0x02, 0x08, 0x00]; // LED 4
+            byte[] value06 = [0x02, 0x10, 0x00]; // LED 5
+            byte[] value07 = [0x02, 0x20, 0x00]; // LED 6
+            byte[] value08 = [0x02, 0x40, 0x00]; // LED 7
+            byte[] value09 = [0x02, 0x80, 0x00]; // LED 8
+            byte[] value10 = [0x03, 0x01, 0x00]; // LED 9
+            byte[] value11 = [0x03, 0x02, 0x00]; // LED 10
+            byte[] value12 = [0x03, 0x04, 0x00]; // LED 11
+            byte[] value13 = [0x03, 0x08, 0x00]; // LED 12
+            byte[] value14 = [0x03, 0x10, 0x00]; // LED 13
+            byte[] value15 = [0x03, 0x20, 0x00]; // LED 14
+            byte[] value16 = [0x03, 0x40, 0x00]; // LED 15
+            byte[] value17 = [0x03, 0x80, 0x00]; // LED 16
+            byte[] value18 = [0x02, 0xff, 0xff]; // All On
+
+            List<byte[]> bytes = [value01, value02, value03,
+                                    value04, value05, value06,
+                                    value07, value08, value09,
+                                    value10, value11, value12,
+                                    value13, value14, value15,
+                                    value16, value17, value18];
+
+            return bytes;
         }
         #endregion
         #region ReadWrite
@@ -127,9 +139,9 @@ namespace IoTLib_Test.Models
         public bool WritePwm(bool toggleOn)
         {
             if (!toggleOn)
-                i2cDevice!.Write([0x05, 0x0]); //TODO: values als Variable
+                i2cDevice!.Write([pwmAdress, pwmOn]);
             else
-                i2cDevice!.Write([0x05, 0x1]); //TODO: values als Variable
+                i2cDevice!.Write([pwmAdress, pwmOff]);
 
             return true;
         }
