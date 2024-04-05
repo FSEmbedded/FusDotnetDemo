@@ -23,7 +23,7 @@ public partial class UserControl_Spi : UserControl
         Spi = new Spi_Tests();
     }
 
-    void BtnSpi_Clicked(object sender, RoutedEventArgs args)
+    private void BtnSpi_Clicked(object sender, RoutedEventArgs args)
     {
         if(!Spi.SpiStart(spidev, register))
         {
@@ -37,27 +37,27 @@ public partial class UserControl_Spi : UserControl
         }
     }
 
-    void AddButtonHandlers()
+    private void AddButtonHandlers()
     {
         /* Button bindings */
         btnSpi.AddHandler(Button.ClickEvent, BtnSpi_Clicked!);
     }
 
-    void WriteStandardValuesInTextBox()
+    private void WriteStandardValuesInTextBox()
     {
         /* Write standard values in textboxes*/
         
         //TODO
     }
 
-    void AddTextBoxHandlers()
+    private void AddTextBoxHandlers()
     {
         /* Add handler to only allow decimal value inputs */
 
         //TODO
     }
 
-    void FillTextBlockWithText()
+    private void FillTextBlockWithText()
     {
         /* Description Text */
         txDescSpi.Text = "Connect BBDSI with SPI: " +

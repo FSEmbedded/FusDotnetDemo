@@ -28,7 +28,7 @@ public partial class UserControl_Video : UserControl
         Video = new Video_Tests();
     }
 
-    void BtnCamera_Clicked(object sender, RoutedEventArgs args)
+    private void BtnCamera_Clicked(object sender, RoutedEventArgs args)
     {
         //TODO
 
@@ -44,13 +44,13 @@ public partial class UserControl_Video : UserControl
         }
     }
 
-    void AddButtonHandlers()
+    private void AddButtonHandlers()
     {
         /* Button bindings */
         btnCamera.AddHandler(Button.ClickEvent, BtnCamera_Clicked!);
     }
 
-    void FillTextBlockWithText()
+    private void FillTextBlockWithText()
     {
         txDescCamera.Text = "Connect Camera to USB-Port";
         txInfoCamera.Text = "";

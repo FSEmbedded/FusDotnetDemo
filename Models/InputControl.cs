@@ -9,7 +9,8 @@ namespace IoTLib_Test.Models
         public static void TextBox_DecimalInput(object sender, KeyEventArgs e)
         {
             /* Check if the pressed key is a control character (like Backspace) or a digit */
-            if (!char.IsControl(Convert.ToChar(e.KeySymbol!)) && !char.IsDigit(Convert.ToChar(e.KeySymbol!)))
+            if (!char.IsControl(Convert.ToChar(e.KeySymbol!))&&
+                !char.IsDigit(Convert.ToChar(e.KeySymbol!)))
             {
                 /* If it's not, prevent the character from being entered */
                 e.Handled = true;

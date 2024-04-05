@@ -14,15 +14,45 @@
           <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
+          <TextBlock Text="Value to send (byte array):" Classes.ClassContentinfo="true"/>
+          <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
+            <TextBlock Text="0x" Classes.Class0x="true"/>
+            <TextBox Name="tbVal0"/>
+            <TextBlock Text="0x" Classes.Class0x="true"/>
+            <TextBox Name="tbVal1"/>
+            <TextBlock Text="0x" Classes.Class0x="true"/>
+            <TextBox Name="tbVal2"/>
+            <TextBlock Text="0x" Classes.Class0x="true"/>
+            <TextBox Name="tbVal3"/>
+          </StackPanel>
+          <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
+            <TextBlock Text="0x" Classes.Class0x="true"/>
+            <TextBox Name="tbVal4"/>
+            <TextBlock Text="0x" Classes.Class0x="true"/>
+            <TextBox Name="tbVal5"/>
+            <TextBlock Text="0x" Classes.Class0x="true"/>
+            <TextBox Name="tbVal6"/>
+            <TextBlock Text="0x" Classes.Class0x="true"/>
+            <TextBox Name="tbVal7"/>
+          </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Column="0" Grid.Row="1">
           <TextBlock Text="CAN device:" Classes.ClassContentinfo="true"/>
           <TextBox Name="tbCanDev"/>
         </StackPanel>
-        <StackPanel Grid.Column="1">
+        <StackPanel Grid.Column="1" Grid.Row="1">
           <TextBlock Text="Bitrate:" Classes.ClassContentinfo="true"/>
           <TextBox Name="tbBitrate" Width="120"/>
         </StackPanel>
-        <Button Name="btnCan" Content="CAN Test" Grid.Column="2"/>
+        <Button Name="btnCan" Content="CAN Test" Grid.Column="2" Grid.Row="1"/>
+        <TextBlock Name="txCanWrite" Classes.ClassInfo="true" Grid.Column="0" Grid.Row="2"/>
+        <TextBlock Name="txCanRead" Classes.ClassInfo="true" Grid.Column="2" Grid.Row="2"/>
       </Grid>
       <TextBlock Name="txInfoCan" Classes.ClassInfo="true"/>
     </StackPanel>

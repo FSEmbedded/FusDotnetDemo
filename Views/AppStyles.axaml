@@ -44,6 +44,8 @@
   <Style Selector="ScrollViewer">
     <Setter Property="AllowAutoHide" Value="True"/>
     <Setter Property="UseLayoutRounding" Value="True"/>
+    <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
+    <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
   </Style>
   <Style Selector="StackPanel">
     <Setter Property="Margin" Value="8"/>

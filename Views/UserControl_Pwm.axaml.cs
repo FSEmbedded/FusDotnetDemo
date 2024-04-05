@@ -26,42 +26,42 @@ public partial class UserControl_Pwm : UserControl
         FillTextBlockWithText();
 
         /* Convert GPIO Pin number to gpio bank and pin */
-        bank = PinConverter.GetGpioBank(gpioNo);
-        pin = PinConverter.GetGpioPin(gpioNo);
+        bank = Helper.GetGpioBank(gpioNo);
+        pin = Helper.GetGpioPin(gpioNo);
 
         Pwm = new Pwm_Tests();
     }
 
-    void BtnPwm_Clicked(object sender, RoutedEventArgs args)
+    private void BtnPwm_Clicked(object sender, RoutedEventArgs args)
     {
         /* Convert GPIO Pin # to gpio bank and pin */
         gpioNo = Convert.ToInt32(tbPwmPin.Text);
-        bank = PinConverter.GetGpioBank(gpioNo);
-        pin = PinConverter.GetGpioPin(gpioNo);
+        bank = Helper.GetGpioBank(gpioNo);
+        pin = Helper.GetGpioPin(gpioNo);
 
         Pwm.PwmSet(bank, pin);
         //TODO: optimieren
     }
 
-    void AddButtonHandlers()
+    private void AddButtonHandlers()
     {
         /* Button bindings */
         btnPwm.AddHandler(Button.ClickEvent, BtnPwm_Clicked!);
     }
 
-    void WriteStandardValuesInTextBox()
+    private void WriteStandardValuesInTextBox()
     {
         /* Write standard GPIO pins in textboxes */
         tbPwmPin.Text = Convert.ToString(gpioNo);
     }
 
-    void AddTextBoxHandlers()
+    private void AddTextBoxHandlers()
     {
         /* Handler to only allow decimal value inputs */
         tbPwmPin.AddHandler(KeyDownEvent, InputControl.TextBox_DecimalInput!, RoutingStrategies.Tunnel);
     }
 
-    void FillTextBlockWithText()
+    private void FillTextBlockWithText()
     {
         txDescPwm.Text = "Connect voltmeter to J11-34 and GND"; //TODO
         txInfoPwm.Text = "";

@@ -30,7 +30,7 @@ public partial class UserControl_Audio : UserControl
         Audio = new Audio_Tests();
     }
 
-    void BtnAudioOut_Clicked(object sender, RoutedEventArgs args)
+    private void BtnAudioOut_Clicked(object sender, RoutedEventArgs args)
     {
         if (!speakerIsOn)
         {
@@ -56,7 +56,7 @@ public partial class UserControl_Audio : UserControl
         }
     }
 
-    void BtnAudioInCont_Clicked(object sender, RoutedEventArgs args)
+    private void BtnAudioInCont_Clicked(object sender, RoutedEventArgs args)
     {
         if (!isRecording)
         {
@@ -94,7 +94,7 @@ public partial class UserControl_Audio : UserControl
         }
     }
 
-    void BtnAudioInDur_Clicked(object sender, RoutedEventArgs args)
+    private void BtnAudioInDur_Clicked(object sender, RoutedEventArgs args)
     {
         /* Stop if device is already recording */
         if (isRecording)
@@ -125,7 +125,7 @@ public partial class UserControl_Audio : UserControl
         }
     }
 
-    void AddButtonHandlers()
+    private void AddButtonHandlers()
     {
         /* Button bindings */
         btnAudioOut.AddHandler(Button.ClickEvent, BtnAudioOut_Clicked!);
@@ -133,19 +133,19 @@ public partial class UserControl_Audio : UserControl
         btnAudioInDur.AddHandler(Button.ClickEvent, BtnAudioInDur_Clicked!);
     }
 
-    void WriteStandardValuesInTextBox()
+    private void WriteStandardValuesInTextBox()
     {
         /* Write standard values in textboxes */
         tbAudioInDur.Text = Convert.ToString(recFileDur);
     }
 
-    void AddTextBoxHandlers()
+    private void AddTextBoxHandlers()
     {
         /* Handler to only allow decimal value inputs */
         tbAudioInDur.AddHandler(KeyDownEvent, InputControl.TextBox_DecimalInput!, RoutingStrategies.Tunnel);
     }
 
-    void FillTextBlockWithText()
+    private void FillTextBlockWithText()
     {
         txDescAudioOut.Text = "Connect Speaker to PcoreBBDSI Rev1.40 - AUDIO_A_LOUT_L - J11-49, AUDIO_A_LOUT_R - J11-45, GND - J11-47";
         txDescAudioInCont.Text = "This test will record audio until you stop it.\r\nConnect Line In to PcoreBBDSI Rev1.40 - AUDIO_A_LIN_L - J11-48, AUDIO_A_LIN_R - J11-44, GND - J11-46";

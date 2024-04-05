@@ -14,23 +14,24 @@ namespace IoTLib_Test.Models
         private CanId canIdRead;
 
         /* Value to send over CAN */
-        private readonly byte[] valueSend = [1, 2, 3, 40, 50, 60, 70, 80];
-        private byte[]? valueRead;
+        private byte[] valueSend = [];
+        private byte[] valueRead = [];
 
         private bool runRwProcesses;
-        private bool canRwSuccess = false;
-        private readonly int maxRunCount = 10;
+        private readonly int maxRunCount = 10; // counter for repeating Read task
 
-        public bool StartCanRWTest(string _canDev, string _bitrate)
+        public (byte[], CanId) StartCanRWTest(string _canDev, string _bitrate, CanId _canIdWrite, byte[] _valueSend)
         {
             canDev = "can" + _canDev;
             bitrate = _bitrate;
+            canIdWrite = _canIdWrite;
+            valueSend = _valueSend;
             runRwProcesses = true;
-            canRwSuccess = false;
-            /* Reset compare values */
+            int runCount = 0;
+            /* Reset canIdRead values */
             canIdRead = new CanId();
-            valueRead = null;
-
+            valueRead = [];
+            
             /* Check if CAN device is up */
             if (!IsCanDevUp())
             {
@@ -42,16 +43,11 @@ namespace IoTLib_Test.Models
                     runRwProcesses = false;
                     throw new Exception($"Exception: Could not activate CAN device {canDev}");
                 }
-            }
-
-            canIdWrite = new CanId()
-            {
-                Standard = 0x1A
-            };
+            }            
 
             try
             {
-                /* Start single write processes to check if it's working */
+                /* Start single write processes to check if receiving device is working */
                 CanWrite(1);
             }
             catch (Exception ex)
@@ -64,8 +60,6 @@ namespace IoTLib_Test.Models
             Thread writeThread = new(() => CanWrite(maxRunCount));
             writeThread.Start();
 
-            int runCount = 0;
-
             while (runRwProcesses && runCount < maxRunCount)
             {
                 /* Let CanRead run as Task, otherwise it won't timeout if it there is nothing to read */
@@ -76,9 +70,8 @@ namespace IoTLib_Test.Models
                     if (readTask.Result == true)
                     {
                         /* Compare CAN IDs & valueRead / valueSend */
-                        if (canIdRead.Value != canIdWrite.Value && ByteArraysEqual(valueRead!, valueSend))
+                        if (canIdRead.Value != canIdWrite.Value)
                         {
-                            canRwSuccess = true;
                             runRwProcesses = false;
                         }
                     }
@@ -86,9 +79,8 @@ namespace IoTLib_Test.Models
                 runCount++;
             }
             runRwProcesses = false;
-            return canRwSuccess;
+            return (valueRead, canIdRead);
         }
-
         #region RW_Test
         public void CanWrite(int maxWriteCount)
         {
@@ -173,18 +165,5 @@ namespace IoTLib_Test.Models
             process.WaitForExit();
         }
         #endregion
-
-        public static bool ByteArraysEqual(byte[] b1, byte[] b2)
-        {
-            /* Compare byte arrays, return true if equal */
-            if (b1 == b2) return true;
-            if (b1 == null || b2 == null) return false;
-            if (b1.Length != b2.Length) return false;
-            for (int i = 0; i < b1.Length; i++)
-            {
-                if (b1[i] != b2[i]) return false;
-            }
-            return true;
-        }
     }
 }

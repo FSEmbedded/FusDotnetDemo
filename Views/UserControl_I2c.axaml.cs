@@ -40,13 +40,13 @@ public partial class UserControl_I2c : UserControl
         FillTextBlockWithText();
     }
 
-    void BtnI2cLed_Clicked(object sender, RoutedEventArgs args)
+    private void BtnI2cLed_Clicked(object sender, RoutedEventArgs args)
     {
         if (!ledThreadStarted)
         {
             /* Convert  values from UI to hex */
-            busIdLed = ConvertStringToHex(tbBusIdLed.Text, busIdLed);
-            devAddrLed = ConvertStringToHex(tbDevAddrLed.Text, devAddrLed);
+            busIdLed = Helper.ConvertHexStringToHexInt(tbBusIdLed.Text, busIdLed);
+            devAddrLed = Helper.ConvertHexStringToHexInt(tbDevAddrLed.Text, devAddrLed);
             
             try
             {
@@ -84,15 +84,15 @@ public partial class UserControl_I2c : UserControl
         }
     }
 
-    void BtnI2cRW_Clicked(object sender, RoutedEventArgs args)
+    private void BtnI2cRW_Clicked(object sender, RoutedEventArgs args)
     {
         /* Convert  values from UI to hex */
-        busIdStorage = ConvertStringToHex(tbBusIdStorage.Text, busIdStorage);
-        devAddrStorage = ConvertStringToHex(tbDevAddrStorage.Text, devAddrStorage);
-        valueWrite1 = ConvertStringToHex(tbValue1.Text, valueWrite1);
-        valueWrite2 = ConvertStringToHex(tbValue2.Text, valueWrite2);
-        register1 = ConvertStringToHex(tbReg1.Text, register1);
-        register2 = ConvertStringToHex(tbReg2.Text, register2);
+        busIdStorage = Helper.ConvertHexStringToHexInt(tbBusIdStorage.Text, busIdStorage);
+        devAddrStorage = Helper.ConvertHexStringToHexInt(tbDevAddrStorage.Text, devAddrStorage);
+        valueWrite1 = Helper.ConvertHexStringToHexInt(tbValue1.Text, valueWrite1);
+        valueWrite2 = Helper.ConvertHexStringToHexInt(tbValue2.Text, valueWrite2);
+        register1 = Helper.ConvertHexStringToHexInt(tbReg1.Text, register1);
+        register2 = Helper.ConvertHexStringToHexInt(tbReg2.Text, register2);
 
         try
         {
@@ -146,13 +146,13 @@ public partial class UserControl_I2c : UserControl
         }
     }
 
-    void BtnI2cPwm_Clicked(object sender, RoutedEventArgs args)
+    private void BtnI2cPwm_Clicked(object sender, RoutedEventArgs args)
     {
         /* Convert  values from UI to hex */
-        busIdPwm = ConvertStringToHex(tbBusIdPwm.Text, busIdPwm);
-        devAddrPwm = ConvertStringToHex(tbDevAddrPwm.Text, devAddrPwm);
-        busIdAdc = ConvertStringToHex(tbBusIdAdc.Text, busIdAdc);
-        devAddrAdc = ConvertStringToHex(tbDevAddrAdc.Text, devAddrAdc);
+        busIdPwm = Helper.ConvertHexStringToHexInt(tbBusIdPwm.Text, busIdPwm);
+        devAddrPwm = Helper.ConvertHexStringToHexInt(tbDevAddrPwm.Text, devAddrPwm);
+        busIdAdc = Helper.ConvertHexStringToHexInt(tbBusIdAdc.Text, busIdAdc);
+        devAddrAdc = Helper.ConvertHexStringToHexInt(tbDevAddrAdc.Text, devAddrAdc);
 
         try
         {
@@ -203,15 +203,7 @@ public partial class UserControl_I2c : UserControl
         //}
     }
 
-    int ConvertStringToHex(string? Input, int Output)
-    {
-        if (Input != "" && Input != string.Empty && Input != null)
-            Output = int.Parse(Input, NumberStyles.HexNumber);
-
-        return Output;
-    }
-
-    void AddButtonHandlers()
+    private void AddButtonHandlers()
     {
         /* Button bindings */
         btnI2cLed.AddHandler(Button.ClickEvent, BtnI2cLed_Clicked!);
@@ -219,7 +211,7 @@ public partial class UserControl_I2c : UserControl
         btnI2cPwm.AddHandler(Button.ClickEvent, BtnI2cPwm_Clicked!);
     }
 
-    void WriteStandardValuesInTextBox()
+    private void WriteStandardValuesInTextBox()
     {
         /* Write standard values in textboxes*/
         tbBusIdLed.Text = busIdLed.ToString("X");
@@ -236,7 +228,7 @@ public partial class UserControl_I2c : UserControl
         tbDevAddrAdc.Text = devAddrAdc.ToString("X");
     }
 
-    void AddTextBoxHandlers()
+    private void AddTextBoxHandlers()
     {
         /* Add handler to only allow hex value inputs */
         tbBusIdLed.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
@@ -253,7 +245,7 @@ public partial class UserControl_I2c : UserControl
         tbDevAddrAdc.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
     }
 
-    void FillTextBlockWithText()
+    private void FillTextBlockWithText()
     {
         /* Description Text */
         txDescLed.Text = "Connect BBDSI with I²C Extension Board: I2C_A_SCL = J11-16 -> J1-11, I2C_A_SDA = J11-17 -> J1-10, GND = J11-37 -> J1-16";

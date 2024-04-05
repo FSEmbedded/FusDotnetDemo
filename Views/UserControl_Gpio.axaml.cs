@@ -32,21 +32,21 @@ public partial class UserControl_Gpio : UserControl
         FillTextBlockWithText();
 
         /* Convert GPIO Pin number to gpio bank and pin */
-        ledBank = PinConverter.GetGpioBank(gpioNoLed);
-        ledPin = PinConverter.GetGpioPin(gpioNoLed);
+        ledBank = Helper.GetGpioBank(gpioNoLed);
+        ledPin = Helper.GetGpioPin(gpioNoLed);
         /* Convert GPIO Pin # to gpio bank and pin */
-        inputBank = PinConverter.GetGpioBank(gpioNoInput);
-        inputPin = PinConverter.GetGpioPin(gpioNoInput);
+        inputBank = Helper.GetGpioBank(gpioNoInput);
+        inputPin = Helper.GetGpioPin(gpioNoInput);
 
         Gpio = new Gpio_Tests(ledBank, ledPin, inputBank, inputPin);
     }
 
-    void BtnLedSwitch_Clicked(object sender, RoutedEventArgs args)
+    private void BtnLedSwitch_Clicked(object sender, RoutedEventArgs args)
     {
         /* Convert GPIO Pin # to gpio bank and pin */
         gpioNoLed = Convert.ToInt32(tbLedPin.Text);
-        ledBank = PinConverter.GetGpioBank(gpioNoLed);
-        ledPin = PinConverter.GetGpioPin(gpioNoLed);
+        ledBank = Helper.GetGpioBank(gpioNoLed);
+        ledPin = Helper.GetGpioPin(gpioNoLed);
 
         if (!ledIsOn)
         {
@@ -72,22 +72,22 @@ public partial class UserControl_Gpio : UserControl
         }
     }
 
-    void BtnLedBlink_Clicked(object sender, RoutedEventArgs args)
+    private void BtnLedBlink_Clicked(object sender, RoutedEventArgs args)
     {
         /* Convert GPIO Pin # to gpio bank and pin */
         gpioNoLed = Convert.ToInt32(tbLedPin.Text);
-        ledBank = PinConverter.GetGpioBank(gpioNoLed);
-        ledPin = PinConverter.GetGpioPin(gpioNoLed);
+        ledBank = Helper.GetGpioBank(gpioNoLed);
+        ledPin = Helper.GetGpioPin(gpioNoLed);
 
         Gpio.BlinkLed(ledBank, ledPin);
     }
 
-    void BtnGpioInput_Clicked(object sender, RoutedEventArgs args)
+    private void BtnGpioInput_Clicked(object sender, RoutedEventArgs args)
     {
         /* Convert GPIO Pin # to gpio bank and pin */
         gpioNoInput = Convert.ToInt32(tbInputPin.Text);
-        inputBank = PinConverter.GetGpioBank(gpioNoInput);
-        inputPin = PinConverter.GetGpioPin(gpioNoInput);
+        inputBank = Helper.GetGpioBank(gpioNoInput);
+        inputPin = Helper.GetGpioPin(gpioNoInput);
 
         if (!buttonIsActive)
         {
@@ -113,7 +113,7 @@ public partial class UserControl_Gpio : UserControl
         }
     }
 
-    void AddButtonHandlers()
+    private void AddButtonHandlers()
     {
         /* GPIO_LED button bindings */
         btnLedSwitch.AddHandler(Button.ClickEvent, BtnLedSwitch_Clicked!);
@@ -122,21 +122,21 @@ public partial class UserControl_Gpio : UserControl
         btnGpioInput.AddHandler(Button.ClickEvent, BtnGpioInput_Clicked!);
     }
 
-    void WriteStandardValuesInTextBox()
+    private void WriteStandardValuesInTextBox()
     {
         /* Write standard GPIO pins in textboxes */
         tbLedPin.Text = Convert.ToString(gpioNoLed);
         tbInputPin.Text = Convert.ToString(gpioNoInput);
     }
 
-    void AddTextBoxHandlers()
+    private void AddTextBoxHandlers()
     {
         /* Handler to only allow decimal value inputs */
         tbLedPin.AddHandler(KeyDownEvent, InputControl.TextBox_DecimalInput!, RoutingStrategies.Tunnel);
         tbInputPin.AddHandler(KeyDownEvent, InputControl.TextBox_DecimalInput!, RoutingStrategies.Tunnel);
     }
 
-    void FillTextBlockWithText()
+    private void FillTextBlockWithText()
     {
         txDescLed.Text = "Connect LED to PcoreBBDSI Rev1.40 - J11-8 / J11-11"; // GPIO_J1_54
         txDescInput.Text = "Connect Button to PcoreBBDSI Rev1.40 - J11-18 / J11-27"; // GPIO_J1_52
