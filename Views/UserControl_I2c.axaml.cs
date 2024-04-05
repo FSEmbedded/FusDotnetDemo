@@ -148,6 +148,9 @@ public partial class UserControl_I2c : UserControl
 
     private void BtnI2cPwm_Clicked(object sender, RoutedEventArgs args)
     {
+        /* Empty TextBlock */
+        txPwmRead.Text = "";
+
         /* Convert  values from UI to hex */
         busIdPwm = Helper.ConvertHexStringToHexInt(tbBusIdPwm.Text, busIdPwm);
         devAddrPwm = Helper.ConvertHexStringToHexInt(tbDevAddrPwm.Text, devAddrPwm);
