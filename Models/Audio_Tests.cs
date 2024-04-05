@@ -1,9 +1,4 @@
-﻿using System;
-using System.IO;
-using System.IO.Pipelines;
-using System.Threading;
-using Iot.Device.FtCommon;
-using Iot.Device.Media;
+﻿using Iot.Device.Media;
 
 namespace IoTLib_Test.Models
 {

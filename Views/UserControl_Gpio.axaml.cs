@@ -62,7 +62,7 @@ public partial class UserControl_Gpio : UserControl
         else
         {
             /* Create new thread, turn off LED */
-            Thread ledOffThread = new(new ThreadStart(Gpio.TurnOffLed));
+            Thread ledOffThread = new(Gpio.TurnOffLed);
             ledOffThread.Start();
             ledIsOn = false;
             /* Change UI */

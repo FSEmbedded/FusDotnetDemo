@@ -1,10 +1,7 @@
 using System;
-using System.Runtime.InteropServices;
-using System.Text;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using DynamicData;
 using Iot.Device.SocketCan;
 using IoTLib_Test.Models;
 

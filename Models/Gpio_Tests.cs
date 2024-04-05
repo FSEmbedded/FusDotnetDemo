@@ -1,5 +1,4 @@
 ﻿using System.Threading;
-using Avalonia.Threading;
 using System.Device.Gpio;
 using System.Device.Gpio.Drivers;
 
@@ -95,19 +94,16 @@ namespace IoTLib_Test.Models
             }
         }
 
-        async void OnButton_Press(object sender, PinValueChangedEventArgs args)
+        private void OnButton_Press(object sender, PinValueChangedEventArgs args)
         {
-            //TODO: Dispatcher ohne Avalonia
-            await Dispatcher.UIThread.InvokeAsync(() =>
-            {
-                TurnOnLed(bankLed, pinLed);
-            });
+            if(ledIsOn) return;
+            TurnOnLed(bankLed, pinLed);
         }
 
-        async void OnButton_Release(object sender, PinValueChangedEventArgs args)
+        private void OnButton_Release(object sender, PinValueChangedEventArgs args)
         {
-            //TODO: Dispatcher ohne Avalonia
-            await Dispatcher.UIThread.InvokeAsync(TurnOffLed);
+            if(!ledIsOn) return;
+            TurnOffLed();
         }
         #endregion
     }

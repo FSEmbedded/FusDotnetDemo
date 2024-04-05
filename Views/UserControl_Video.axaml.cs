@@ -17,7 +17,7 @@ public partial class UserControl_Video : UserControl
 {
     /* Video functions are in separate class */
     private readonly Video_Tests Video;
-    public readonly string imgFile = "/home/root/img_cam.jpg";
+    public readonly string imgFile = "/home/root/img_camtest.jpg";
 
     public UserControl_Video()
     {
@@ -30,10 +30,9 @@ public partial class UserControl_Video : UserControl
 
     private void BtnCamera_Clicked(object sender, RoutedEventArgs args)
     {
-        //TODO
-
         if (Video.CaptureCam(imgFile))
         {
+            //TODO: Bild anzeigen
             txInfoCamera.Text = $"Image was taken, see {imgFile}";
         }
 
