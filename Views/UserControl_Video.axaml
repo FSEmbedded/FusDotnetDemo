@@ -9,17 +9,12 @@
     <StackPanel>
       <TextBlock Text="Camera  Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescCamera" Classes.ClassDescription="true"/>
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0">
+      <Grid ColumnDefinitions="*,*,*">
+        <StackPanel Grid.Column="1">
           <TextBlock Text="Keep file:" Classes.ClassContentinfo="true"/>
           <CheckBox Name="cbKeepFile"/>
         </StackPanel>
-        <Button Name="btnCamera" Content="Capture Camera" Grid.Column="1"/>
+        <Button Name="btnCamera" Content="Capture Camera"/>
       </Grid>
       <TextBlock Name="txInfoCamera" Classes.ClassInfo="true"/>
       <!-- Picture Preview -->

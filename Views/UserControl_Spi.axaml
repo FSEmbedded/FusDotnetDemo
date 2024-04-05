@@ -9,7 +9,9 @@
       <!-- SPI Test -->
       <TextBlock Text="SPI Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescSpi" Classes.ClassDescription="true"/>
-      <Button Name="btnSpi" Content="Start SPI Test" Background="LightGreen"/>
+      <Grid ColumnDefinitions="*,*,*">
+        <Button Name="btnSpi" Content="Start SPI Test"/>
+      </Grid>
       <TextBlock Name="txInfoSpi" Classes.ClassInfo="true"/>
       <Border/>
     </StackPanel>

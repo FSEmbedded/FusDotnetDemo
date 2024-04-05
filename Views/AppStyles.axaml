@@ -44,7 +44,6 @@
   <Style Selector="ScrollViewer">
     <Setter Property="AllowAutoHide" Value="True"/>
     <Setter Property="UseLayoutRounding" Value="True"/>
-    <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
     <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
   </Style>
   <Style Selector="StackPanel">
@@ -63,6 +62,7 @@
     <Setter Property="CornerRadius" Value="8"/>
     <Setter Property="Background" Value="LightGreen"/>
     <Setter Property="BorderBrush" Value="Black"/>
+    <Setter Property="Grid.Column" Value="2"/>
   </Style>
   <Style Selector="TextBox">
     <Setter Property="Margin" Value="5"/>

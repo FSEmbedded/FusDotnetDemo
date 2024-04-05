@@ -9,17 +9,12 @@
       <!-- PWM Test -->
       <TextBlock Text="PWM Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescPwm" Classes.ClassDescription="true"/>
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0">
+      <Grid ColumnDefinitions="*,*,*">
+        <StackPanel Grid.Column="1">
           <TextBlock Text="PWM GPIO Pin:" Classes.ClassContentinfo="true"/>
           <TextBox Name="tbPwmPin"/>
         </StackPanel>
-        <Button Name="btnPwm" Content="Toggle PWM" Grid.Column="1"/>
+        <Button Name="btnPwm" Content="Toggle PWM"/>
       </Grid>
       <TextBlock Name="txInfoPwm" Classes.ClassInfo="true"/>
     </StackPanel>

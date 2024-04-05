@@ -9,12 +9,7 @@
       <!-- I2C Extension Board - LED Test -->
       <TextBlock Text="I2C Extension Board - LED Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescLed" Classes.ClassDescription="true"/>
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+      <Grid ColumnDefinitions="*,*,*">
         <StackPanel Grid.Column="0">
           <TextBlock Text="I²C Bus ID:" Classes.ClassContentinfo="true"/>
           <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
@@ -29,24 +24,14 @@
             <TextBox Name="tbDevAddrLed"/>
           </StackPanel>
         </StackPanel>
-        <Button Name="btnI2cLed" Content="Start LED Test" Grid.Column="2"/>
+        <Button Name="btnI2cLed" Content="Start LED Test"/>
       </Grid>
       <TextBlock Name="txInfoLed" Classes.ClassInfo="true"/>
       <Border BorderThickness="0.6" Margin="0,5,0,20"/>
       <!-- RW Test -->
       <TextBlock Text="Read / Write Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescStorage" Classes.ClassDescription="true"/>
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+      <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto,Auto">
         <StackPanel Grid.Column="0" Grid.Row="0">
           <TextBlock Text="I²C Bus ID:" Classes.ClassContentinfo="true"/>
           <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
@@ -89,7 +74,7 @@
             <TextBox Name="tbReg2"/>
           </StackPanel>
         </StackPanel>
-        <Button Name="btnI2cRW" Content="Start RW Test" Grid.Column="2" Grid.Row="2"/>
+        <Button Name="btnI2cRW" Content="Start RW Test" Grid.Row="2"/>
       </Grid>
       <TextBlock Name="txInfoWrite" Classes.ClassInfo="true"/>
       <TextBlock Name="txInfoRead" Classes.ClassInfo="true"/>
@@ -97,16 +82,7 @@
       <!-- I2C Extension Board - PWM Test -->
       <TextBlock Text="I2C Extension Board - PWM Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescPwm" Classes.ClassDescription="true"/>
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+      <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto">
         <StackPanel Grid.Column="0" Grid.Row="0">
           <TextBlock Text="I²C Bus ID - PWM:" Classes.ClassContentinfo="true"/>
           <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
@@ -135,7 +111,7 @@
             <TextBox Name="tbDevAddrAdc"/>
           </StackPanel>
         </StackPanel>
-        <Button Name="btnI2cPwm" Content="Start I²C PWM Test" Grid.Column="2" Grid.Row="1"/>
+        <Button Name="btnI2cPwm" Content="Start I²C PWM Test" Grid.Row="1"/>
       </Grid>
       <TextBlock Name="txPwmSend" Classes.ClassInfo="true"/>
       <TextBlock Name="txPwmRead" Classes.ClassInfo="true"/>

@@ -9,35 +9,25 @@
       <!-- LED Test -->
       <TextBlock Text="GPIO LED Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescLed" Classes.ClassDescription="true"/>
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0">
+      <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto">
+        <StackPanel Grid.Column="1">
           <TextBlock Text="GPIO Pin:" Classes.ClassContentinfo="true"/>
           <TextBox Name="tbLedPin"/>
         </StackPanel>
-        <Button Name="btnLedSwitch" Content="LED On" Grid.Column="1"/>
-        <Button Name="btnLedBlink" Content="LED Blinking" Grid.Column="2"/>
+        <Button Name="btnLedSwitch" Content="LED On" Grid.Row="0"/>
+        <Button Name="btnLedBlink" Content="LED Blinking" Grid.Row="1"/>
       </Grid>
       <TextBlock Name="txInfoLed" Classes.ClassInfo="true"/>
       <Border BorderThickness="0.6" Margin="0,5,0,20"/>
       <!-- Input Test -->
       <TextBlock Text="GPIO Input Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescInput" Classes.ClassDescription="true"/>
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0">
+      <Grid ColumnDefinitions="*,*,*">
+        <StackPanel Grid.Column="1">
           <TextBlock Text="GPIO Pin:" Classes.ClassContentinfo="true"/>
           <TextBox Name="tbInputPin"/>
         </StackPanel>
-        <Button Name="btnGpioInput" Content="Start GPIO Input" Grid.Column="1"/>
+        <Button Name="btnGpioInput" Content="Start GPIO Input" />
       </Grid>
       <TextBlock Name="txInfoInput" Classes.ClassInfo="true"/>
     </StackPanel>

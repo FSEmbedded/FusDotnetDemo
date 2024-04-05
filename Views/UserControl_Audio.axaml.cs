@@ -136,7 +136,7 @@ public partial class UserControl_Audio : UserControl
     private void WriteStandardValuesInTextBox()
     {
         /* Write standard values in textboxes */
-        tbAudioInDur.Text = Convert.ToString(recFileDur);
+        tbAudioInDur.Text = Convert.ToString(recDuration);
     }
 
     private void AddTextBoxHandlers()

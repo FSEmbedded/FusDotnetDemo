@@ -9,42 +9,27 @@
     <StackPanel>
       <TextBlock Text="Audio Out Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescAudioOut" Classes.ClassDescription="true"/>
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Button Name="btnAudioOut" Content="Play Audio" Grid.Column="1"/>
+      <Grid ColumnDefinitions="*,*,*">
+        <Button Name="btnAudioOut" Content="Play Audio"/>
       </Grid>
       <TextBlock Name="txInfoAudioOut" Classes.ClassInfo="true"/>
       <Border BorderThickness="0.6" Margin="0,5,0,20"/>
       <!-- Audio Record Test -->
       <TextBlock Text="Audio Input Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescAudioInCont" Classes.ClassDescription="true"/>
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0">
+      <Grid ColumnDefinitions="*,*,*">
+        <StackPanel Grid.Column="1">
           <TextBlock Text="Keep file:" Classes.ClassContentinfo="true"/>
           <CheckBox Name="cbKeepFileCont"/>
         </StackPanel>
-        <Button Name="btnAudioInCont" Content="Start Recording" Grid.Column="1"/>
+        <Button Name="btnAudioInCont" Content="Start Recording"/>
       </Grid>
       <TextBlock Name="txInfoAudioInCont" Classes.ClassInfo="true"/>
       <Border BorderThickness="0.6" Margin="0,5,0,20"/>
       <!-- Audio Record Timer Test -->
       <TextBlock Text="Audio Input Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescAudioInDur" Classes.ClassDescription="true"/>
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+      <Grid ColumnDefinitions="*,*,*">
         <StackPanel Grid.Column="0">
           <TextBlock Text="Recording Time (s):" Classes.ClassContentinfo="true"/>
           <TextBox Name="tbAudioInDur"/>
@@ -53,7 +38,7 @@
           <TextBlock Text="Keep file:" Classes.ClassContentinfo="true"/>
           <CheckBox Name="cbKeepFileDur"/>
         </StackPanel>
-        <Button Name="btnAudioInDur" Content="Record Audio" Grid.Column="2"/>
+        <Button Name="btnAudioInDur" Content="Record Audio"/>
       </Grid>
       <TextBlock Name="txInfoAudioInDur" Classes.ClassInfo="true"/>
     </StackPanel>

@@ -14,23 +14,23 @@
         ExtendClientAreaChromeHints="NoChrome"
         ExtendClientAreaTitleBarHeightHint="0">
 
-  <Grid>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="40"/>
-      <RowDefinition Height="*"/>
-    </Grid.RowDefinitions>
-
+  <Grid RowDefinitions="40,*">
     <StackPanel Classes.ClassHeader="true" Grid.Row="0">
       <Image Margin="5" Source="/Assets/fs_logo.png"/>
       <TextBlock Classes.ClassHeader="true" Text="IoT Library Demo"/>
     </StackPanel>
-    
     <TabControl Grid.Row="1">
       <TabItem>
         <TabItem.Header>
           <TextBlock Text="GPIO" Classes.ClassTab="true"/>
         </TabItem.Header>
         <views:UserControl_Gpio/>
+      </TabItem>
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock Text="CAN" Classes.ClassTab="true"/>
+        </TabItem.Header>
+        <views:UserControl_Can/>
       </TabItem>
       <TabItem>
         <TabItem.Header>
@@ -43,12 +43,6 @@
           <TextBlock Text="SPI" Classes.ClassTab="true"/>
         </TabItem.Header>
         <views:UserControl_Spi/>
-      </TabItem>
-      <TabItem>
-        <TabItem.Header>
-          <TextBlock Text="CAN" Classes.ClassTab="true"/>
-        </TabItem.Header>
-        <views:UserControl_Can/>
       </TabItem>
       <TabItem>
         <TabItem.Header>
