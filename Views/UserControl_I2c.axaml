@@ -113,7 +113,7 @@
         </StackPanel>
         <Button Name="btnI2cPwm" Content="Start I²C PWM Test" Grid.Row="1"/>
       </Grid>
-      <TextBlock Name="txPwmSend" Classes.ClassInfo="true"/>
+      <TextBlock Name="txPwmWrite" Classes.ClassInfo="true"/>
       <TextBlock Name="txPwmRead" Classes.ClassInfo="true"/>
     </StackPanel>
   </ScrollViewer>

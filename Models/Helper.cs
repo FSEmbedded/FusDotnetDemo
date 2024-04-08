@@ -31,6 +31,23 @@ namespace IoTLib_Test.Models
             return hexInt;
         }
 
+        public static byte ConvertHexStringToByte(string? hexString, byte hexByte)
+        {
+            int hexInt = Convert.ToInt32(hexByte);
+
+            if (!string.IsNullOrEmpty(hexString))
+                hexInt = int.Parse(hexString, NumberStyles.HexNumber);
+
+            try
+            {
+                return Convert.ToByte(hexInt);
+            }
+            catch (OverflowException)
+            {
+                throw new($"The int value {hexInt} is outside the range of the Byte type.");
+            }
+        }
+
         public static byte ConvertStringToByte(string? hexString)
         {
             if (string.IsNullOrEmpty(hexString))

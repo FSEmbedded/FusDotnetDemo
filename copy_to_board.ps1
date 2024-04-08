@@ -1,4 +1,4 @@
-$ipAddress = "10.0.0.136" # Define the IP address as a variable
+$ipAddress = "10.0.0.39" # Define the IP address as a variable
 $localDir = ".\bin\Debug\net8.0"
 $remotePath = "root@${ipAddress}:/home/root/IoTLib_Test" # Use the $ipAddress variable in the $remotePath
 $runtimesPath = "$localDir/runtimes"

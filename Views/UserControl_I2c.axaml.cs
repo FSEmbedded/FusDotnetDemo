@@ -165,8 +165,8 @@ public partial class UserControl_I2c : UserControl
         catch (Exception ex)
         {
             /* Show exception */
-            txPwmSend.Text = ex.Message;
-            txPwmSend.Foreground = Brushes.Red;
+            txPwmWrite.Text = ex.Message;
+            txPwmWrite.Foreground = Brushes.Red;
             return;
         }
         try
@@ -267,7 +267,7 @@ public partial class UserControl_I2c : UserControl
         txInfoLed.Text = "";
         txInfoWrite.Text = "";
         txInfoRead.Text = "";
-        txPwmSend.Text = "";
+        txPwmWrite.Text = "";
         txPwmRead.Text = "";
     }
 }

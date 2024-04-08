@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -8,9 +9,15 @@ namespace IoTLib_Test.Views;
 public partial class UserControl_Spi : UserControl
 {
     /* SPI functions are in separate class */
-    private readonly Spi_Tests Spi;
-    private readonly int spidev = 0x1;
-    private readonly byte register = 0x2b;
+    private Spi_Tests? Spi;
+    private int spidev = 0x1;
+    private byte register = 0x2b;
+    /* Values to write */
+    private byte valueWrite1 = 0x5;
+    private byte valueWrite2 = 0x6;
+    /* Values read from SPI device */
+    private byte valueRead1;
+    private byte valueRead2;
 
     public UserControl_Spi()
     {
@@ -19,22 +26,81 @@ public partial class UserControl_Spi : UserControl
         AddTextBoxHandlers();
         WriteStandardValuesInTextBox();
         FillTextBlockWithText();
-
-        Spi = new Spi_Tests();
     }
 
     private void BtnSpi_Clicked(object sender, RoutedEventArgs args)
     {
-        if(!Spi.SpiStart(spidev, register))
+        /* Empty TextBlock */
+        txInfoSpi.Text = "";
+        txInfoSpiWrite.Text = "";
+        txInfoSpiRead.Text = "";
+
+        /* Convert values from UI to hex */
+        GetValuesFromTextbox();
+
+        try
         {
-            txInfoSpi.Text = "Data sent and data read are different";
+            /* SPI tests are in separate class */
+            Spi = new Spi_Tests(spidev, register);
+        }
+        catch (Exception ex)
+        {
+            txInfoSpi.Text = ex.Message;
             txInfoSpi.Foreground = Brushes.Red;
+            return;
+        }
+
+        /* SpiStart writes the values valueWrite1/2 to the defined registers on SPI device, 
+         * returns the values that it reads in these registers */
+        (valueRead1, valueRead2) = Spi.StartSpiRWTest(valueWrite1, valueWrite2);
+
+        /* Write values into TextBlock */
+        FillInfoTextBlock();
+
+        /* Compare return values with values written */
+        if (valueRead1 == valueWrite1 && valueRead2 == valueWrite2)
+        {
+            txInfoSpi.Text = $"SPI Test Success!\r\nRead and Write values are the same";
+            txInfoSpi.Foreground = Brushes.Green;
         }
         else
         {
-            txInfoSpi.Text = "Data sent and data read are equal";
-            txInfoSpi.Foreground = Brushes.Green;
+            txInfoSpi.Text = "SPI Test Failed!\r\nRead and Write values are different";
+            txInfoSpi.Foreground = Brushes.Red;
         }
+    }
+
+    private void GetValuesFromTextbox()
+    {
+        /* Convert values from UI to hex */
+        spidev = Helper.ConvertHexStringToHexInt(tbSpiDev.Text, spidev);
+        try
+        {
+            register = Helper.ConvertHexStringToByte(tbRegister.Text, register);
+            valueWrite1 = Helper.ConvertHexStringToByte(tbValue1.Text, valueWrite1);
+            valueWrite2 = Helper.ConvertHexStringToByte(tbValue2.Text, valueWrite2);
+        }
+        catch (Exception ex)
+        {
+            txInfoSpi.Text = ex.Message;
+            txInfoSpi.Foreground = Brushes.Red;
+            return;
+        }
+    }
+
+    private void FillInfoTextBlock()
+    {
+        txInfoSpiWrite.Text = $"SPI Write\r\n" +
+                              $"SPI Device: 0x{spidev:X}\r\n" +
+                              $"Register: 0x{register:X}\r\n" +
+                              $"Value 1: 0x{valueWrite1:X}\r\n" +
+                              $"Value2: 0x{valueWrite2:X}";
+
+        txInfoSpiRead.Text = $"SPI Read\r\n" +
+                             $"SPI Device: 0x{spidev:X}\r\n" +
+                             $"Register: 0x{register:X}\r\n" +
+                             $"Value 1: 0x{valueRead1:X}\r\n" +
+                             $"Value2: 0x{valueRead2:X}";
     }
 
     private void AddButtonHandlers()
@@ -46,15 +112,19 @@ public partial class UserControl_Spi : UserControl
     private void WriteStandardValuesInTextBox()
     {
         /* Write standard values in textboxes*/
-        
-        //TODO
+        tbSpiDev.Text = spidev.ToString("X");
+        tbRegister.Text = register.ToString("X");
+        tbValue1.Text = valueWrite1.ToString("X");
+        tbValue2.Text = valueWrite2.ToString("X");
     }
 
     private void AddTextBoxHandlers()
     {
         /* Add handler to only allow decimal value inputs */
-
-        //TODO
+        tbSpiDev.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
+        tbRegister.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
+        tbValue1.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
+        tbValue2.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
     }
 
     private void FillTextBlockWithText()
@@ -69,8 +139,8 @@ public partial class UserControl_Spi : UserControl
             "GND: ADP-16 -> J11-42; " +
             "+3V3: ADP-26 -> J11-1";
 
+        txInfoSpiWrite.Text = "";
+        txInfoSpiRead.Text = "";
         txInfoSpi.Text = "";
     }
 }
-
-//TODO: UI verbessern
