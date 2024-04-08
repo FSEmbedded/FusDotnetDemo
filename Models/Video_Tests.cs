@@ -15,17 +15,28 @@ namespace IoTLib_Test.Models
 {
     internal class Video_Tests
     {
-        //TODO: Video Tests
+        private readonly VideoConnectionSettings settings;
+        private readonly VideoDevice device;
 
-        // https://github.com/dotnet/iot/tree/ab3f910a76568d8a0c234aee0227c65705729da8/src/devices/Media
+        public Video_Tests(int _busid, uint _width, uint _height)
+        {
+            try
+            {
+                settings = new(busId: _busid, captureSize: (_width, _height));
+                device = VideoDevice.Create(settings);
+            }
+            catch (Exception ex)
+            {
+                throw new("Exception: " + ex.Message);
+            }
+        }
+
 
         public bool CaptureCam(string imgFile)
         {
-            VideoConnectionSettings settings = new(busId: 1, captureSize: (2560, 1920));
-            using VideoDevice device = VideoDevice.Create(settings);
-
-            // Capture static image
+            /* Capture static image */
             device.Capture(imgFile);
+
             //TODO: Datei wird erzeugt, Inhalt kann nicht angezeigt werden!
             
             return true;

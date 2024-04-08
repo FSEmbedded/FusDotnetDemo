@@ -1,23 +1,21 @@
 using System;
-using Avalonia.Input;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Media;
 using IoTLib_Test.Models;
 
 namespace IoTLib_Test.Views;
 
-public partial class UserControl_Pwm : UserControl
+public partial class UserControl_Pwm_Adc : UserControl
 {
-    /* PWM functions are in separate class */
+    /* PWM and ADC functions are in separate class */
     private readonly Pwm_Tests Pwm;
-
+    private readonly Adc_Tests Adc;
     /* GPIO Pin # */
     int gpioNo = 10; // GPIO1_IO10
     int bank;
     int pin;
 
-    public UserControl_Pwm()
+    public UserControl_Pwm_Adc()
     {
         InitializeComponent();
         AddButtonHandlers();
@@ -30,6 +28,7 @@ public partial class UserControl_Pwm : UserControl
         pin = Helper.GetGpioPin(gpioNo);
 
         Pwm = new Pwm_Tests();
+        Adc = new Adc_Tests();
     }
 
     private void BtnPwm_Clicked(object sender, RoutedEventArgs args)
@@ -68,5 +67,5 @@ public partial class UserControl_Pwm : UserControl
     }
 
 }
-//TODO: ADC hier einfügen!?
+//TODO: ADC hier einfügen!
 // PWM PWM3 GPIO1_IO10 IO 10 J11-34

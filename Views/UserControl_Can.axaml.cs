@@ -80,7 +80,7 @@ public partial class UserControl_Can : UserControl
         }
     }
 
-    private string CreateResultString(CanId id, byte[] bytes)
+    private static string CreateResultString(CanId id, byte[] bytes)
     {
         /* Convert the byte array values to strings, to display in UI */
         string result = $"CAN ID: {id.Value:X}\r\n" +

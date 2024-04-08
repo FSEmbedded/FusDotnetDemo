@@ -46,15 +46,9 @@
       </TabItem>
       <TabItem>
         <TabItem.Header>
-          <TextBlock Text="PWM" Classes.ClassTab="true"/>
+          <TextBlock Text="PWM/ADC" TextWrapping="Wrap" Classes.ClassTab="true"/>
         </TabItem.Header>
-        <views:UserControl_Pwm/>
-      </TabItem>
-      <TabItem>
-        <TabItem.Header>
-          <TextBlock Text="ADC" Classes.ClassTab="true"/>
-        </TabItem.Header>
-        <views:UserControl_Adc/>
+        <views:UserControl_Pwm_Adc/>
       </TabItem>
       <TabItem>
         <TabItem.Header>

@@ -28,7 +28,7 @@ namespace IoTLib_Test.Models
             }
             catch (Exception ex)
             {
-                throw new Exception("Exception: " + ex.Message);
+                throw new("Exception: " + ex.Message);
             }
         }
 
@@ -67,7 +67,7 @@ namespace IoTLib_Test.Models
             runLedTest = false;
         }
 
-        private List<byte[]> GetLedValues()
+        private static List<byte[]> GetLedValues()
         {
             /* Values to send to I2C Extension Board */
             byte[] value01 = [0x02, 0x00, 0x00]; // All Off

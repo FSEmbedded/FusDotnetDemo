@@ -48,6 +48,12 @@
     </AvaloniaResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Views\UserControl_Pwm_Adc.axaml.cs">
+      <DependentUpon>UserControl_Pwm_Adc.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="powershell.exe .\copy_to_board.ps1" />
   </Target>
