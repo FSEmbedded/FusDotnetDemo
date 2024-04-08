@@ -9,6 +9,6 @@ namespace IoTLib_Test.Models
 {
     internal class Adc_Tests
     {
-        //TODO: ADC Tests
+        //TODO: ADC Tests - Auf PCoreMX8MPr2 nicht vorhanden!
     }
 }

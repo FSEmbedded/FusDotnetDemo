@@ -8,16 +8,16 @@ using IoTLib_Test.Models;
 
 namespace IoTLib_Test.Views;
 
-public partial class UserControl_Video : UserControl
+public partial class UserControl_Camera : UserControl
 {
-    /* Video functions are in separate class */
-    private Video_Tests? Video;
+    /* Camera functions are in separate class */
+    private Camera_Tests? Camera;
     private readonly string imgFile = "/home/root/img_camtest.png";
     private int busId = 1;
     private uint width = 1920;
     private uint height = 1080;
 
-    public UserControl_Video()
+    public UserControl_Camera()
     {
         InitializeComponent();
         AddButtonHandlers();
@@ -39,7 +39,7 @@ public partial class UserControl_Video : UserControl
         try
         {
             /* Video tests are in separate class */
-            Video = new Video_Tests(busId, width, height);
+            Camera = new Camera_Tests(busId, width, height);
         }
         catch (Exception ex)
         {
@@ -48,7 +48,7 @@ public partial class UserControl_Video : UserControl
             return;
         }
 
-        if (Video.CaptureCam(imgFile))
+        if (Camera.CaptureCam(imgFile))
         {
             /* Show image in UI */
             try

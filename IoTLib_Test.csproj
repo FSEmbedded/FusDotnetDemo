@@ -49,8 +49,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\UserControl_Pwm_Adc.axaml.cs">
-      <DependentUpon>UserControl_Pwm_Adc.axaml</DependentUpon>
+    <Compile Update="Views\UserControl_Pwm.axaml.cs">
+      <DependentUpon>UserControl_Pwm.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\UserControl_Camera.axaml.cs">
+      <DependentUpon>UserControl_Camera.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 

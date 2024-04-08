@@ -46,9 +46,9 @@
       </TabItem>
       <TabItem>
         <TabItem.Header>
-          <TextBlock Text="PWM/ADC" TextWrapping="Wrap" Classes.ClassTab="true"/>
+          <TextBlock Text="PWM" TextWrapping="Wrap" Classes.ClassTab="true"/>
         </TabItem.Header>
-        <views:UserControl_Pwm_Adc/>
+        <views:UserControl_Pwm/>
       </TabItem>
       <TabItem>
         <TabItem.Header>
@@ -64,9 +64,9 @@
       </TabItem>
       <TabItem>
         <TabItem.Header>
-          <TextBlock Text="Video" Classes.ClassTab="true"/>
+          <TextBlock Text="Camera" Classes.ClassTab="true"/>
         </TabItem.Header>
-        <views:UserControl_Video/>
+        <views:UserControl_Camera/>
       </TabItem>
     </TabControl>
   </Grid>

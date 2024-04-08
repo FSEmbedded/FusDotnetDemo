@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="IoTLib_Test.Views.UserControl_Video">
+             x:Class="IoTLib_Test.Views.UserControl_Camera">
   <ScrollViewer>
     <!-- Camera Test -->
     <StackPanel>
@@ -11,11 +11,11 @@
       <TextBlock Name="txDescCamera" Classes.ClassDescription="true"/>
       <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto">
         <StackPanel Grid.Column="0" Grid.Row="0">
-          <TextBlock Text="Width:" Classes.ClassContentinfo="true"/>
+          <TextBlock Text="Image Width:" Classes.ClassContentinfo="true"/>
           <TextBox Name="tbCamWidth" Width="80"/>
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="0">
-          <TextBlock Text="Height:" Classes.ClassContentinfo="true"/>
+          <TextBlock Text="Image Height:" Classes.ClassContentinfo="true"/>
           <TextBox Name="tbCamHeight" Width="80"/>
         </StackPanel>
         <StackPanel Grid.Column="0" Grid.Row="1">

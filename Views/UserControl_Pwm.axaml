@@ -3,18 +3,22 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="IoTLib_Test.Views.UserControl_Pwm_Adc">
+             x:Class="IoTLib_Test.Views.UserControl_Pwm">
   <ScrollViewer>
     <StackPanel>
       <!-- PWM Test -->
       <TextBlock Text="PWM Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescPwm" Classes.ClassDescription="true"/>
       <Grid ColumnDefinitions="*,*,*">
-        <StackPanel Grid.Column="1">
+        <StackPanel Grid.Column="0">
           <TextBlock Text="PWM GPIO Pin:" Classes.ClassContentinfo="true"/>
           <TextBox Name="tbPwmPin"/>
         </StackPanel>
-        <Button Name="btnPwm" Content="Toggle PWM"/>
+        <StackPanel Grid.Column="1">
+          <TextBlock Text="Time span (s):" Classes.ClassContentinfo="true"/>
+          <TextBox Name="tbTimeSpan"/>
+        </StackPanel>
+        <Button Name="btnPwm" Content="Start PWM Test"/>
       </Grid>
       <TextBlock Name="txInfoPwm" Classes.ClassInfo="true"/>
     </StackPanel>
