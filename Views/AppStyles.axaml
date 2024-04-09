@@ -37,7 +37,7 @@
     <Setter Property="FontWeight" Value="DemiBold"/>
     <Setter Property="VerticalAlignment" Value="Center"/>
     <Setter Property="HorizontalAlignment" Value="Left"/>
-    <Setter Property="Margin" Value="-6"/>
+    <Setter Property="Margin" Value="-4"/>
     <Setter Property="Foreground" Value="White"/> <!-- Use Color2-->
   </Style>
   <!-- UserControl -->

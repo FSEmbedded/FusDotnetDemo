@@ -6,6 +6,13 @@ namespace IoTLib_Test.Models
 {
     internal class InputControl
     {
+        /*
+         * 
+         * Helper Class for TexBox Inputs
+         * Only allow specific characters, block input of invalid keys
+         * 
+         */
+
         public static void TextBox_DecimalInput(object sender, KeyEventArgs e)
         {
             /* Check if the pressed key is a control character (like Backspace) or a digit */

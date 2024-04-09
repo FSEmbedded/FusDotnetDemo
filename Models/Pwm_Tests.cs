@@ -1,30 +1,80 @@
 ﻿using System.Threading;
 using System.Device.Pwm.Drivers;
+using System;
 
 namespace IoTLib_Test.Models
 {
     internal class Pwm_Tests
     {
-        /* PWM Pin Number */
-        int pin;
+        private readonly SoftwarePwmChannel pwmChannel;
 
-        public void PwmDimLed(int _pin, int sleep)
+        /* PWM Pin Number */
+        private readonly int pin;
+        private readonly int frequency = 200;
+
+        private double voltageValue;
+        private bool sliderIsActive = false;
+
+        public Pwm_Tests(int _pin)
         {
             pin = _pin;
-            int frequency = 200;
-            int dutyCycle = 0;
 
-            /* Create a Software PWM Channel */
-            using (var pwmChannel = new SoftwarePwmChannel(pin, frequency, dutyCycle))
+            try
             {
-                pwmChannel.Start();
-                /* Increase Duty Cycle */
-                for (double fill = 0.0; fill <= 1.0; fill += 0.01)
-                {
-                    pwmChannel.DutyCycle = fill;
-                    Thread.Sleep(sleep);
-                }
+                /* Create PWM Channel */
+                pwmChannel = new SoftwarePwmChannel(pin, frequency);
             }
+            catch (Exception ex)
+            {
+                throw new($"Exception: {ex.Message}");
+            }
+        }
+
+
+        public void PwmDimTimespan(int sleep)
+        {
+            /* Increase PWM voltage over a defined time span */
+            int dutyCycle = 0;
+            /* Start with LED off */
+            pwmChannel.DutyCycle = dutyCycle;
+            pwmChannel.Start();
+
+            /* Increase DutyCycle -> increase brightness */
+            for (double fill = 0.0; fill <= 1.0; fill += 0.01)
+            {
+                pwmChannel.DutyCycle = fill;
+                Thread.Sleep(sleep);
+            }
+            /* Clear channel */
+            pwmChannel.Dispose();
+        }
+
+        public void PwmDimValue(double startValue)
+        {
+            /* Change PWM voltage by setting the voltage */
+            voltageValue = startValue;
+            sliderIsActive = true;
+
+            while (sliderIsActive)
+            {
+                /* Set PWM voltage to a defined value */
+                pwmChannel.DutyCycle = voltageValue;
+                pwmChannel.Start();
+            }
+        }
+
+        public void StopPwmDimValue()
+        {
+            /* Clear channel */
+            sliderIsActive = false;
+            pwmChannel.Dispose();
+        }
+
+        public void SetVoltageValue(double value)
+        {
+            /* Set value for while-loop in PwmDimValue */
+            if (value >= 0.0 && value <= 1.0)
+                voltageValue = value;
         }
     }
 }

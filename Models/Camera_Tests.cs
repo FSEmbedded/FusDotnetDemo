@@ -18,14 +18,14 @@ namespace IoTLib_Test.Models
     internal class Camera_Tests
     {
         private readonly VideoConnectionSettings settings;
-        private readonly VideoDevice vidDevice;
+        private readonly VideoDevice videoDevice;
 
         public Camera_Tests(int _busid, uint _width, uint _height)
         {
             try
             {
                 settings = new(busId: _busid, captureSize: (_width, _height));
-                vidDevice = VideoDevice.Create(settings);
+                videoDevice = VideoDevice.Create(settings);
             }
             catch (Exception ex)
             {
@@ -37,12 +37,12 @@ namespace IoTLib_Test.Models
         public bool CaptureCam(string imgFile)
         {
             /* Capture static image */
-            vidDevice.Capture(imgFile);
+            videoDevice.Capture(imgFile);
 
             //TODO: Datei wird erzeugt, Inhalt kann nicht angezeigt werden!
             {
                 /* Test - innerhalb Klammern kann gelöscht werden */
-                byte[] buffer = vidDevice.Capture();
+                byte[] buffer = videoDevice.Capture();
 
 
                 var processSettings = ProcessSettingsFactory.CreateForLibcamerastill();
@@ -67,6 +67,7 @@ namespace IoTLib_Test.Models
                 using var proc2 = new ProcessRunner(process2);
                 var text = proc2.ExecuteReadOutputAsStringAsync(string.Empty);
                 //IEnumerable<CameraInfo> cameras = CameraInfo.From(text);
+
             }
 
             

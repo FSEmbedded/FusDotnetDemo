@@ -49,6 +49,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\UserControl_Adc.axaml.cs">
+      <DependentUpon>UserControl_Adc.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\UserControl_Pwm.axaml.cs">
       <DependentUpon>UserControl_Pwm.axaml</DependentUpon>
     </Compile>

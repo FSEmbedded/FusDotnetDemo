@@ -6,21 +6,37 @@
              x:Class="IoTLib_Test.Views.UserControl_Pwm">
   <ScrollViewer>
     <StackPanel>
-      <!-- PWM Test -->
-      <TextBlock Text="PWM Test" Classes.ClassName="true"/>
-      <TextBlock Name="txDescPwm" Classes.ClassDescription="true"/>
+      <!-- PWM Test - Time Span -->
+      <TextBlock Text="PWM Test - Time Span" Classes.ClassName="true"/>
+      <TextBlock Name="txDescPwmTS" Classes.ClassDescription="true"/>
       <Grid ColumnDefinitions="*,*,*">
         <StackPanel Grid.Column="0">
           <TextBlock Text="PWM GPIO Pin:" Classes.ClassContentinfo="true"/>
-          <TextBox Name="tbPwmPin"/>
+          <TextBox Name="tbPwmPinTS"/>
         </StackPanel>
         <StackPanel Grid.Column="1">
           <TextBlock Text="Time span (s):" Classes.ClassContentinfo="true"/>
           <TextBox Name="tbTimeSpan"/>
         </StackPanel>
-        <Button Name="btnPwm" Content="Start PWM Test"/>
+        <Button Name="btnPwmTS" Content="Start PWM Test"/>
       </Grid>
-      <TextBlock Name="txInfoPwm" Classes.ClassInfo="true"/>
+      <TextBlock Name="txInfoPwmTS" Classes.ClassInfo="true"/>
+      <Border BorderThickness="0.6" Margin="0,5,0,20"/>
+      <!-- PWM Test - Value -->
+      <TextBlock Text="PWM Test - Set Voltage" Classes.ClassName="true"/>
+      <TextBlock Name="txDescPwmV" Classes.ClassDescription="true"/>
+      <Grid ColumnDefinitions="*,*,*">
+        <StackPanel Grid.Column="0">
+          <TextBlock Text="PWM GPIO Pin:" Classes.ClassContentinfo="true"/>
+          <TextBox Name="tbPwmPinV"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1">
+          <TextBlock Text="Set Voltage:" Classes.ClassContentinfo="true"/>
+          <Slider Name="slVoltage"/>
+        </StackPanel>
+        <Button Name="btnPwmV" Content="Activate Slider"/>
+      </Grid>
+      <TextBlock Name="txInfoPwmV" Classes.ClassInfo="true"/>
     </StackPanel>
   </ScrollViewer>
 </UserControl>
