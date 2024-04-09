@@ -21,7 +21,7 @@ Treiber in Linux laden:
 insmod ads7828.ko
 
 # LED
-LED auf I2C-Extension-Board
+PCA9532 auf I2C-Extension-Board
 Treiber für leds-pca9532 muss in Kernel und Device Tree integriert werden!
 Treiber in Linux laden:
 insmod leds-pca9532.ko

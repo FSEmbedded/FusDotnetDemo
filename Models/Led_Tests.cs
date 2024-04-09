@@ -9,31 +9,47 @@ namespace IoTLib_Test.Models
 {
     internal class Led_Tests
     {
-        //TODO: LED Tests
-        // PCA9532 auf I2C-Extension-Board
-
-        public void StartLedTest()
+        public static List<string> GetAllLeds()
         {
-            // Get all BoardLed instances of on-board LEDs.
+            List<string> ledNames = new();
+            /* Get all BoardLed instances of on-board LEDs */
             IEnumerable<BoardLed> leds = BoardLed.EnumerateLeds();
+            /* Return a list with all LED names */
+            foreach (var led in leds)
+            {
+                ledNames.Add(led.Name);
+            }
+            return ledNames;
+        }
 
-            // Open the LED with the specified name.
-            BoardLed led = new BoardLed("led0");
+        public void StartLedTest(string ledName)
+        {
+            /* Open the LED with the specified name */
+            using BoardLed led = new BoardLed(ledName);
 
-            // Get all triggers of current LED.
-            IEnumerable<string> triggers = led.EnumerateTriggers();
-
-            // Set trigger.
-            // The kernel provides some triggers which let the kernel control the LED.
-            // For example, the red light of Raspberry Pi, whose trigger is "default-on", which makes it keep lighting up.
-            // If you want to operate the LED, you need to remove the trigger, which is to set its trigger to "none".
+            /* Set trigger.
+            /* The kernel provides some triggers which let the kernel control the LED.
+            /* If you want to operate the LED, you need to remove the trigger -> set it to "none"
+            /* Keep default trigger for reset.
+            */
+            string defaultTrigger = led.Trigger;
             led.Trigger = "none";
 
-            // Get the max brightness of current LED.
+            /* Get the max brightness of current LED (Could be 1 or 255) */
             int maxBrightness = led.MaxBrightness;
 
-            // Set brightness.
-            led.Brightness = 255;
+            /* Let LED blink for 10 times */
+            for (int i = 0; i < 10; i++)
+            {
+                /* Set brightness to max */
+                led.Brightness = maxBrightness;
+                Thread.Sleep(250);
+                /* Turn LED off */
+                led.Brightness = 0;
+                Thread.Sleep(250);
+            }
+            /* Reset trigger */
+            led.Trigger = defaultTrigger;
         }
     }
 }

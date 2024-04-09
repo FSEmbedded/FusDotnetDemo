@@ -7,10 +7,26 @@
 
   <ScrollViewer>
     <StackPanel>
-      <!-- PWM Test - Value -->
+      <!-- Get LED names -->
+      <TextBlock Text="Get all available LED names" Classes.ClassName="true"/>
+      <TextBlock Name="txDescLedName" Classes.ClassDescription="true"/>
+      <Grid ColumnDefinitions="*,*,*">
+        <Button Name="btnLedName" Content="Get LED Names" Grid.Column="0"/>
+        <StackPanel Grid.Column="1" Grid.ColumnSpan="2">
+          <TextBlock Text="Available LED Names:" Classes.ClassContentinfo="true"/>
+          <ComboBox Name="cbLedNames" Width="220" HorizontalAlignment="Center"/>
+        </StackPanel>
+      </Grid>
+      <TextBlock Name="txInfoLedName" Classes.ClassInfo="true"/>
+      <Border BorderThickness="0.6" Margin="0,5,0,20"/>
+      <!-- LED Test -->
       <TextBlock Text="LED Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescLed" Classes.ClassDescription="true"/>
       <Grid ColumnDefinitions="*,*,*">
+        <StackPanel Grid.Column="0" Grid.ColumnSpan="2">
+          <TextBlock Text="LED Name:" Classes.ClassContentinfo="true"/>
+          <TextBox Name="tbLedName" Width="200"/>
+        </StackPanel>
         <Button Name="btnLed" Content="Start LED Test"/>
       </Grid>
       <TextBlock Name="txInfoLed" Classes.ClassInfo="true"/>

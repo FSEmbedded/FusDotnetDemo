@@ -7,7 +7,7 @@
 
   <ScrollViewer>
     <StackPanel>
-      <!-- PWM Test - Value -->
+      <!-- ADC Test -->
       <TextBlock Text="ADC Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescAdc" Classes.ClassDescription="true"/>
       <Grid ColumnDefinitions="*,*,*">
