@@ -2,7 +2,7 @@
 using System;
 using System.Net;
 
-namespace IoTLib_Test
+namespace IoTLib_Test.Views
 {
     public partial class MainWindow : Window
     {
