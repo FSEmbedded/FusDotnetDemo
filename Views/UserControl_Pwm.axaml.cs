@@ -160,5 +160,3 @@ public partial class UserControl_Pwm : UserControl
         slVoltage.AddHandler(Slider.PointerMovedEvent, slVoltage_OnPointerMoved);
     }
 }
-
-//TODO: Test mit versch. Helligkeiten: Button & Slider

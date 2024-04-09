@@ -7,10 +7,9 @@
     </Design.PreviewWith>
 
   <!-- Header -->
-  <Style Selector="StackPanel.ClassHeader">
+  <Style Selector="Grid.ClassHeader">
     <Setter Property="Background" Value="#6a99c8"/> <!-- Use Color1 -->
     <Setter Property="Margin" Value="0"/>
-    <Setter Property="Orientation" Value="Horizontal"/>
   </Style>
   <Style Selector="TextBlock.ClassHeader">
     <Setter Property="FontSize" Value="20"/>

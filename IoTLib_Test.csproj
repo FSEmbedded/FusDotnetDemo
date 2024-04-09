@@ -28,10 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <AvaloniaResource Remove="Assets\Audio_Test.wav" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="Assets\Audio_Test.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CustomToolNamespace>Assets</CustomToolNamespace>
@@ -46,18 +42,6 @@
     <AvaloniaResource Update="Assets\fs_logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AvaloniaResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Views\UserControl_Adc.axaml.cs">
-      <DependentUpon>UserControl_Adc.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\UserControl_Pwm.axaml.cs">
-      <DependentUpon>UserControl_Pwm.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\UserControl_Camera.axaml.cs">
-      <DependentUpon>UserControl_Camera.axaml</DependentUpon>
-    </Compile>
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

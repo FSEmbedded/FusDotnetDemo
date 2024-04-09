@@ -1,4 +1,8 @@
 ﻿using Avalonia.Controls;
+using System;
+using System.Diagnostics;
+using System.Net;
+using UnitsNet;
 
 namespace IoTLib_Test
 {
@@ -7,6 +11,23 @@ namespace IoTLib_Test
         public MainWindow()
         {
             InitializeComponent();
+            /* Add IP Address to Header */
+            txIp.Text = GetIPAddress();
+        }
+
+        public string GetIPAddress()
+        {
+            string ip = "";
+            string Hostname = Environment.MachineName;
+            IPHostEntry? Host = Dns.GetHostEntry(Hostname);
+            foreach (IPAddress IP in Host.AddressList)
+            {
+                if (IP.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                {
+                    ip = "IP: " + Convert.ToString(IP);
+                }
+            }
+            return ip;
         }
     }
 }

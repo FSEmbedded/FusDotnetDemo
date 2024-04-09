@@ -39,7 +39,7 @@ namespace IoTLib_Test.Models
             /* Capture static image */
             videoDevice.Capture(imgFile);
 
-            //TODO: Datei wird erzeugt, Inhalt kann nicht angezeigt werden!
+            //TODO: Datei wird erzeugt, hat keinen Inhalt
             {
                 /* Test - innerhalb Klammern kann gelöscht werden */
                 byte[] buffer = videoDevice.Capture();
