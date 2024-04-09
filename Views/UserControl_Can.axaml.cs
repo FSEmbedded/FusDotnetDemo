@@ -3,7 +3,8 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Iot.Device.SocketCan;
-using IoTLib_Test.Models;
+using IoTLib_Test.Models.Tools;
+using IoTLib_Test.Models.Hardware_Tests;
 
 namespace IoTLib_Test.Views;
 

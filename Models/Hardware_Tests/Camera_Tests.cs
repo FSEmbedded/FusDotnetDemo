@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Threading;
-using System.Diagnostics;
-using System.Threading.Tasks;
+using System.IO;
 using Iot.Device.Media;
-using System.Collections.Generic;
-using Iot.Device.Graphics;
-using System.Drawing;
-using Iot.Device.Gui;
-using Iot.Device.Camera;
 using Iot.Device.Camera.Settings;
 using Iot.Device.Common;
-using System.Text.RegularExpressions;
-using System.IO;
 
-namespace IoTLib_Test.Models
+namespace IoTLib_Test.Models.Hardware_Tests
 {
     internal class Camera_Tests
     {
@@ -70,7 +61,6 @@ namespace IoTLib_Test.Models
 
             }
 
-            
             return true;
         }
     }

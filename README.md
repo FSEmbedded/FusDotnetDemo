@@ -15,10 +15,12 @@ include alsa-dev to yocto release
 https://github.com/dotnet/iot/tree/ab3f910a76568d8a0c234aee0227c65705729da8/src/devices/Camera
 
 # ADC
-ADC auf I2C-Extension-Board
+ADS7828 auf I2C-Extension-Board
 Treiber für ads7828 muss in Kernel und Device Tree integriert werden!
 Treiber in Linux laden:
 insmod ads7828.ko
+
+cat ./sys/bus/i2c/drivers/ads7828/5-004b/hwmon/hwmon1/in0_input
 
 # LED
 PCA9532 auf I2C-Extension-Board

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Device.Spi;
 
-namespace IoTLib_Test.Models
+namespace IoTLib_Test.Models.Hardware_Tests
 {
     internal class Spi_Tests
     {

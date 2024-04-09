@@ -2,7 +2,7 @@
 using System.Device.Gpio;
 using System.Device.Gpio.Drivers;
 
-namespace IoTLib_Test.Models
+namespace IoTLib_Test.Models.Hardware_Tests
 {
     internal class Gpio_Tests(int _bankLed, int _pinLed, int _bankButton, int _pinButton)
     {
@@ -96,13 +96,13 @@ namespace IoTLib_Test.Models
 
         private void OnButton_Press(object sender, PinValueChangedEventArgs args)
         {
-            if(ledIsOn) return;
+            if (ledIsOn) return;
             TurnOnLed(bankLed, pinLed);
         }
 
         private void OnButton_Release(object sender, PinValueChangedEventArgs args)
         {
-            if(!ledIsOn) return;
+            if (!ledIsOn) return;
             TurnOffLed();
         }
         #endregion

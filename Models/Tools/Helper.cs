@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace IoTLib_Test.Models
+namespace IoTLib_Test.Models.Tools
 {
     static class Helper
     {

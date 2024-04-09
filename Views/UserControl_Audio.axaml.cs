@@ -4,7 +4,8 @@ using System.Threading;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using IoTLib_Test.Models;
+using IoTLib_Test.Models.Tools;
+using IoTLib_Test.Models.Hardware_Tests;
 
 namespace IoTLib_Test.Views;
 

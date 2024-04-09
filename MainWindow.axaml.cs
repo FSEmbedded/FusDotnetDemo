@@ -1,8 +1,6 @@
 ﻿using Avalonia.Controls;
 using System;
-using System.Diagnostics;
 using System.Net;
-using UnitsNet;
 
 namespace IoTLib_Test
 {
@@ -15,7 +13,7 @@ namespace IoTLib_Test
             txIp.Text = GetIPAddress();
         }
 
-        public string GetIPAddress()
+        public static string GetIPAddress()
         {
             string ip = "";
             string Hostname = Environment.MachineName;

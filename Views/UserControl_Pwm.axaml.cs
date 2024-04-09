@@ -3,7 +3,8 @@ using System.Threading;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using IoTLib_Test.Models;
+using IoTLib_Test.Models.Tools;
+using IoTLib_Test.Models.Hardware_Tests;
 
 namespace IoTLib_Test.Views;
 
@@ -109,7 +110,7 @@ public partial class UserControl_Pwm : UserControl
         }
     }
 
-    private void slVoltage_OnPointerMoved(object sender, RoutedEventArgs args)
+    private void SlVoltage_OnPointerMoved(object sender, RoutedEventArgs args)
     {
         if (sliderIsActive)
         {
@@ -157,6 +158,6 @@ public partial class UserControl_Pwm : UserControl
         slVoltage.Maximum = 1;
         slVoltage.Value = voltageValue;
 
-        slVoltage.AddHandler(Slider.PointerMovedEvent, slVoltage_OnPointerMoved);
+        slVoltage.AddHandler(PointerMovedEvent, SlVoltage_OnPointerMoved!);
     }
 }

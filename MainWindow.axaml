@@ -53,12 +53,6 @@
       </TabItem>
       <TabItem>
         <TabItem.Header>
-          <TextBlock Text="ADC" Classes.ClassTab="true"/>
-        </TabItem.Header>
-        <views:UserControl_Adc/>
-      </TabItem>
-      <TabItem>
-        <TabItem.Header>
           <TextBlock Text="LED" Classes.ClassTab="true"/>
         </TabItem.Header>
         <views:UserControl_Led/>

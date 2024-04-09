@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Iot.Device.SocketCan;
 
-namespace IoTLib_Test.Models
+namespace IoTLib_Test.Models.Hardware_Tests
 {
     internal class Can_Tests
     {
@@ -31,7 +31,7 @@ namespace IoTLib_Test.Models
             /* Reset canIdRead values */
             canIdRead = new CanId();
             valueRead = [];
-            
+
             /* Check if CAN device is up */
             if (!IsCanDevUp())
             {
@@ -43,7 +43,7 @@ namespace IoTLib_Test.Models
                     runRwProcesses = false;
                     throw new Exception($"Exception: Could not activate CAN device {canDev}");
                 }
-            }            
+            }
 
             try
             {

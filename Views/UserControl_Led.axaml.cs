@@ -1,7 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using System.Collections.Generic;
-using IoTLib_Test.Models;
+using IoTLib_Test.Models.Hardware_Tests;
 
 namespace IoTLib_Test.Views;
 

@@ -1,6 +1,6 @@
 ﻿using Iot.Device.Media;
 
-namespace IoTLib_Test.Models
+namespace IoTLib_Test.Models.Hardware_Tests
 {
     internal class Audio_Tests
     {

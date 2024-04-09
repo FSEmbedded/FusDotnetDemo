@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Device.I2c;
 
-namespace IoTLib_Test.Models
+namespace IoTLib_Test.Models.Hardware_Tests
 {
     internal class I2c_Tests
     {

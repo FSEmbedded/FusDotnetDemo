@@ -1,8 +1,8 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Device.Pwm.Drivers;
-using System;
 
-namespace IoTLib_Test.Models
+namespace IoTLib_Test.Models.Hardware_Tests
 {
     internal class Pwm_Tests
     {
@@ -29,7 +29,6 @@ namespace IoTLib_Test.Models
                 throw new($"Exception: {ex.Message}");
             }
         }
-
 
         public void PwmDimTimespan(int sleep)
         {
@@ -75,6 +74,16 @@ namespace IoTLib_Test.Models
             /* Set value for while-loop in PwmDimValue */
             if (value >= 0.0 && value <= 1.0)
                 voltageValue = value;
+        }
+
+        public static bool SetPwm(int pin, double value)
+        {
+            /* Set PWM voltage to a defined value */
+            SoftwarePwmChannel pwmChannel = new(pin);
+            pwmChannel.DutyCycle = value;
+            pwmChannel.Start();
+
+            return true;
         }
     }
 }

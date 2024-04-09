@@ -1,11 +1,8 @@
-﻿using System;
-using System.Threading;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using Iot.Device.BoardLed;
+﻿using System.Threading;
 using System.Collections.Generic;
+using Iot.Device.BoardLed;
 
-namespace IoTLib_Test.Models
+namespace IoTLib_Test.Models.Hardware_Tests
 {
     internal class Led_Tests
     {
