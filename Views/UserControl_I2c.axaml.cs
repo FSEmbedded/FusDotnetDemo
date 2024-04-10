@@ -10,24 +10,24 @@ namespace IoTLib_Test.Views;
 
 public partial class UserControl_I2c : UserControl
 {
-    /* I²C functions are in separate class */
+    /* I²C functions are in a separate class */
     I2c_Tests? I2c;
     I2c_Tests? I2cPwm;
     I2c_Tests? I2cAdc;
     /* Standard IDs and addresses */
+    private int busIdRW = 0x5;
+    private int devAddrRW = 0x23;
     private int busIdLed = 0x5;
     private int devAddrLed = 0x23;
-    private int busIdStorage = 0x5;
-    private int devAddrStorage = 0x23;
     private int busIdPwm = 0x5;
     private int devAddrPwm = 0x63;
     private int busIdAdc = 0x5;
     private int devAddrAdc = 0x4b;
-    /* Values to write on I2C storage */
-    private int valueWrite1 = 0xAA;
-    private int valueWrite2 = 0x55;
-    private int register1 = 0x02;
-    private int register2 = 0x03;
+    /* Values to write to I2C device */
+    private byte valueWrite1 = 0xAA;
+    private byte valueWrite2 = 0x55;
+    private byte register1 = 0x02;
+    private byte register2 = 0x03;
 
     private bool ledThreadStarted = false;
 
@@ -40,14 +40,66 @@ public partial class UserControl_I2c : UserControl
         FillTextBlockWithText();
     }
 
+    private void BtnI2cRW_Clicked(object sender, RoutedEventArgs args)
+    {
+        /* Get values from UI */
+        GetValuesFromUI(0);
+
+        try
+        {
+            /* Create new I2c_Tests */
+            I2c = new(busIdRW, devAddrRW);
+        }
+        catch (Exception ex)
+        {
+            /* Show exception */
+            txInfoWrite.Text = ex.Message;
+            txInfoWrite.Foreground = Brushes.Red;
+            txInfoRead.Text = "";
+            return;
+        }
+
+        try
+        {
+            /* Write values to I2C Device */
+           I2c!.WriteValueToRegister(register1, valueWrite1);
+           I2c!.WriteValueToRegister(register2, valueWrite2);
+        }
+        catch (Exception ex)
+        {
+            txInfoWrite.Text = ex.Message;
+            txInfoWrite.Foreground = Brushes.Red;
+            txInfoRead.Text = "";
+            return;
+        }
+
+        txInfoWrite.Text = $"Values 0x{valueWrite1:X} & 0x{valueWrite2:X} sent to I²C Device";
+        txInfoWrite.Foreground = Brushes.Blue;
+
+        /* Read values from I2C Device */
+        byte valueRead1 = I2c.ReadValueFromRegister(register1);
+        byte valueRead2 = I2c.ReadValueFromRegister(register2);
+
+        /* Check if values read and write are equal */
+        if (valueRead1 == valueWrite1 && valueRead2 == valueWrite2)
+        {
+            txInfoRead.Text = $"Value 0x{valueRead1:X} & 0x{valueRead2:X} read from I²C Device";
+            txInfoRead.Foreground = Brushes.Green;
+        }
+        else
+        {
+            txInfoRead.Text = $"Values 0x{valueRead1:X} & 0x{valueRead2:X} don't match the values written to I²C Device";
+            txInfoRead.Foreground = Brushes.Red;
+        }
+    }
+
     private void BtnI2cLed_Clicked(object sender, RoutedEventArgs args)
     {
         if (!ledThreadStarted)
         {
-            /* Convert  values from UI to hex */
-            busIdLed = Helper.ConvertHexStringToHexInt(tbBusIdLed.Text, busIdLed);
-            devAddrLed = Helper.ConvertHexStringToHexInt(tbDevAddrLed.Text, devAddrLed);
-            
+            /* Get values from UI */
+            GetValuesFromUI(1);
+
             try
             {
                 /* Create new I2c_Tests */
@@ -84,83 +136,20 @@ public partial class UserControl_I2c : UserControl
         }
     }
 
-    private void BtnI2cRW_Clicked(object sender, RoutedEventArgs args)
-    {
-        /* Convert  values from UI to hex */
-        busIdStorage = Helper.ConvertHexStringToHexInt(tbBusIdStorage.Text, busIdStorage);
-        devAddrStorage = Helper.ConvertHexStringToHexInt(tbDevAddrStorage.Text, devAddrStorage);
-        valueWrite1 = Helper.ConvertHexStringToHexInt(tbValue1.Text, valueWrite1);
-        valueWrite2 = Helper.ConvertHexStringToHexInt(tbValue2.Text, valueWrite2);
-        register1 = Helper.ConvertHexStringToHexInt(tbReg1.Text, register1);
-        register2 = Helper.ConvertHexStringToHexInt(tbReg2.Text, register2);
-
-        try
-        {
-            /* Create new I2c_Tests */
-            I2c = new(busIdStorage, devAddrStorage);
-        }
-        catch (Exception ex)
-        {
-            /* Show exception */
-            txInfoWrite.Text = ex.Message;
-            txInfoWrite.Foreground = Brushes.Red;
-            txInfoRead.Text = "";
-            return;
-        }
-
-        bool writeSuccess;
-        try
-        {
-            writeSuccess = I2c!.WriteValueToRegister(register1, valueWrite1);
-            writeSuccess = I2c!.WriteValueToRegister(register2, valueWrite2);
-        }
-        catch (Exception ex)
-        {
-            txInfoWrite.Text = ex.Message;
-            txInfoWrite.Foreground = Brushes.Red;
-            txInfoRead.Text = "";
-            return;
-        }
-
-        /* Send values to I2C Device */
-        if (writeSuccess)
-        {
-            txInfoWrite.Text = $"Values 0x{valueWrite1:X} & 0x{valueWrite2:X} sent to I²C Device";
-            txInfoWrite.Foreground = Brushes.Blue;
-
-            /* Read values from I2C Device */
-            byte valueRead1 = I2c.ReadValueFromRegister(register1);
-            byte valueRead2 = I2c.ReadValueFromRegister(register2);
-
-            /* Check if values read and write are equal */
-            if (valueRead1 == valueWrite1 && valueRead2 == valueWrite2)
-            {
-                txInfoRead.Text = $"Value 0x{valueRead1:X} & 0x{valueRead2:X} read from I²C Device";
-                txInfoRead.Foreground = Brushes.Green;
-            }
-            else
-            {
-                txInfoRead.Text = $"Values 0x{valueRead1:X} & 0x{valueRead2:X} don't match the values written to I²C Device";
-                txInfoRead.Foreground = Brushes.Red;
-            }
-        }
-    }
-
     private void BtnI2cPwm_Clicked(object sender, RoutedEventArgs args)
     {
         /* Empty TextBlock */
         txPwmRead.Text = "";
 
-        /* Convert  values from UI to hex */
-        busIdPwm = Helper.ConvertHexStringToHexInt(tbBusIdPwm.Text, busIdPwm);
-        devAddrPwm = Helper.ConvertHexStringToHexInt(tbDevAddrPwm.Text, devAddrPwm);
-        busIdAdc = Helper.ConvertHexStringToHexInt(tbBusIdAdc.Text, busIdAdc);
-        devAddrAdc = Helper.ConvertHexStringToHexInt(tbDevAddrAdc.Text, devAddrAdc);
+        /* Get values from UI */
+        GetValuesFromUI(2);
 
         try
         {
-            /* Create new I2c_Tests */
+            /* Create new I2c_Tests for PWM device */
             I2cPwm = new(busIdPwm, devAddrPwm);
+            /* Create new I2c_Tests for ADC device */
+            I2cAdc = new(busIdAdc, devAddrAdc);
         }
         catch (Exception ex)
         {
@@ -169,71 +158,128 @@ public partial class UserControl_I2c : UserControl
             txPwmWrite.Foreground = Brushes.Red;
             return;
         }
-        try
-        {
-            /* Create new I2c_Tests */
-            I2cAdc = new(busIdAdc, devAddrAdc);
-        }
-        catch (Exception ex)
-        {
-            /* Show exception */
-            txPwmRead.Text = ex.Message;
-            txPwmRead.Foreground = Brushes.Red;
-            return;
-        }
 
-        byte returnValue;
         int counter = 0;
         bool toggleOn = true;
 
+        //TODO: in Thread starten, Live-Anzeige voltage in UI!?
         while(counter < 6)
         {
-            I2cPwm!.WritePwm(toggleOn);
-            toggleOn = !toggleOn;
-            returnValue = I2cAdc!.ReadADC();
+            /* Toggle PWM */
+            I2cPwm!.PwmSwitchOnOff(toggleOn);
+            
+            /* Read ADC */
+            byte returnValue = I2cAdc!.ReadADC();
+            
             /* calculate voltage from return value */
             double voltage = (double)returnValue / (double)0xff * 100;
-            /* When LED is on, returnValue should be 0 */
-            if (!toggleOn && returnValue != 0)
+            
+            /* If PWM switched on the OnBoard-LED, returnValue should be 0 */
+            if (toggleOn && returnValue != 0)
             {
                 txPwmRead.Foreground = Brushes.Red;
-                txPwmRead.Text += $"LED is off, Voltage should be 0V. ADC detected {voltage:F2}V\r\n";
+                txPwmRead.Text += $"PWM is on, Voltage should be 0V. ADC detected {voltage:F2}V\r\n";
             }
-            else if (!toggleOn && returnValue == 0)
+            else if (toggleOn && returnValue == 0)
             {
                 txPwmRead.Foreground = Brushes.Green;
-                txPwmRead.Text += $"LED is on, ADC detected: {voltage:F2}V\r\n";
+                txPwmRead.Text += $"PWM is on, ADC detected: {voltage:F2}V\r\n";
             }
             else
             {
-                
                 txPwmRead.Foreground = Brushes.Green;
-                txPwmRead.Text += $"LED is off, ADC detected: {voltage:F2}V\r\n";
+                txPwmRead.Text += $"PWM is off, ADC detected: {voltage:F2}V\r\n";
             }
+
+            toggleOn = !toggleOn;
             counter++;
             Thread.Sleep(1000);
+        }
+    }
+
+    public void GetValuesFromUI(int callerId)
+    {
+        switch (callerId)
+        {
+            // BtnI2cRW_Clicked()
+            case 0:
+                if (!string.IsNullOrEmpty(tbBusIdRW.Text))
+                    busIdRW = Helper.ConvertHexStringToInt(tbBusIdRW.Text, busIdRW);
+                else
+                    tbBusIdRW.Text = busIdRW.ToString("X");
+                if (!string.IsNullOrEmpty(tbDevAddrRW.Text))
+                    devAddrRW = Helper.ConvertHexStringToInt(tbDevAddrRW.Text, devAddrRW);
+                else
+                    tbDevAddrRW.Text = devAddrRW.ToString("X");
+                if (!string.IsNullOrEmpty(tbValue1.Text))
+                    valueWrite1 = Helper.ConvertHexStringToByte(tbValue1.Text, valueWrite1);
+                else
+                    tbValue1.Text = valueWrite1.ToString("X");
+                if (!string.IsNullOrEmpty(tbValue2.Text))
+                    valueWrite2 = Helper.ConvertHexStringToByte(tbValue2.Text, valueWrite2);
+                else
+                    tbValue2.Text = valueWrite2.ToString("X");
+                if (!string.IsNullOrEmpty(tbReg1.Text))
+                    register1 = Helper.ConvertHexStringToByte(tbReg1.Text, register1);
+                else
+                    tbReg1.Text = register1.ToString("X");
+                if (!string.IsNullOrEmpty(tbReg2.Text))
+                    register2 = Helper.ConvertHexStringToByte(tbReg2.Text, register2);
+                else
+                    tbReg2.Text = register2.ToString("X");
+                break;
+            // BtnI2cLed_Clicked()
+            case 1:
+                if (!string.IsNullOrEmpty(tbBusIdLed.Text))
+                    busIdLed = Helper.ConvertHexStringToInt(tbBusIdLed.Text, busIdLed);
+                else
+                    tbBusIdLed.Text = busIdLed.ToString("X");
+                if (!string.IsNullOrEmpty(tbDevAddrLed.Text))
+                    devAddrLed = Helper.ConvertHexStringToInt(tbDevAddrLed.Text, devAddrLed);
+                else
+                    tbDevAddrLed.Text = devAddrLed.ToString("X");
+                break;
+            // BtnI2cPwm_Clicked()
+            case 2:
+                if (!string.IsNullOrEmpty(tbBusIdPwm.Text))
+                    busIdPwm = Helper.ConvertHexStringToInt(tbBusIdPwm.Text, busIdPwm);
+                else
+                    tbBusIdPwm.Text = busIdPwm.ToString("X");
+                if (!string.IsNullOrEmpty(tbDevAddrPwm.Text))
+                    devAddrPwm = Helper.ConvertHexStringToInt(tbDevAddrPwm.Text, devAddrPwm);
+                else
+                    tbDevAddrPwm.Text = devAddrPwm.ToString("X");
+                if (!string.IsNullOrEmpty(tbBusIdAdc.Text))
+                    busIdAdc = Helper.ConvertHexStringToInt(tbBusIdAdc.Text, busIdAdc);
+                else
+                    tbBusIdAdc.Text = busIdAdc.ToString("X");
+                if (!string.IsNullOrEmpty(tbDevAddrAdc.Text))
+                    devAddrAdc = Helper.ConvertHexStringToInt(tbDevAddrAdc.Text, devAddrAdc);
+                else
+                    tbDevAddrAdc.Text = devAddrAdc.ToString("X");
+                break;
         }
     }
 
     private void AddButtonHandlers()
     {
         /* Button bindings */
-        btnI2cLed.AddHandler(Button.ClickEvent, BtnI2cLed_Clicked!);
         btnI2cRW.AddHandler(Button.ClickEvent, BtnI2cRW_Clicked!);
+        btnI2cLed.AddHandler(Button.ClickEvent, BtnI2cLed_Clicked!);
         btnI2cPwm.AddHandler(Button.ClickEvent, BtnI2cPwm_Clicked!);
     }
 
     private void WriteStandardValuesInTextBox()
     {
         /* Write standard values in textboxes*/
-        tbBusIdLed.Text = busIdLed.ToString("X");
-        tbDevAddrLed.Text = devAddrLed.ToString("X");
-        tbBusIdStorage.Text = busIdStorage.ToString("X");
-        tbDevAddrStorage.Text = devAddrStorage.ToString("X");
+        tbBusIdRW.Text = busIdRW.ToString("X");
+        tbDevAddrRW.Text = devAddrRW.ToString("X");
         tbValue1.Text = valueWrite1.ToString("X");
         tbValue2.Text = valueWrite2.ToString("X");
         tbReg1.Text = register1.ToString("X");
         tbReg2.Text = register2.ToString("X");
+        tbBusIdLed.Text = busIdLed.ToString("X");
+        tbDevAddrLed.Text = devAddrLed.ToString("X");
         tbBusIdPwm.Text = busIdPwm.ToString("X");
         tbDevAddrPwm.Text = devAddrPwm.ToString("X");
         tbBusIdAdc.Text = busIdAdc.ToString("X");
@@ -243,14 +289,14 @@ public partial class UserControl_I2c : UserControl
     private void AddTextBoxHandlers()
     {
         /* Add handler to only allow hex value inputs */
-        tbBusIdLed.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
-        tbDevAddrLed.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
-        tbBusIdStorage.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
-        tbDevAddrStorage.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
+        tbBusIdRW.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
+        tbDevAddrRW.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
         tbValue1.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
         tbValue2.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
         tbReg1.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
         tbReg2.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
+        tbBusIdLed.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
+        tbDevAddrLed.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
         tbBusIdPwm.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
         tbDevAddrPwm.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
         tbBusIdAdc.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
@@ -259,14 +305,15 @@ public partial class UserControl_I2c : UserControl
 
     private void FillTextBlockWithText()
     {
-        /* Description Text */
-        txDescLed.Text = "Connect BBDSI with I²C Extension Board: I2C_A_SCL = J11-16 -> J1-11, I2C_A_SDA = J11-17 -> J1-10, GND = J11-37 -> J1-16";
-        txDescStorage.Text = "Connect BBDSI with I²C Extension Board: I2C_A_SCL = J11-16 -> J1-11, I2C_A_SDA = J11-17 -> J1-10, GND = J11-37 -> J1-16";
-        txDescPwm.Text = "Connect I²C Extension Board Pins: J2-17 -> J2-27; Set S2-3 to ON";
+        //TODO: Desc Text verbessern: Pins in Doku/Readme
 
-        txInfoLed.Text = "";
+        /* Description Text */
+        txDescRW.Text = "Connect BBDSI with I²C Extension Board: I2C_A_SCL = J11-16 -> J1-11, I2C_A_SDA = J11-17 -> J1-10, GND = J11-37 -> J1-16";
         txInfoWrite.Text = "";
         txInfoRead.Text = "";
+        txDescLed.Text = "Connect BBDSI with I²C Extension Board: I2C_A_SCL = J11-16 -> J1-11, I2C_A_SDA = J11-17 -> J1-10, GND = J11-37 -> J1-16";
+        txInfoLed.Text = "";
+        txDescPwm.Text = "Connect I²C Extension Board Pins: J2-17 -> J2-27; Set S2-3 to ON";
         txPwmWrite.Text = "";
         txPwmRead.Text = "";
     }

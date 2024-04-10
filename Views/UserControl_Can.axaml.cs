@@ -138,10 +138,12 @@ public partial class UserControl_Can : UserControl
             canDevNo = tbCanDev.Text;
         else
             tbCanDev.Text = canDevNo;
+        
         if (!string.IsNullOrEmpty(tbBitrate.Text))
             bitrate = tbBitrate.Text;
         else
             tbBitrate.Text = bitrate;
+        
         if (!string.IsNullOrEmpty(tbCanId.Text))
             canIdWrite = Helper.ConvertStringToUInt(tbCanId.Text);
         else

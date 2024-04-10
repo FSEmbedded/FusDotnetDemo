@@ -23,7 +23,7 @@ namespace IoTLib_Test.Models.Tools
             return gpioPin;
         }
 
-        public static int ConvertHexStringToHexInt(string? hexString, int hexInt)
+        public static int ConvertHexStringToInt(string? hexString, int hexInt)
         {
             if (!string.IsNullOrEmpty(hexString))
                 hexInt = int.Parse(hexString, NumberStyles.HexNumber);

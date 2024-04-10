@@ -32,8 +32,10 @@ public partial class UserControl_Gpio : UserControl
     {
         if (!ledIsOn)
         {
+            /* Get Pin numbers from TextBoxes */
+            GetValuesFromUI();
+
             /* Create new instance of Gpio_Tests */
-            gpioNoLed = Convert.ToInt32(tbLedPin.Text);
             Gpio = new(gpioNoLed);
             /* Create new thread, light up LED */
             Thread ledOnThread = new(() => Gpio.LedSwitchOn());
@@ -42,7 +44,7 @@ public partial class UserControl_Gpio : UserControl
             /* Change UI */
             btnLedSwitch.Content = "Switch Off";
             btnLedSwitch.Background = Brushes.Red;
-            txInfoLed.Text = "LED on Pin J11-8 is on";
+            txInfoLed.Text = $"LED on GPIO Pin {gpioNoLed} is on";
         }
         else
         {
@@ -53,7 +55,7 @@ public partial class UserControl_Gpio : UserControl
             /* Change UI */
             btnLedSwitch.Content = "Switch On";
             btnLedSwitch.Background = Brushes.LightGreen;
-            txInfoLed.Text = "LED on Pin J11-8 is off";
+            txInfoLed.Text = $"LED on GPIO Pin {gpioNoLed} is off";
         }
     }
 
@@ -61,9 +63,10 @@ public partial class UserControl_Gpio : UserControl
     {
         if (!buttonIsActive)
         {
+            /* Get Pin numbers from TextBoxes */
+            GetValuesFromUI();
+
             /* Create new instance of Gpio_Tests */
-            gpioNoInput = Convert.ToInt32(tbInputPin.Text);
-            gpioNoLed = Convert.ToInt32(tbLedPin.Text);
             Gpio = new(gpioNoLed, gpioNoInput);
             /* Create new thread, turn off LED */
             Thread inputThread = new(() => Gpio.ActivateInputListener());
@@ -83,8 +86,22 @@ public partial class UserControl_Gpio : UserControl
             /* Change UI */
             btnGpioInput.Content = "Activate Input";
             btnGpioInput.Background = Brushes.LightGreen;
-            txInfoInput.Text = "hardware button deactivated";
+            txInfoInput.Text = "Hardware button deactivated";
         }
+    }
+
+    public void GetValuesFromUI()
+    {
+        /* Get Pin numbers from TextBoxes */
+        if (!string.IsNullOrEmpty(tbLedPin.Text))
+            gpioNoLed = Convert.ToInt32(tbLedPin.Text);
+        else
+            tbLedPin.Text = Convert.ToString(gpioNoLed);
+        
+        if (!string.IsNullOrEmpty(tbInputPin.Text))
+            gpioNoInput = Convert.ToInt32(tbInputPin.Text);
+        else
+            tbInputPin.Text = Convert.ToString(gpioNoInput);
     }
 
     private void AddButtonHandlers()

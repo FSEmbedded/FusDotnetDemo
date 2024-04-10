@@ -74,7 +74,7 @@ public partial class UserControl_Spi : UserControl
     private void GetValuesFromTextbox()
     {
         /* Convert values from UI to hex */
-        spidev = Helper.ConvertHexStringToHexInt(tbSpiDev.Text, spidev);
+        spidev = Helper.ConvertHexStringToInt(tbSpiDev.Text, spidev);
         try
         {
             register = Helper.ConvertHexStringToByte(tbRegister.Text, register);

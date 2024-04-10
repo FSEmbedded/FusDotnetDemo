@@ -7,12 +7,11 @@ namespace IoTLib_Test.Models.Hardware_Tests
 {
     internal class I2c_Tests
     {
-        private bool runLedTest;
         private readonly I2cDevice i2cDevice;
-
         private readonly byte busId;
         private readonly byte pwmOn = 0x0;
         private readonly byte pwmOff = 0x1;
+        private bool runLedTest;
 
         public I2c_Tests(int _busId, int _devAddr)
         {
@@ -35,35 +34,36 @@ namespace IoTLib_Test.Models.Hardware_Tests
         #region ExtensionLED
         public void WriteValuesLed()
         {
-            runLedTest = true;
-            int sleep = 200;
-
-            /* Set I2C Device to read mode */
-            byte[] config = [0x06, 0x00, 0x00];
-
             if (i2cDevice != null)
             {
+                runLedTest = true;
+
+                /* Set I2C Device to read mode */
+                byte[] config = [0x06, 0x00, 0x00];
                 i2cDevice.Write(config);
 
-                /* Values to send to I2C Extension Board */
+                /* Get values to send to I2C Extension Board */
                 List<byte[]> bytes = GetLedValues();
 
                 /* Run LED lights until StopI2C() is called */
                 while (runLedTest)
                 {
+                    /* Will run a ch */
                     foreach (byte[] data in bytes)
                     {
                         i2cDevice.Write(data);
-                        Thread.Sleep(sleep);
+                        Thread.Sleep(250);
+
+                        if (!runLedTest)
+                            return;
                     }
                 }
             }
-            else
-                runLedTest = false;
         }
 
         public void StopLedLoop()
         {
+            /* Breaks while-loop in WriteValuesLed() */
             runLedTest = false;
         }
 
@@ -100,24 +100,17 @@ namespace IoTLib_Test.Models.Hardware_Tests
         }
         #endregion
         #region ReadWrite
-        public bool WriteValueToRegister(int _register, int _valueWrite)
+        public void WriteValueToRegister(byte register, byte valueWrite)
         {
             try
             {
-                byte[] valuesToWrite;
-                byte register = Convert.ToByte(_register);
-
                 /* Set I2C Device to read mode */
                 byte[] config = [0x06, 0x00, 0x00];
                 i2cDevice.Write(config);
 
-                /* Write data */
-                byte valueWrite1 = Convert.ToByte(_valueWrite);
-
-                valuesToWrite = [register, valueWrite1];
+                /* Write data to register */
+                byte[] valuesToWrite = [register, valueWrite];
                 i2cDevice.Write(valuesToWrite);
-
-                return true;
             }
             catch (Exception ex)
             {
@@ -125,10 +118,8 @@ namespace IoTLib_Test.Models.Hardware_Tests
             }
         }
 
-        public byte ReadValueFromRegister(int _register)
+        public byte ReadValueFromRegister(byte register)
         {
-            byte register = Convert.ToByte(_register);
-
             /* Set address to register first */
             i2cDevice.WriteByte(register);
             /* Read data from last used register */
@@ -138,7 +129,7 @@ namespace IoTLib_Test.Models.Hardware_Tests
         }
         #endregion
         #region PWM
-        public bool WritePwm(bool toggleOn)
+        public bool PwmSwitchOnOff(bool toggleOn)
         {
             /* Write value to PWM device */
             if (!toggleOn)

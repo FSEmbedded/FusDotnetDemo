@@ -31,7 +31,7 @@
       <TextBlock Name="txInfoCanAct" Classes.ClassInfo="true"/>
       <Border BorderThickness="0.6" Margin="0,5,0,20"/>
       <!-- CAN Read-Write Test -->
-      <TextBlock Text="CAN - Read Write Test" Classes.ClassName="true"/>
+      <TextBlock Text="CAN: Read / Write Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescCanRW" Classes.ClassDescription="true"/>
       <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto">
         <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
