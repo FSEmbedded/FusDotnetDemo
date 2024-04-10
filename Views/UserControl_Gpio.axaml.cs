@@ -11,18 +11,13 @@ namespace IoTLib_Test.Views;
 public partial class UserControl_Gpio : UserControl
 {
     /* GPIO functions are in separate class */
-    private readonly Gpio_Tests Gpio;
+    private Gpio_Tests? Gpio;
+    /* GPIO Pin # */
+    private int gpioNoLed = 1; // GPIO_J1_54
+    private int gpioNoInput = 78; // GPIO_J1_52
+
     private bool ledIsOn = false;
     private bool buttonIsActive = false;
-
-    /* GPIO Pin # */
-    int gpioNoLed = 1; // GPIO_J1_54
-    int ledBank;
-    int ledPin;
-    int gpioNoInput = 78; // GPIO_J1_52
-    int inputBank;
-    int inputPin;
-
 
     public UserControl_Gpio()
     {
@@ -31,86 +26,64 @@ public partial class UserControl_Gpio : UserControl
         AddTextBoxHandlers();
         WriteStandardValuesInTextBox();
         FillTextBlockWithText();
-
-        /* Convert GPIO Pin number to gpio bank and pin */
-        ledBank = Helper.GetGpioBank(gpioNoLed);
-        ledPin = Helper.GetGpioPin(gpioNoLed);
-        /* Convert GPIO Pin # to gpio bank and pin */
-        inputBank = Helper.GetGpioBank(gpioNoInput);
-        inputPin = Helper.GetGpioPin(gpioNoInput);
-
-        Gpio = new Gpio_Tests(ledBank, ledPin, inputBank, inputPin);
     }
 
     private void BtnLedSwitch_Clicked(object sender, RoutedEventArgs args)
     {
-        /* Convert GPIO Pin # to gpio bank and pin */
-        gpioNoLed = Convert.ToInt32(tbLedPin.Text);
-        ledBank = Helper.GetGpioBank(gpioNoLed);
-        ledPin = Helper.GetGpioPin(gpioNoLed);
-
         if (!ledIsOn)
         {
+            /* Create new instance of Gpio_Tests */
+            gpioNoLed = Convert.ToInt32(tbLedPin.Text);
+            Gpio = new(gpioNoLed);
             /* Create new thread, light up LED */
-            Thread ledOnThread = new(() => Gpio.TurnOnLed(ledBank, ledPin));
+            Thread ledOnThread = new(() => Gpio.LedSwitchOn());
             ledOnThread.Start();
             ledIsOn = true;
             /* Change UI */
-            btnLedSwitch.Content = "LED Off";
+            btnLedSwitch.Content = "Switch Off";
             btnLedSwitch.Background = Brushes.Red;
             txInfoLed.Text = "LED on Pin J11-8 is on";
         }
         else
         {
             /* Create new thread, turn off LED */
-            Thread ledOffThread = new(Gpio.TurnOffLed);
+            Thread ledOffThread = new(Gpio!.LedSwitchOff);
             ledOffThread.Start();
             ledIsOn = false;
             /* Change UI */
-            btnLedSwitch.Content = "LED On";
+            btnLedSwitch.Content = "Switch On";
             btnLedSwitch.Background = Brushes.LightGreen;
             txInfoLed.Text = "LED on Pin J11-8 is off";
         }
     }
 
-    private void BtnLedBlink_Clicked(object sender, RoutedEventArgs args)
-    {
-        /* Convert GPIO Pin # to gpio bank and pin */
-        gpioNoLed = Convert.ToInt32(tbLedPin.Text);
-        ledBank = Helper.GetGpioBank(gpioNoLed);
-        ledPin = Helper.GetGpioPin(gpioNoLed);
-
-        Gpio.BlinkLed(ledBank, ledPin);
-    }
-
     private void BtnGpioInput_Clicked(object sender, RoutedEventArgs args)
     {
-        /* Convert GPIO Pin # to gpio bank and pin */
-        gpioNoInput = Convert.ToInt32(tbInputPin.Text);
-        inputBank = Helper.GetGpioBank(gpioNoInput);
-        inputPin = Helper.GetGpioPin(gpioNoInput);
-
         if (!buttonIsActive)
         {
+            /* Create new instance of Gpio_Tests */
+            gpioNoInput = Convert.ToInt32(tbInputPin.Text);
+            gpioNoLed = Convert.ToInt32(tbLedPin.Text);
+            Gpio = new(gpioNoLed, gpioNoInput);
             /* Create new thread, turn off LED */
-            Thread inputThread = new(() => Gpio.ActivateButtonInput(inputBank, inputPin));
+            Thread inputThread = new(() => Gpio.ActivateInputListener());
             inputThread.Start();
             buttonIsActive = true;
             /* Change UI */
-            btnGpioInput.Content = "Stop GPIO Input";
+            btnGpioInput.Content = "Deactivate Input";
             btnGpioInput.Background = Brushes.Red;
-            txInfoInput.Text = "Waiting for Hardware-Button click";
+            txInfoInput.Text = "Waiting for hardware button click";
         }
         else
         {
             /* Create new thread, turn off LED */
-            Thread inputStopThread = new(new ThreadStart(Gpio.StopButtonInput));
+            Thread inputStopThread = new(new ThreadStart(Gpio!.StopInputListener));
             inputStopThread.Start();
             buttonIsActive = false;
             /* Change UI */
-            btnGpioInput.Content = "Start GPIO Input";
+            btnGpioInput.Content = "Activate Input";
             btnGpioInput.Background = Brushes.LightGreen;
-            txInfoInput.Text = "Hardware-Button deactivated";
+            txInfoInput.Text = "hardware button deactivated";
         }
     }
 
@@ -118,7 +91,6 @@ public partial class UserControl_Gpio : UserControl
     {
         /* GPIO_LED button bindings */
         btnLedSwitch.AddHandler(Button.ClickEvent, BtnLedSwitch_Clicked!);
-        btnLedBlink.AddHandler(Button.ClickEvent, BtnLedBlink_Clicked!);
         /* GPIO_Input button bindings */
         btnGpioInput.AddHandler(Button.ClickEvent, BtnGpioInput_Clicked!);
     }
@@ -140,7 +112,7 @@ public partial class UserControl_Gpio : UserControl
     private void FillTextBlockWithText()
     {
         txDescLed.Text = "Connect LED to PcoreBBDSI Rev1.40 - J11-8 / J11-11"; // GPIO_J1_54
-        txDescInput.Text = "Connect Button to PcoreBBDSI Rev1.40 - J11-18 / J11-27"; // GPIO_J1_52
+        txDescInput.Text = "Connect Button to PcoreBBDSI Rev1.40 - J11-18 / J11-27.\r\nThis test will light up the LED defined in \"GPIO LED Test\" on button click."; // GPIO_J1_52
         txInfoLed.Text = "";
         txInfoInput.Text = "";
     }

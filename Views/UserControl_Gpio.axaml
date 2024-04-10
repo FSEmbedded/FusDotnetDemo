@@ -14,8 +14,7 @@
           <TextBlock Text="GPIO Pin:" Classes.ClassContentinfo="true"/>
           <TextBox Name="tbLedPin"/>
         </StackPanel>
-        <Button Name="btnLedSwitch" Content="LED On" Grid.Row="0"/>
-        <Button Name="btnLedBlink" Content="LED Blinking" Grid.Row="1"/>
+        <Button Name="btnLedSwitch" Content="Switch On" Grid.Row="0"/>
       </Grid>
       <TextBlock Name="txInfoLed" Classes.ClassInfo="true"/>
       <Border BorderThickness="0.6" Margin="0,5,0,20"/>
@@ -27,7 +26,7 @@
           <TextBlock Text="GPIO Pin:" Classes.ClassContentinfo="true"/>
           <TextBox Name="tbInputPin"/>
         </StackPanel>
-        <Button Name="btnGpioInput" Content="Start GPIO Input" />
+        <Button Name="btnGpioInput" Content="Activate Input" />
       </Grid>
       <TextBlock Name="txInfoInput" Classes.ClassInfo="true"/>
     </StackPanel>
