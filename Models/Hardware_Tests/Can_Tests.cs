@@ -4,166 +4,181 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Iot.Device.SocketCan;
 
-namespace IoTLib_Test.Models.Hardware_Tests
+namespace IoTLib_Test.Models.Hardware_Tests;
+
+internal class Can_Tests
 {
-    internal class Can_Tests
+    private readonly string canDev;
+    private readonly string bitrate;
+    private readonly CanId canIdWrite;
+    private CanId canIdRead;
+    /* Value that is read will be stored in thise byte array */
+    private byte[] valueRead = [];
+
+    private bool rwTestIsRunning; // Is used to stop while-loop
+    private readonly int maxReadCount = 10; // counter for repeating Read task
+
+    public Can_Tests(string _candev, string _bitrate, uint _canIdWriteValue)
     {
-        private string? canDev;
-        private string? bitrate;
-        private CanId canIdWrite;
-        private CanId canIdRead;
+        canDev = _candev; // eg. "can0"
+        bitrate = _bitrate;
+        /* Set standard identifier for canIdWrite */
+        canIdWrite = new() { Standard = _canIdWriteValue };
 
-        /* Value to send over CAN */
-        private byte[] valueSend = [];
-        private byte[] valueRead = [];
-
-        private bool runRwProcesses;
-        private readonly int maxRunCount = 10; // counter for repeating Read task
-
-        public (byte[], CanId) StartCanRWTest(string _canDev, string _bitrate, CanId _canIdWrite, byte[] _valueSend)
+        /* Check if CAN device is up */
+        if (!IsCanDevUp())
         {
-            canDev = "can" + _canDev;
-            bitrate = _bitrate;
-            canIdWrite = _canIdWrite;
-            valueSend = _valueSend;
-            runRwProcesses = true;
-            int runCount = 0;
-            /* Reset canIdRead values */
-            canIdRead = new CanId();
-            valueRead = [];
-
-            /* Check if CAN device is up */
+            /* Activate canDev */
+            ActivateCanDev();
+            /* Throw exception if canDev couldn't be activated */
             if (!IsCanDevUp())
             {
-                /* Activate canDev */
-                ActivateCanDev();
-                /* Throw exception if canDev couldn't be activated */
-                if (!IsCanDevUp())
+                throw new Exception($"Exception: Could not activate CAN device {canDev}");
+            }
+        }
+
+        try
+        {
+            /* Start write processes to check if receiving device is working */
+            CanWriteFrame([0]);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Receiving device is not working as expected: {ex.Message}");
+        }
+    }
+
+    public (byte[], uint) StartRWTest(byte[] valueWrite)
+    {
+        /* Reset values */
+        rwTestIsRunning = true;
+        int readCount = 0;
+
+        /* Start write thread. RepeatWriteFrame will call CanWriteFrame() in a loop */
+        Thread writeThread = new(() => RepeatWriteFrame(valueWrite));
+        writeThread.Start();
+
+        while (rwTestIsRunning && readCount < maxReadCount)
+        {
+            /* Let CanRead run as Task, otherwise it won't timeout if it there is nothing to read */
+            var readTask = Task.Run(() => CanReadFrame(valueWrite));
+
+            if (readTask.Wait(TimeSpan.FromSeconds(1)))
+            {
+                /* CanRead returns true if anything was read */
+                if (readTask.Result == true)
                 {
-                    runRwProcesses = false;
-                    throw new Exception($"Exception: Could not activate CAN device {canDev}");
-                }
-            }
-
-            try
-            {
-                /* Start single write processes to check if receiving device is working */
-                CanWrite(1);
-            }
-            catch (Exception ex)
-            {
-                runRwProcesses = false;
-                throw new Exception(ex.Message);
-            }
-
-            /* Start write thread */
-            Thread writeThread = new(() => CanWrite(maxRunCount));
-            writeThread.Start();
-
-            while (runRwProcesses && runCount < maxRunCount)
-            {
-                /* Let CanRead run as Task, otherwise it won't timeout if it there is nothing to read */
-                var readTask = Task.Run(CanRead);
-                if (readTask.Wait(TimeSpan.FromSeconds(1)))
-                {
-                    /* CanRead returns true, if anything was read */
-                    if (readTask.Result == true)
+                    /* Compare CAN IDs */
+                    if (canIdRead.Value != canIdWrite.Value)
                     {
-                        /* Compare CAN IDs & valueRead / valueSend */
-                        if (canIdRead.Value != canIdWrite.Value)
-                        {
-                            runRwProcesses = false;
-                        }
+                        /* Stop RW Test if IDs are different -> echo from other device was received */
+                        rwTestIsRunning = false;
                     }
                 }
-                runCount++;
             }
-            runRwProcesses = false;
-            return (valueRead, canIdRead);
+            readCount++;
         }
-        #region RW_Test
-        public void CanWrite(int maxWriteCount)
-        {
-            using CanRaw can = new(canDev!);
-            Span<byte> bytes = new(valueSend);
-            int runCount = 0;
+        rwTestIsRunning = false;
+        return (valueRead, canIdRead.Value);
+    }
 
-            while (runRwProcesses && runCount < maxWriteCount)
+    #region RW_Test
+    public void CanWriteFrame(byte[] valueWrite)
+    {
+        /* using declaration ensures hardware resources will be released properly */
+        using CanRaw can = new(canDev!);
+        Span<byte> bytes = new(valueWrite);
+        
+        try
+        {
+            /* Write value */
+            can.WriteFrame(bytes, canIdWrite);
+        }
+        catch (Exception ex)
+        {
+            rwTestIsRunning = false;
+            throw new Exception("CAN Write Exception: " + ex.Message);
+        }
+    }
+
+    public bool CanReadFrame(byte[] valueWrite)
+    {
+        /* using declaration ensures hardware resources will be released properly */
+        using CanRaw can = new(canDev!);
+        /* buffer needs to be the same length as valueSend */
+        byte[] buffer = new byte[valueWrite.Length];
+
+        try
+        {
+            if (can.TryReadFrame(buffer, out int frameLength, out canIdRead))
             {
-                try
-                {
-                    /* Write data */
-                    can.WriteFrame(bytes, canIdWrite);
-                    runCount++;
-                    Thread.Sleep(1000);
-                }
-                catch (Exception ex)
-                {
-                    runRwProcesses = false;
-                    throw new Exception("CAN Write Exception: " + ex.Message);
-                }
+                Span<byte> bytesRead = new(buffer, 0, frameLength);
+                valueRead = bytesRead.ToArray();
+                return true;
             }
         }
-
-        public bool CanRead()
+        catch (Exception ex)
         {
-            using CanRaw can = new(canDev!);
-            /* buffer needs to be the same length as valueSend */
-            byte[] buffer = new byte[valueSend.Length];
+            rwTestIsRunning = false;
+            throw new Exception("CAN Read Exception: " + ex.Message);
+        }
+        return false;
+    }
 
+    public void RepeatWriteFrame(byte[] valueWrite)
+    {
+        /* Repeat until rwTestIsRunning == false is set by another function */
+        while (rwTestIsRunning)
+        {
             try
             {
-                if (can.TryReadFrame(buffer, out int frameLength, out canIdRead))
-                {
-                    Span<byte> bytesRead = new(buffer, 0, frameLength);
-                    valueRead = bytesRead.ToArray();
-                    return true;
-                }
+                /* Write data */
+                CanWriteFrame(valueWrite);
             }
             catch (Exception ex)
             {
-                runRwProcesses = false;
-                throw new Exception("CAN Read Exception: " + ex.Message);
+                rwTestIsRunning = false;
+                throw new Exception("CAN Write Exception: " + ex.Message);
             }
-            return false;
+            Thread.Sleep(1000);
         }
-        #endregion
-        #region ActivateCanDev
-        public bool IsCanDevUp()
-        {
-            /* Check if CAN device is up */
-            /* Run shell command */
-            string argument = $"-c \"ip link show {canDev} | grep -q 'state UP'\"";
-            ProcessStartInfo startInfo = new()
-            {
-                FileName = "/bin/bash",
-                Arguments = argument,
-            };
-
-            using Process process = Process.Start(startInfo)!;
-            process.WaitForExit();
-            /* ExitCode is 0 if canDev is up */
-            if (process.ExitCode == 0)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public void ActivateCanDev()
-        {
-            /* Activate canDev and setup bitrate */
-            string argument = $"-c \"ip link set {canDev} up type can bitrate {bitrate} && ifconfig {canDev} up\"";
-
-            ProcessStartInfo startInfo = new()
-            {
-                FileName = "/bin/bash",
-                Arguments = argument,
-            };
-
-            using Process process = Process.Start(startInfo)!;
-            process.WaitForExit();
-        }
-        #endregion
     }
+    #endregion
+    #region ActivateCanDev
+    public bool IsCanDevUp()
+    {
+        /* Check if CAN device is up */
+        /* Run shell command */
+        string argument = $"-c \"ip link show {canDev} | grep -q 'state UP'\"";
+        ProcessStartInfo startInfo = new()
+        {
+            FileName = "/bin/bash",
+            Arguments = argument,
+        };
+
+        using Process process = Process.Start(startInfo)!;
+        process.WaitForExit();
+        /* ExitCode is 0 if canDev is up */
+        if (process.ExitCode == 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void ActivateCanDev()
+    {
+        /* Activate canDev and setup bitrate */
+        string argument = $"-c \"ip link set {canDev} up type can bitrate {bitrate} && ifconfig {canDev} up\"";
+
+        ProcessStartInfo startInfo = new()
+        {
+            FileName = "/bin/bash",
+            Arguments = argument,
+        };
+
+        using Process process = Process.Start(startInfo)!;
+        process.WaitForExit();
+    }
+    #endregion
 }

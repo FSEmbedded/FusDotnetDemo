@@ -111,6 +111,7 @@ public partial class UserControl_Gpio : UserControl
 
     private void FillTextBlockWithText()
     {
+        //TODO: Desc Text verbessern: Pins in Doku/Readme
         txDescLed.Text = "Connect LED to PcoreBBDSI Rev1.40 - J11-8 / J11-11"; // GPIO_J1_54
         txDescInput.Text = "Connect Button to PcoreBBDSI Rev1.40 - J11-18 / J11-27.\r\nThis test will light up the LED defined in \"GPIO LED Test\" on button click."; // GPIO_J1_52
         txInfoLed.Text = "";

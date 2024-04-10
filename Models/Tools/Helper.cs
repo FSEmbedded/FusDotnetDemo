@@ -58,6 +58,16 @@ namespace IoTLib_Test.Models.Tools
             return Convert.ToByte(value);
         }
 
+        public static uint ConvertStringToUInt(string? hexString)
+        {
+            if (string.IsNullOrEmpty(hexString))
+                return 0;
+
+            /* Convert the string to a uint */
+            uint value = Convert.ToUInt32(hexString, 16);
+            return value;
+        }
+
         public static bool ByteArraysEqual(byte[] b1, byte[] b2)
         {
             /* Compare byte arrays, return true if equal */

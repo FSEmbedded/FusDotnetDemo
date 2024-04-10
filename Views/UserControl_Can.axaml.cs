@@ -1,8 +1,8 @@
 using System;
+using Avalonia.Input;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using Iot.Device.SocketCan;
 using IoTLib_Test.Models.Tools;
 using IoTLib_Test.Models.Hardware_Tests;
 
@@ -10,15 +10,18 @@ namespace IoTLib_Test.Views;
 
 public partial class UserControl_Can : UserControl
 {
-    /* CAN functions are in separate class */
-    private readonly Can_Tests Can;
+    /* CAN functions are in a separate class */
+    private Can_Tests? Can;
     /* Standard values */
-    private string canDevice = "0"; //can0
+    private string canDevNo = "0"; //can0
+    private string canDevice = "can0";
     private string bitrate = "1000000";
     private byte[] valueSend = [1, 2, 3, 40, 50, 60, 70, 80];
-    /* value that is read will be stored in this byte array */
+    private uint canIdWrite = 0x1a;
+    /* values that are read */
     private byte[] valueRead = [];
-
+    private uint canIdRead;
+    
     public UserControl_Can()
     {
         InitializeComponent();
@@ -26,65 +29,78 @@ public partial class UserControl_Can : UserControl
         AddTextBoxHandlers();
         WriteStandardValuesInTextBox();
         FillTextBlockWithText();
-
-        /* Create new Can_Tests */
-        Can = new Can_Tests();
+        /* Button will be enabled after CAN is activated */
+        btnCanRW.IsEnabled = false;
     }
 
-    private void BtnCan_Clicked(object sender, RoutedEventArgs args)
+    private void BtnCanAct_Clicked(object sender, RoutedEventArgs args)
     {
-        /* Get CAN Device and Bitrate from TextBoxes */
-        if(!string.IsNullOrEmpty(tbCanDev.Text))
-            canDevice = tbCanDev.Text;
-        if (!string.IsNullOrEmpty(tbBitrate.Text))
-            bitrate = tbBitrate.Text;
-        /* take values from TextBoxes, insert them into byte array */
-        valueSend = ValuesToByteArray();
-
-        CanId canIdRead;
-        CanId canIdWrite = new()
-        {
-            Standard = 0x1A
-        };
+        /* Read values from TextBoxes */
+        GetValuesFromUI();
 
         try
         {
-            /* Run Read/Write test */
-            (valueRead, canIdRead) = Can.StartCanRWTest(canDevice, bitrate, canIdWrite, valueSend);
+            /* Create new Can_Tests
+             * Will activate CAN device in constructor
+             * Writes to external CAN device to check if connection is established */
+            Can = new Can_Tests(canDevice, bitrate, canIdWrite);
+            txInfoCanAct.Text = "CAN device is active and connection to receiving device is validated";
+            txInfoCanAct.Foreground = Brushes.Green;
+            btnCanRW.IsEnabled = true;
         }
         catch (Exception ex)
         {
             /* Show exception */
-            txInfoCan.Text = ex.Message;
-            txInfoCan.Foreground = Brushes.Red;
+            txInfoCanAct.Text = ex.Message;
+            txInfoCanAct.Foreground = Brushes.Red;
             return;
-        }
-
-        /* Compare CanIds and byte arrays - CanId must be different, but byte array the same */
-        if (canIdRead.Value != canIdWrite.Value && Helper.ByteArraysEqual(valueRead, valueSend))
-        {
-            /* Convert the byte array values to strings, to display in UI */
-            txCanWrite.Text = "CAN Write\r\n" + CreateResultString(canIdWrite, valueSend);
-            txCanRead.Text = "CAN Read\r\n" + CreateResultString(canIdRead, valueRead);
-
-            txInfoCan.Text = $"CAN Test Success!\r\nCAN ID differs while values are the same";
-            txInfoCan.Foreground = Brushes.Green;
-        }
-        else
-        {
-            txCanWrite.Text = "";
-            txCanRead.Text = "";
-
-            txInfoCan.Text = "CAN Test Failed\r\n" +
-                "Is receiving device connected and CAN activated?";
-            txInfoCan.Foreground = Brushes.Red;
         }
     }
 
-    private static string CreateResultString(CanId id, byte[] bytes)
+    private void BtnCanRW_Clicked(object sender, RoutedEventArgs args)
+    {
+        /* Reset values */
+        valueRead = [];
+        canIdRead = new();
+
+        /* take values from TextBoxes, insert them into byte array */
+        valueSend = ValuesToByteArray();
+
+        try
+        {
+            /* Run Read/Write test */
+            (valueRead, canIdRead) = Can!.StartRWTest(valueSend);
+        }
+        catch (Exception ex)
+        {
+            /* Show exception */
+            txInfoCanRW.Text = ex.Message;
+            txInfoCanRW.Foreground = Brushes.Red;
+            return;
+        }
+
+        /* Convert the byte array values to strings to display in UI */
+        txCanWrite.Text = "CAN Write\r\n" + CreateResultString(canIdWrite, valueSend);
+        txCanRead.Text = "CAN Read\r\n" + CreateResultString(canIdRead, valueRead);
+
+        /* Compare CanIds and byte arrays - CanId must be different, but byte array the same */
+        if (canIdRead != canIdWrite && Helper.ByteArraysEqual(valueRead, valueSend))
+        {
+            txInfoCanRW.Text = $"CAN Test Success!\r\nCAN ID differs while values are the same";
+            txInfoCanRW.Foreground = Brushes.Green;
+        }
+        else
+        {
+            txInfoCanRW.Text = "CAN Test Failed\r\n" +
+                "Receiving device must echo the values written to it, but with a different CAN ID!";
+            txInfoCanRW.Foreground = Brushes.Red;
+        }
+    }
+
+    private static string CreateResultString(uint id, byte[] bytes)
     {
         /* Convert the byte array values to strings, to display in UI */
-        string result = $"CAN ID: {id.Value:X}\r\n" +
+        string result = $"CAN ID: {id:X}\r\n" +
             $"Values:\r\n";
 
         for(int i = 0; i < bytes.Length; i++)
@@ -97,8 +113,10 @@ public partial class UserControl_Can : UserControl
 
         return result;
     }
+
     private byte[] ValuesToByteArray()
     {
+        /* Get values from TextBoxes, add them to  byte array */
         byte[] bytes =
         [
             Helper.ConvertStringToByte(tbVal0.Text),
@@ -113,17 +131,67 @@ public partial class UserControl_Can : UserControl
         return bytes;
     }
 
+    public void GetValuesFromUI()
+    {
+        /* Get CAN Device and Bitrate from TextBoxes */
+        if (!string.IsNullOrEmpty(tbCanDev.Text))
+            canDevNo = tbCanDev.Text;
+        else
+            tbCanDev.Text = canDevNo;
+        if (!string.IsNullOrEmpty(tbBitrate.Text))
+            bitrate = tbBitrate.Text;
+        else
+            tbBitrate.Text = bitrate;
+        if (!string.IsNullOrEmpty(tbCanId.Text))
+            canIdWrite = Helper.ConvertStringToUInt(tbCanId.Text);
+        else
+            tbCanId.Text = canIdWrite.ToString("X");
+
+        canDevice = $"can{canDevNo}";
+    }
+
+    private void DeActivateBtnCanRW(object sender, KeyEventArgs e)
+    {
+        /* (De)Activate btnCanRW if values for CAN device changed.
+         * Button will be activated again if right value is entered 
+         * or activation with new value is run again */
+        if (sender == tbCanDev)
+        {
+            if (tbCanDev.Text == canDevNo.ToString())
+                btnCanRW.IsEnabled = true;
+            else
+                btnCanRW.IsEnabled = false;
+        }
+        else if (sender == tbCanId)
+        {
+            if (tbCanId.Text == canIdWrite.ToString("X"))
+                btnCanRW.IsEnabled = true;
+            else
+                btnCanRW.IsEnabled = false;
+        }
+        else if (sender == tbBitrate)
+        {
+            if (tbBitrate.Text == bitrate.ToString())
+                btnCanRW.IsEnabled = true;
+            else
+                btnCanRW.IsEnabled = false;
+        }
+        e.Handled = true;
+    }
+
     private void AddButtonHandlers()
     {
         /* Button bindings */
-        btnCan.AddHandler(Button.ClickEvent, BtnCan_Clicked!);
+        btnCanAct.AddHandler(Button.ClickEvent, BtnCanAct_Clicked!);
+        btnCanRW.AddHandler(Button.ClickEvent, BtnCanRW_Clicked!);
     }
 
     private void WriteStandardValuesInTextBox()
     {
         /* Write standard values in textboxes*/
-        tbCanDev.Text = Convert.ToString(canDevice);
-        tbBitrate.Text = Convert.ToString(bitrate);
+        tbCanDev.Text = canDevNo.ToString();
+        tbCanId.Text = canIdWrite.ToString("X");
+        tbBitrate.Text = bitrate.ToString();
         tbVal0.Text = valueSend[0].ToString();
         tbVal1.Text = valueSend[1].ToString();
         tbVal2.Text = valueSend[2].ToString();
@@ -138,6 +206,7 @@ public partial class UserControl_Can : UserControl
     {
         /* Handler to only allow decimal value inputs */
         tbCanDev.AddHandler(KeyDownEvent, InputControl.TextBox_DecimalInput!, RoutingStrategies.Tunnel);
+        tbCanId.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
         tbBitrate.AddHandler(KeyDownEvent, InputControl.TextBox_DecimalInput!, RoutingStrategies.Tunnel);
         tbVal0.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
         tbVal1.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
@@ -147,19 +216,28 @@ public partial class UserControl_Can : UserControl
         tbVal5.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
         tbVal6.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
         tbVal7.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
+        /* Additional handlers, will disable btnCanRW */
+        tbCanDev.AddHandler(KeyUpEvent, DeActivateBtnCanRW!, RoutingStrategies.Tunnel);
+        tbCanId.AddHandler(KeyUpEvent, DeActivateBtnCanRW!, RoutingStrategies.Tunnel);
+        tbBitrate.AddHandler(KeyUpEvent, DeActivateBtnCanRW!, RoutingStrategies.Tunnel);
     }
 
     private void FillTextBlockWithText()
     {
+        //TODO: Desc Text verbessern: Pins in Doku/Readme
+
         /* Description Text */
-        txDescCan.Text = "Connect second board, CAN_L - CAN_L & CAN_H - CAN_H\r\n" +
+        txDescCanAct.Text = "Activate CAN device on your board\r\nValidate connection to receiving CAN device";
+        txInfoCanAct.Text = "";
+
+        txDescCanRW.Text = "Activate CAN device first!\r\n" +
+            "Connect second board, CAN_L - CAN_L & CAN_H - CAN_H\r\n" +
             "On second device , run following comand under Linux to activate can0:\r\n" +
             "ip link set can0 up type can bitrate 1000000 && ifconfig can0 up\r\n" +
             "Run this command while CAN test is running to return the received value:\r\n" +
             "STRING=$(candump can0 -L -n1 | cut -d '#' -f2) && cansend can0 01b#${STRING}";
-
         txCanWrite.Text = "";
         txCanRead.Text = "";
-        txInfoCan.Text = "";
+        txInfoCanRW.Text = "";
     }
 }

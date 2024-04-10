@@ -3,13 +3,38 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Class="IoTLib_Test.Views.UserControl_Can">
-
   <ScrollViewer>
     <StackPanel>
-      <TextBlock Text="CAN Test" Classes.ClassName="true"/>
-      <TextBlock Name="txDescCan" Classes.ClassDescription="true"/>
-      <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto,Auto">
-        <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
+      <!-- Activate CAN / validate connection-->
+      <TextBlock Text="Activate CAN" Classes.ClassName="true"/>
+      <TextBlock Name="txDescCanAct" Classes.ClassDescription="true"/>
+      <Grid ColumnDefinitions="*,*,*">
+        <StackPanel Orientation="Horizontal" Margin="0" Grid.Column="0">
+          <StackPanel>
+            <TextBlock Text="CAN device:" Classes.ClassContentinfo="true"/>
+            <TextBox Name="tbCanDev"/>
+          </StackPanel>
+          <StackPanel>
+            <TextBlock Text="CAN ID:" Classes.ClassContentinfo="true"/>
+            <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
+              <TextBlock Text="0x" Classes.Class0x="true"/>
+              <TextBox Name="tbCanId"/>
+            </StackPanel>
+          </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Column="1">
+          <TextBlock Text="Bitrate:" Classes.ClassContentinfo="true"/>
+          <TextBox Name="tbBitrate" Width="120"/>
+        </StackPanel>
+        <Button Name="btnCanAct" Content="Activate CAN" Grid.Row="0"/>
+      </Grid>
+      <TextBlock Name="txInfoCanAct" Classes.ClassInfo="true"/>
+      <Border BorderThickness="0.6" Margin="0,5,0,20"/>
+      <!-- CAN Read-Write Test -->
+      <TextBlock Text="CAN - Read Write Test" Classes.ClassName="true"/>
+      <TextBlock Name="txDescCanRW" Classes.ClassDescription="true"/>
+      <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto">
+        <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
           <TextBlock Text="Value to send (byte array):" Classes.ClassContentinfo="true"/>
           <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
             <TextBlock Text="0x" Classes.Class0x="true"/>
@@ -32,19 +57,11 @@
             <TextBox Name="tbVal7"/>
           </StackPanel>
         </StackPanel>
-        <StackPanel Grid.Column="0" Grid.Row="1">
-          <TextBlock Text="CAN device:" Classes.ClassContentinfo="true"/>
-          <TextBox Name="tbCanDev"/>
-        </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="1">
-          <TextBlock Text="Bitrate:" Classes.ClassContentinfo="true"/>
-          <TextBox Name="tbBitrate" Width="120"/>
-        </StackPanel>
-        <Button Name="btnCan" Content="CAN Test" Grid.Row="1"/>
-        <TextBlock Name="txCanWrite" Classes.ClassInfo="true" Grid.Column="0" Grid.Row="2"/>
-        <TextBlock Name="txCanRead" Classes.ClassInfo="true" Grid.Column="2" Grid.Row="2"/>
+        <Button Name="btnCanRW" Content="Start RW Test" Grid.Row="0" VerticalAlignment="Bottom"/>
+        <TextBlock Name="txCanWrite" Classes.ClassInfo="true" Grid.Column="0" Grid.Row="1"/>
+        <TextBlock Name="txCanRead" Classes.ClassInfo="true" Grid.Column="2" Grid.Row="1"/>
       </Grid>
-      <TextBlock Name="txInfoCan" Classes.ClassInfo="true"/>
+      <TextBlock Name="txInfoCanRW" Classes.ClassInfo="true"/>
     </StackPanel>
   </ScrollViewer>
 </UserControl>
