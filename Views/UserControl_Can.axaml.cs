@@ -36,7 +36,7 @@ public partial class UserControl_Can : UserControl
     private void BtnCanAct_Clicked(object sender, RoutedEventArgs args)
     {
         /* Read values from TextBoxes */
-        GetValuesFromUI();
+        GetValuesFromTextBox();
 
         try
         {
@@ -131,7 +131,7 @@ public partial class UserControl_Can : UserControl
         return bytes;
     }
 
-    public void GetValuesFromUI()
+    public void GetValuesFromTextBox()
     {
         /* Get CAN Device and Bitrate from TextBoxes */
         if (!string.IsNullOrEmpty(tbCanDev.Text))

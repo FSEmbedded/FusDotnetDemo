@@ -12,7 +12,8 @@ public partial class UserControl_Spi : UserControl
     /* SPI functions are in separate class */
     private Spi_Tests? Spi;
     private int spidev = 0x1;
-    private byte register = 0x2b;
+    private byte register1 = 0x2b;
+    private byte register2 = 0x2c;
     /* Values to write */
     private byte valueWrite1 = 0x5;
     private byte valueWrite2 = 0x6;
@@ -37,12 +38,12 @@ public partial class UserControl_Spi : UserControl
         txInfoSpiRead.Text = "";
 
         /* Convert values from UI to hex */
-        GetValuesFromTextbox();
+        GetValuesFromTextBox();
 
         try
         {
-            /* SPI tests are in separate class */
-            Spi = new Spi_Tests(spidev, register);
+            /* SPI tests are in a separate class */
+            Spi = new Spi_Tests(spidev);
         }
         catch (Exception ex)
         {
@@ -53,7 +54,8 @@ public partial class UserControl_Spi : UserControl
 
         /* SpiStart writes the values valueWrite1/2 to the defined registers on SPI device, 
          * returns the values that it reads in these registers */
-        (valueRead1, valueRead2) = Spi.StartSpiRWTest(valueWrite1, valueWrite2);
+        valueRead1 = Spi.StartSpiRWTest(register1, valueWrite1);
+        valueRead2 = Spi.StartSpiRWTest(register2, valueWrite2);
 
         /* Write values into TextBlock */
         FillInfoTextBlock();
@@ -71,15 +73,30 @@ public partial class UserControl_Spi : UserControl
         }
     }
 
-    private void GetValuesFromTextbox()
+    private void GetValuesFromTextBox()
     {
         /* Convert values from UI to hex */
-        spidev = Helper.ConvertHexStringToInt(tbSpiDev.Text, spidev);
+        if (!string.IsNullOrEmpty(tbSpiDev.Text))
+            spidev = Helper.ConvertHexStringToInt(tbSpiDev.Text, spidev);
+        else
+            tbSpiDev.Text = spidev.ToString("X");
         try
         {
-            register = Helper.ConvertHexStringToByte(tbRegister.Text, register);
-            valueWrite1 = Helper.ConvertHexStringToByte(tbValue1.Text, valueWrite1);
-            valueWrite2 = Helper.ConvertHexStringToByte(tbValue2.Text, valueWrite2);
+            if(!string.IsNullOrEmpty(tbRegister.Text))
+                register1 = Helper.ConvertHexStringToByte(tbRegister.Text, register1);
+            else
+                tbRegister.Text = register1.ToString("X");
+            if (!string.IsNullOrEmpty(tbValue1.Text))
+                valueWrite1 = Helper.ConvertHexStringToByte(tbValue1.Text, valueWrite1);
+            else
+                tbValue1.Text = valueWrite1.ToString("X");
+            if (!string.IsNullOrEmpty(tbValue2.Text))
+                valueWrite2 = Helper.ConvertHexStringToByte(tbValue2.Text, valueWrite2);
+            else
+                tbValue2.Text = valueWrite2.ToString("X");
+
+            /* register2 is register1 + 1 */
+            register2 = Convert.ToByte(register1 + 1);
         }
         catch (Exception ex)
         {
@@ -93,14 +110,16 @@ public partial class UserControl_Spi : UserControl
     {
         txInfoSpiWrite.Text = $"SPI Write\r\n" +
                               $"SPI Device: 0x{spidev:X}\r\n" +
-                              $"Register: 0x{register:X}\r\n" +
+                              $"Register 1: 0x{register1:X}\r\n" +
                               $"Value 1: 0x{valueWrite1:X}\r\n" +
+                              $"Register 2: 0x{register2:X}\r\n" +
                               $"Value2: 0x{valueWrite2:X}";
 
         txInfoSpiRead.Text = $"SPI Read\r\n" +
                              $"SPI Device: 0x{spidev:X}\r\n" +
-                             $"Register: 0x{register:X}\r\n" +
+                             $"Register 1: 0x{register1:X}\r\n" +
                              $"Value 1: 0x{valueRead1:X}\r\n" +
+                             $"Register 2: 0x{register2:X}\r\n" +
                              $"Value2: 0x{valueRead2:X}";
     }
 
@@ -114,7 +133,7 @@ public partial class UserControl_Spi : UserControl
     {
         /* Write standard values in textboxes*/
         tbSpiDev.Text = spidev.ToString("X");
-        tbRegister.Text = register.ToString("X");
+        tbRegister.Text = register1.ToString("X");
         tbValue1.Text = valueWrite1.ToString("X");
         tbValue2.Text = valueWrite2.ToString("X");
     }
@@ -130,6 +149,8 @@ public partial class UserControl_Spi : UserControl
 
     private void FillTextBlockWithText()
     {
+        //TODO: Desc Text verbessern: Pins in Doku/Readme
+
         /* Description Text */
         txDescSpi.Text = "Connect BBDSI with SPI: " +
             "SCLK: ADP-2 -> J11-3; " +

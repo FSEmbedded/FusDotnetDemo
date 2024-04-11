@@ -7,15 +7,14 @@ namespace IoTLib_Test.Models.Hardware_Tests
     {
         private readonly SpiConnectionSettings spiConnectionSettings;
         private readonly SpiDevice spiDevice;
-        private readonly byte register;
 
-        public Spi_Tests(int spidev, byte _register)
+        public Spi_Tests(int spidev)
         {
             try
             {
+                /* Create SPI device */
                 spiConnectionSettings = new(spidev, 0);
                 spiDevice = SpiDevice.Create(spiConnectionSettings);
-                register = _register;
             }
             catch (Exception ex)
             {
@@ -23,21 +22,20 @@ namespace IoTLib_Test.Models.Hardware_Tests
             }
         }
 
-        public (byte, byte) StartSpiRWTest(byte valueWrite1, byte valueWrite2)
+        public byte StartSpiRWTest(byte register, byte valueWrite)
         {
             /* Send reset command to empty all registers */
             byte[] reset = [0xc0];
             spiDevice!.Write(reset);
 
             /* Write valueWrite1 to register1, valueWrite2 will be written to the next register */
-            byte[] writecmd = [0x2, register, valueWrite1, valueWrite2];
+            byte[] writecmd = [0x2, register, valueWrite];
             spiDevice.Write(writecmd);
 
             /* Read data from the registers that were written */
-            byte valueRead1 = SpiRead(spiDevice, register);
-            byte valueRead2 = SpiRead(spiDevice, Convert.ToByte(register + 1));
+            byte valueRead = SpiRead(spiDevice, register);
 
-            return (valueRead1, valueRead2);
+            return valueRead;
         }
 
         private byte SpiRead(SpiDevice spiDevice, byte address)

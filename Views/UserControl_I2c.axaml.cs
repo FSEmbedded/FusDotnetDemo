@@ -43,7 +43,7 @@ public partial class UserControl_I2c : UserControl
     private void BtnI2cRW_Clicked(object sender, RoutedEventArgs args)
     {
         /* Get values from UI */
-        GetValuesFromUI(0);
+        GetValuesFromTextBox(0);
 
         try
         {
@@ -98,7 +98,7 @@ public partial class UserControl_I2c : UserControl
         if (!ledThreadStarted)
         {
             /* Get values from UI */
-            GetValuesFromUI(1);
+            GetValuesFromTextBox(1);
 
             try
             {
@@ -142,7 +142,7 @@ public partial class UserControl_I2c : UserControl
         txPwmRead.Text = "";
 
         /* Get values from UI */
-        GetValuesFromUI(2);
+        GetValuesFromTextBox(2);
 
         try
         {
@@ -197,7 +197,7 @@ public partial class UserControl_I2c : UserControl
         }
     }
 
-    public void GetValuesFromUI(int callerId)
+    public void GetValuesFromTextBox(int callerId)
     {
         switch (callerId)
         {

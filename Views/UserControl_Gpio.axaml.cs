@@ -33,7 +33,7 @@ public partial class UserControl_Gpio : UserControl
         if (!ledIsOn)
         {
             /* Get Pin numbers from TextBoxes */
-            GetValuesFromUI();
+            GetValuesFromTextBox();
 
             /* Create new instance of Gpio_Tests */
             Gpio = new(gpioNoLed);
@@ -64,7 +64,7 @@ public partial class UserControl_Gpio : UserControl
         if (!buttonIsActive)
         {
             /* Get Pin numbers from TextBoxes */
-            GetValuesFromUI();
+            GetValuesFromTextBox();
 
             /* Create new instance of Gpio_Tests */
             Gpio = new(gpioNoLed, gpioNoInput);
@@ -90,7 +90,7 @@ public partial class UserControl_Gpio : UserControl
         }
     }
 
-    public void GetValuesFromUI()
+    public void GetValuesFromTextBox()
     {
         /* Get Pin numbers from TextBoxes */
         if (!string.IsNullOrEmpty(tbLedPin.Text))

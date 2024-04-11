@@ -40,9 +40,9 @@
         </StackPanel>
         <Button Name="btnSpi" Content="Start SPI Test" Grid.Row="1"/>
         <TextBlock Name="txInfoSpiWrite" Classes.ClassInfo="true" Grid.Column="0" Grid.Row="2"/>
-        <TextBlock Name="txInfoSpiRead" Classes.ClassInfo="true" Grid.Column="2" Grid.Row="2"/>
+        <TextBlock Name="txInfoSpiRead" Classes.ClassInfo="true" Grid.Column="1" Grid.Row="2"/>
+        <TextBlock Name="txInfoSpi" Classes.ClassInfo="true" Grid.Column="2" Grid.Row="2"/>
       </Grid>
-      <TextBlock Name="txInfoSpi" Classes.ClassInfo="true"/>
     </StackPanel>
   </ScrollViewer>
 </UserControl>
