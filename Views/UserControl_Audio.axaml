@@ -38,7 +38,7 @@
           <TextBlock Text="Keep file:" Classes.ClassContentinfo="true"/>
           <CheckBox Name="cbKeepFileDur"/>
         </StackPanel>
-        <Button Name="btnAudioInDur" Content="Record Audio"/>
+        <Button Name="btnAudioInDur" Content=" Start Recording"/>
       </Grid>
       <TextBlock Name="txInfoAudioInDur" Classes.ClassInfo="true"/>
     </StackPanel>

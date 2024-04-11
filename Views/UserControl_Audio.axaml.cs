@@ -59,6 +59,7 @@ public partial class UserControl_Audio : UserControl
 
     private void BtnAudioInCont_Clicked(object sender, RoutedEventArgs args)
     {
+        /* Recording until Stop is clicked */
         if (!isRecording)
         {
             /* Start Recording */
@@ -100,8 +101,10 @@ public partial class UserControl_Audio : UserControl
         /* Stop if device is already recording */
         if (isRecording)
             return;
+
         /* Get duration from TextBox */
-        recDuration = Convert.ToUInt32(tbAudioInDur.Text);
+        GetValuesFromTextBox();
+
         /* Start recording */
         if (Audio.RecordFixedDuration(recFileDur, recDuration))
         {
@@ -124,6 +127,14 @@ public partial class UserControl_Audio : UserControl
         {
             txInfoAudioInDur.Text += $"\r\nFile is stored at {recFileDur}";
         }
+    }
+
+    public void GetValuesFromTextBox()
+    {
+        if (!string.IsNullOrEmpty(tbAudioInDur.Text))
+            recDuration = Convert.ToUInt32(tbAudioInDur.Text);
+        else
+            tbAudioInDur.Text = recDuration.ToString();
     }
 
     private void AddButtonHandlers()

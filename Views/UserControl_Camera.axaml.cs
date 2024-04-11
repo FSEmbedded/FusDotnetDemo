@@ -30,12 +30,7 @@ public partial class UserControl_Camera : UserControl
     private void BtnCamera_Clicked(object sender, RoutedEventArgs args)
     {
         /* Get Camera Bus ID and resolution from TextBoxes */
-        if (!string.IsNullOrEmpty(tbCamWidth.Text))
-            width = Convert.ToUInt32(tbCamWidth.Text);
-        if (!string.IsNullOrEmpty(tbCamHeight.Text))
-            height = Convert.ToUInt32(tbCamHeight.Text);
-        if (!string.IsNullOrEmpty(tbCamBus.Text))
-            busId = Convert.ToInt32(tbCamBus.Text);
+        GetValuesFromTextBox();
 
         try
         {
@@ -51,9 +46,9 @@ public partial class UserControl_Camera : UserControl
 
         if (Camera.CaptureCam(imgFile))
         {
-            /* Show image in UI */
             try
             {
+                /* Show image in UI */
                 Avalonia.Media.Imaging.Bitmap bitmap = new(imgFile);
                 imgCamCapture.Source = bitmap;
                 txInfoCamera.Text = $"Image was taken, see {imgFile}";
@@ -71,6 +66,22 @@ public partial class UserControl_Camera : UserControl
             /* Delete image testfile */
             File.Delete(imgFile);
         }
+    }
+
+    public void GetValuesFromTextBox()
+    {
+        if (!string.IsNullOrEmpty(tbCamWidth.Text))
+            width = Convert.ToUInt32(tbCamWidth.Text);
+        else
+            tbCamWidth.Text = width.ToString();
+        if (!string.IsNullOrEmpty(tbCamHeight.Text))
+            height = Convert.ToUInt32(tbCamHeight.Text);
+        else
+            tbCamHeight.Text = height.ToString();
+        if (!string.IsNullOrEmpty(tbCamBus.Text))
+            busId = Convert.ToInt32(tbCamBus.Text);
+        else
+            tbCamBus.Text = busId.ToString();
     }
 
     private void AddButtonHandlers()
@@ -97,6 +108,8 @@ public partial class UserControl_Camera : UserControl
 
     private void FillTextBlockWithText()
     {
+        //TODO: Desc Text verbessern: Pins in Doku/Readme
+
         txDescCamera.Text = "Connect Camera to USB-Port";
         txInfoCamera.Text = "";
     }
