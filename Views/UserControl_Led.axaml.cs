@@ -7,7 +7,7 @@ namespace IoTLib_Test.Views;
 
 public partial class UserControl_Led : UserControl
 {
-    /* LED functions are in separate class */
+    /* LED functions are in a separate class */
     private readonly Led_Tests Led;
     private string ledName = "pca:red:power"; // default LED name on I2C-Extension-Board
 
@@ -18,8 +18,8 @@ public partial class UserControl_Led : UserControl
         WriteStandardValuesInTextBox();
         FillTextBlockWithText();
         SetupComboBox();
-
-        Led = new();
+        /* Create new object Led_Tests */
+        Led = new Led_Tests();
     }
 
     private void BtnLedName_Clicked(object sender, RoutedEventArgs args)

@@ -10,7 +10,7 @@ namespace IoTLib_Test.Views;
 
 public partial class UserControl_Pwm : UserControl
 {
-    /* PWM functions are in separate class */
+    /* PWM functions are in a separate class */
     private Pwm_Tests? PwmTS;
     private Pwm_Tests? PwmV;
 
@@ -48,10 +48,10 @@ public partial class UserControl_Pwm : UserControl
         /* PwmDimLed takes 100 steps, sleep is in ms: (duration * 1000)ms / 100 */
         int sleep = duration * 10;
 
-        /* PWM functions are in separate class */
         try
         {
-            PwmTS = new(pinPwmTS);
+            /* Create new object Pwm_Tests */
+            PwmTS = new Pwm_Tests(pinPwmTS);
         }
         catch (Exception ex)
         {
@@ -76,10 +76,10 @@ public partial class UserControl_Pwm : UserControl
             pinPwmV = Helper.GetGpioPin(gpioNoPwm);
             voltageValue = slVoltage.Value;
 
-            /* PWM functions are in separate class */
             try
             {
-                PwmV = new(pinPwmV);
+                /* Create new object Pwm_Tests */
+                PwmV = new Pwm_Tests(pinPwmV);
             }
             catch (Exception ex)
             {
@@ -114,6 +114,7 @@ public partial class UserControl_Pwm : UserControl
     {
         if (sliderIsActive)
         {
+            /* Set voltage when slider is moved */
             voltageValue = slVoltage.Value;
             PwmV!.SetVoltageValue(voltageValue);
         }
@@ -144,6 +145,8 @@ public partial class UserControl_Pwm : UserControl
 
     private void FillTextBlockWithText()
     {
+        //TODO: Desc Text verbessern: Pins in Doku/Readme
+
         txDescPwmTS.Text = "Connect LED to PcoreBBDSI Rev1.40 - J11-8 / J11-11\r\n" +
             "LED brightness will be increased by changing PWM values"; // GPIO_J1_54
         txDescPwmV.Text = "Connect LED to PcoreBBDSI Rev1.40 - J11-8 / J11-11\r\n" +
@@ -154,10 +157,10 @@ public partial class UserControl_Pwm : UserControl
 
     private void SetupSlider()
     {
+        /* Set values for slider, add handler for movement */
         slVoltage.Minimum = 0;
         slVoltage.Maximum = 1;
         slVoltage.Value = voltageValue;
-
         slVoltage.AddHandler(PointerMovedEvent, SlVoltage_OnPointerMoved!);
     }
 }

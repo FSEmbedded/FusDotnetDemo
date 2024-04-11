@@ -9,7 +9,7 @@ namespace IoTLib_Test.Views;
 
 public partial class UserControl_Spi : UserControl
 {
-    /* SPI functions are in separate class */
+    /* SPI functions are in a separate class */
     private Spi_Tests? Spi;
     private int spidev = 0x1;
     private byte register1 = 0x2b;
@@ -42,7 +42,7 @@ public partial class UserControl_Spi : UserControl
 
         try
         {
-            /* SPI tests are in a separate class */
+            /* Create new object Spi_Tests */
             Spi = new Spi_Tests(spidev);
         }
         catch (Exception ex)

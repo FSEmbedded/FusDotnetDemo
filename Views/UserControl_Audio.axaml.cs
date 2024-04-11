@@ -11,7 +11,7 @@ namespace IoTLib_Test.Views;
 
 public partial class UserControl_Audio : UserControl
 {
-    /* Audio functions are in separate class */
+    /* Audio functions are in a separate class */
     private readonly Audio_Tests Audio;
     private bool speakerIsOn = false;
     private bool isRecording = false;
@@ -27,7 +27,7 @@ public partial class UserControl_Audio : UserControl
         AddTextBoxHandlers();
         WriteStandardValuesInTextBox();
         FillTextBlockWithText();
-
+        /* Create new object Audio_Tests */
         Audio = new Audio_Tests();
     }
 

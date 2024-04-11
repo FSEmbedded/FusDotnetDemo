@@ -10,7 +10,7 @@ namespace IoTLib_Test.Views;
 
 public partial class UserControl_Gpio : UserControl
 {
-    /* GPIO functions are in separate class */
+    /* GPIO functions are in a separate class */
     private Gpio_Tests? Gpio;
     /* GPIO Pin # */
     private int gpioNoLed = 1; // GPIO_J1_54
@@ -35,8 +35,8 @@ public partial class UserControl_Gpio : UserControl
             /* Get Pin numbers from TextBoxes */
             GetValuesFromTextBox();
 
-            /* Create new instance of Gpio_Tests */
-            Gpio = new(gpioNoLed);
+            /* Create new object Gpio_Tests */
+            Gpio = new Gpio_Tests(gpioNoLed);
             /* Create new thread, light up LED */
             Thread ledOnThread = new(() => Gpio.LedSwitchOn());
             ledOnThread.Start();
@@ -66,8 +66,8 @@ public partial class UserControl_Gpio : UserControl
             /* Get Pin numbers from TextBoxes */
             GetValuesFromTextBox();
 
-            /* Create new instance of Gpio_Tests */
-            Gpio = new(gpioNoLed, gpioNoInput);
+            /* Create new object Gpio_Tests */
+            Gpio = new Gpio_Tests(gpioNoLed, gpioNoInput);
             /* Create new thread, turn off LED */
             Thread inputThread = new(() => Gpio.ActivateInputListener());
             inputThread.Start();

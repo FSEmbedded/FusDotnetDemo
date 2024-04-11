@@ -11,7 +11,7 @@ namespace IoTLib_Test.Views;
 
 public partial class UserControl_Camera : UserControl
 {
-    /* Camera functions are in separate class */
+    /* Camera functions are in a separate class */
     private Camera_Tests? Camera;
     private readonly string imgFile = "/home/root/img_camtest.png";
     private int busId = 1;
@@ -39,7 +39,7 @@ public partial class UserControl_Camera : UserControl
 
         try
         {
-            /* Video tests are in separate class */
+            /* Create new object Camera_Tests */
             Camera = new Camera_Tests(busId, width, height);
         }
         catch (Exception ex)

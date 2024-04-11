@@ -40,7 +40,7 @@ public partial class UserControl_Can : UserControl
 
         try
         {
-            /* Create new Can_Tests
+            /* Create new object Can_Tests
              * Will activate CAN device in constructor
              * Writes to external CAN device to check if connection is established */
             Can = new Can_Tests(canDevice, bitrate, canIdWrite);

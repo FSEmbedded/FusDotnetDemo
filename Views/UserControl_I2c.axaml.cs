@@ -47,8 +47,8 @@ public partial class UserControl_I2c : UserControl
 
         try
         {
-            /* Create new I2c_Tests */
-            I2c = new(busIdRW, devAddrRW);
+            /* Create new object I2c_Tests */
+            I2c = new I2c_Tests(busIdRW, devAddrRW);
         }
         catch (Exception ex)
         {
@@ -102,8 +102,8 @@ public partial class UserControl_I2c : UserControl
 
             try
             {
-                /* Create new I2c_Tests */
-                I2c = new(busIdLed, devAddrLed);
+                /* Create new object I2c_Tests */
+                I2c = new I2c_Tests(busIdLed, devAddrLed);
             }
             catch (Exception ex)
             {
@@ -139,23 +139,24 @@ public partial class UserControl_I2c : UserControl
     private void BtnI2cPwm_Clicked(object sender, RoutedEventArgs args)
     {
         /* Empty TextBlock */
-        txPwmRead.Text = "";
+        txInfoPwm.Text = "";
+        txInfoPwm.Foreground = Brushes.Blue;
 
         /* Get values from UI */
         GetValuesFromTextBox(2);
 
         try
         {
-            /* Create new I2c_Tests for PWM device */
-            I2cPwm = new(busIdPwm, devAddrPwm);
-            /* Create new I2c_Tests for ADC device */
-            I2cAdc = new(busIdAdc, devAddrAdc);
+            /* Create new object I2c_Tests for PWM device */
+            I2cPwm = new I2c_Tests(busIdPwm, devAddrPwm);
+            /* Create new object I2c_Tests for ADC device */
+            I2cAdc = new I2c_Tests(busIdAdc, devAddrAdc);
         }
         catch (Exception ex)
         {
             /* Show exception */
-            txPwmWrite.Text = ex.Message;
-            txPwmWrite.Foreground = Brushes.Red;
+            txInfoPwm.Text = ex.Message;
+            txInfoPwm.Foreground = Brushes.Red;
             return;
         }
 
@@ -189,11 +190,11 @@ public partial class UserControl_I2c : UserControl
         /* If PWM switched on the OnBoard-LED, returnValue should be 0 */
         if (toggleOn)
         {
-            txPwmRead.Text += $"PWM on - ADC: {voltage:F4} V\r\n";
+            txInfoPwm.Text += $"PWM on - ADC: {voltage:F4} V\r\n";
         }
         else if (!toggleOn)
         {
-            txPwmRead.Text += $"PWM off - ADC: {voltage:F4} V\r\n";
+            txInfoPwm.Text += $"PWM off - ADC: {voltage:F4} V\r\n";
         }
     }
 
@@ -314,7 +315,6 @@ public partial class UserControl_I2c : UserControl
         txDescLed.Text = "Connect BBDSI with I²C Extension Board: I2C_A_SCL = J11-16 -> J1-11, I2C_A_SDA = J11-17 -> J1-10, GND = J11-37 -> J1-16";
         txInfoLed.Text = "";
         txDescPwm.Text = "Connect I²C Extension Board Pins: J2-17 -> J2-27; Set S2-3 to ON";
-        txPwmWrite.Text = "";
-        txPwmRead.Text = "";
+        txInfoPwm.Text = "";
     }
 }
