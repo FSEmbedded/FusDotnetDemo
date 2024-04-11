@@ -7,7 +7,7 @@
   <ScrollViewer>
     <StackPanel>
       <!-- PWM Test - Time Span -->
-      <TextBlock Text="PWM Test - Time Span" Classes.ClassName="true"/>
+      <TextBlock Text="PWM: Dim over time period" Classes.ClassName="true"/>
       <TextBlock Name="txDescPwmTS" Classes.ClassDescription="true"/>
       <Grid ColumnDefinitions="*,*,*">
         <StackPanel Grid.Column="0">
@@ -23,7 +23,7 @@
       <TextBlock Name="txInfoPwmTS" Classes.ClassInfo="true"/>
       <Border BorderThickness="0.6" Margin="0,5,0,20"/>
       <!-- PWM Test - Value -->
-      <TextBlock Text="PWM Test - Set Voltage" Classes.ClassName="true"/>
+      <TextBlock Text="PWM: Set Voltage" Classes.ClassName="true"/>
       <TextBlock Name="txDescPwmV" Classes.ClassDescription="true"/>
       <Grid ColumnDefinitions="*,*,*">
         <StackPanel Grid.Column="0">

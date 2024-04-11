@@ -7,7 +7,7 @@
   <ScrollViewer>
     <!-- Audio Output Test -->
     <StackPanel>
-      <TextBlock Text="Audio Out Test" Classes.ClassName="true"/>
+      <TextBlock Text="Audio: Output Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescAudioOut" Classes.ClassDescription="true"/>
       <Grid ColumnDefinitions="*,*,*">
         <Button Name="btnAudioOut" Content="Play Audio"/>
@@ -15,7 +15,7 @@
       <TextBlock Name="txInfoAudioOut" Classes.ClassInfo="true"/>
       <Border BorderThickness="0.6" Margin="0,5,0,20"/>
       <!-- Audio Record Test -->
-      <TextBlock Text="Audio Input Test" Classes.ClassName="true"/>
+      <TextBlock Text="Audio: Input Test (Continuous)" Classes.ClassName="true"/>
       <TextBlock Name="txDescAudioInCont" Classes.ClassDescription="true"/>
       <Grid ColumnDefinitions="*,*,*">
         <StackPanel Grid.Column="1">
@@ -27,7 +27,7 @@
       <TextBlock Name="txInfoAudioInCont" Classes.ClassInfo="true"/>
       <Border BorderThickness="0.6" Margin="0,5,0,20"/>
       <!-- Audio Record Timer Test -->
-      <TextBlock Text="Audio Input Test" Classes.ClassName="true"/>
+      <TextBlock Text="Audio: Input Test (Fixed Time)" Classes.ClassName="true"/>
       <TextBlock Name="txDescAudioInDur" Classes.ClassDescription="true"/>
       <Grid ColumnDefinitions="*,*,*">
         <StackPanel Grid.Column="0">

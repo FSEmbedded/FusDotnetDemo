@@ -7,7 +7,7 @@
   <ScrollViewer>
     <!-- Camera Test -->
     <StackPanel>
-      <TextBlock Text="Camera  Test" Classes.ClassName="true"/>
+      <TextBlock Text="Camera: Capture Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescCamera" Classes.ClassDescription="true"/>
       <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto">
         <StackPanel Grid.Column="0" Grid.Row="0">

@@ -7,7 +7,7 @@
   <ScrollViewer>
     <StackPanel>
       <!-- Get LED names -->
-      <TextBlock Text="Get all available LED names" Classes.ClassName="true"/>
+      <TextBlock Text="Get all available LEDs" Classes.ClassName="true"/>
       <TextBlock Name="txDescLedName" Classes.ClassDescription="true"/>
       <Grid ColumnDefinitions="*,*">
         <Button Name="btnLedName" Content="Get LED Names" Grid.Column="0"/>
@@ -19,7 +19,7 @@
       <TextBlock Name="txInfoLedName" Classes.ClassInfo="true"/>
       <Border BorderThickness="0.6" Margin="0,5,0,20"/>
       <!-- LED Test -->
-      <TextBlock Text="LED Test" Classes.ClassName="true"/>
+      <TextBlock Text="LED: Blink Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescLed" Classes.ClassDescription="true"/>
       <Grid ColumnDefinitions="*,*">
         <StackPanel Grid.Column="0">
