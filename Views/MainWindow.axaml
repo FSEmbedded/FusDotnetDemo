@@ -13,12 +13,14 @@
         ExtendClientAreaToDecorationsHint="False"
         ExtendClientAreaChromeHints="NoChrome"
         ExtendClientAreaTitleBarHeightHint="0">
-
-  <Grid RowDefinitions="40,*">
+  <Grid RowDefinitions="50,*">
     <Grid ColumnDefinitions="*,*,*" Classes.ClassHeader="true" Grid.Row="0">
       <Image Source="/Assets/fs_logo.png" Margin="5" Grid.Column="0" HorizontalAlignment="Left"/>
       <TextBlock Text="IoT Library Demo" Classes.ClassHeader="true" Grid.Column="1" HorizontalAlignment="Center"/>
-      <TextBlock Name="txIp" Margin="5" Classes.ClassHeader="true" Grid.Column="2" HorizontalAlignment="Right"/>
+      <StackPanel Grid.Column="2" HorizontalAlignment="Right">
+        <TextBlock Name="txArchName" Classes.ClassHeaderDevInfo="true"/>
+        <TextBlock Name="txIp" Classes.ClassHeaderDevInfo="true"/>
+      </StackPanel>      
     </Grid>
     <TabControl Grid.Row="1">
       <TabItem>

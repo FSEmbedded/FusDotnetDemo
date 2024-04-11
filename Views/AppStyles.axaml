@@ -17,6 +17,13 @@
     <Setter Property="VerticalAlignment" Value="Center"/>
     <Setter Property="Foreground" Value="White"/> <!-- Use Color2-->
   </Style>
+  <Style Selector="TextBlock.ClassHeaderDevInfo">
+    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="FontWeight" Value="Medium"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="HorizontalAlignment" Value="Right"/>
+    <Setter Property="Foreground" Value="White"/> <!-- Use Color2-->
+  </Style>
   <!-- TabControl -->
   <Style Selector="TabControl">
     <Setter Property="TabStripPlacement" Value="Left"/>

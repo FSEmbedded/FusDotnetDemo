@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using System;
 using System.Net;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace IoTLib_Test.Views
 {
@@ -10,14 +11,16 @@ namespace IoTLib_Test.Views
         {
             InitializeComponent();
             /* Add IP Address to Header */
-            txIp.Text = GetIPAddress();
+
+            string archName = Environment.MachineName;
+            txArchName.Text = archName;
+            txIp.Text = GetIPAddress(archName);
         }
 
-        public static string GetIPAddress()
+        public static string GetIPAddress(string archName)
         {
             string ip = "";
-            string Hostname = Environment.MachineName;
-            IPHostEntry? Host = Dns.GetHostEntry(Hostname);
+            IPHostEntry? Host = Dns.GetHostEntry(archName);
             foreach (IPAddress IP in Host.AddressList)
             {
                 if (IP.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
