@@ -148,6 +148,8 @@ public partial class UserControl_Audio : UserControl
 
     private void FillTextBlockWithText()
     {
+        //TODO: Desc Text verbessern: Pins in Doku/Readme
+
         txDescAudioOut.Text = "Connect Speaker to PcoreBBDSI Rev1.40 - AUDIO_A_LOUT_L - J11-49, AUDIO_A_LOUT_R - J11-45, GND - J11-47";
         txDescAudioInCont.Text = "This test will record audio until you stop it.\r\nConnect Line In to PcoreBBDSI Rev1.40 - AUDIO_A_LIN_L - J11-48, AUDIO_A_LIN_R - J11-44, GND - J11-46";
         txDescAudioInDur.Text = "This test will record audio for a defined time.\r\nConnect Line In to PcoreBBDSI Rev1.40 - AUDIO_A_LIN_L - J11-48, AUDIO_A_LIN_R - J11-44, GND - J11-46";

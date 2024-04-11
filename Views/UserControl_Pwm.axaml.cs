@@ -39,12 +39,12 @@ public partial class UserControl_Pwm : UserControl
         txInfoPwmTS.Text = "";
         txInfoPwmTS.Foreground = Brushes.Blue;
 
+        /* Get GPIO Pin # and  Time Span of dimming process */
+        GetValuesFromTextBox(0);
+
         /* Convert GPIO Pin # to gpio pin */
-        gpioNoPwm = Convert.ToInt32(tbPwmPinTS.Text);
         pinPwmTS = Helper.GetGpioPin(gpioNoPwm);
 
-        /* Get Time Span of dimming process */
-        duration = Convert.ToInt32(tbTimeSpan.Text);
         /* PwmDimLed takes 100 steps, sleep is in ms: (duration * 1000)ms / 100 */
         int sleep = duration * 10;
 
@@ -71,8 +71,10 @@ public partial class UserControl_Pwm : UserControl
 
         if (!sliderIsActive)
         {
+            /* Get GPIO Pin # from UI */
+            GetValuesFromTextBox(1);
+
             /* Convert GPIO Pin # to gpio pin */
-            gpioNoPwm = Convert.ToInt32(tbPwmPinV.Text);
             pinPwmV = Helper.GetGpioPin(gpioNoPwm);
             voltageValue = slVoltage.Value;
 
@@ -117,6 +119,31 @@ public partial class UserControl_Pwm : UserControl
             /* Set voltage when slider is moved */
             voltageValue = slVoltage.Value;
             PwmV!.SetVoltageValue(voltageValue);
+        }
+    }
+
+    public void GetValuesFromTextBox(int callerId)
+    {
+        switch (callerId)
+        {
+            /* BtnPwmTS_Clicked() */
+            case 0:
+                if (!string.IsNullOrEmpty(tbPwmPinTS.Text))
+                    gpioNoPwm = Convert.ToInt32(tbPwmPinTS.Text);
+                else
+                    tbPwmPinTS.Text = gpioNoPwm.ToString();
+                if (!string.IsNullOrEmpty(tbTimeSpan.Text))
+                    duration = Convert.ToInt32(tbTimeSpan.Text);
+                else
+                    tbTimeSpan.Text = duration.ToString();
+                break;
+            /* BtnPwmV_Clicked() */
+            case 1:
+                if (!string.IsNullOrEmpty(tbPwmPinV.Text))
+                    gpioNoPwm = Convert.ToInt32(tbPwmPinV.Text);
+                else
+                    tbPwmPinV.Text = gpioNoPwm.ToString();
+                break;
         }
     }
 

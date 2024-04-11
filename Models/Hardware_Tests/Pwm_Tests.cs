@@ -7,18 +7,12 @@ namespace IoTLib_Test.Models.Hardware_Tests;
 internal class Pwm_Tests
 {
     private readonly SoftwarePwmChannel pwmChannel;
-
-    /* PWM Pin Number */
-    private readonly int pin;
     private readonly int frequency = 200;
-
     private double voltageValue;
     private bool sliderIsActive = false;
 
-    public Pwm_Tests(int _pin)
+    public Pwm_Tests(int pin)
     {
-        pin = _pin;
-
         try
         {
             /* Create PWM Channel */
@@ -74,15 +68,5 @@ internal class Pwm_Tests
         /* Set value for while-loop in PwmDimValue */
         if (value >= 0.0 && value <= 1.0)
             voltageValue = value;
-    }
-
-    public static bool SetPwm(int pin, double value)
-    {
-        /* Set PWM voltage to a defined value */
-        SoftwarePwmChannel pwmChannel = new(pin);
-        pwmChannel.DutyCycle = value;
-        pwmChannel.Start();
-
-        return true;
     }
 }

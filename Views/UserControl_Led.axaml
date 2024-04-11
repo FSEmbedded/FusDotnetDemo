@@ -9,11 +9,11 @@
       <!-- Get LED names -->
       <TextBlock Text="Get all available LED names" Classes.ClassName="true"/>
       <TextBlock Name="txDescLedName" Classes.ClassDescription="true"/>
-      <Grid ColumnDefinitions="*,*,*">
+      <Grid ColumnDefinitions="*,*">
         <Button Name="btnLedName" Content="Get LED Names" Grid.Column="0"/>
-        <StackPanel Grid.Column="1" Grid.ColumnSpan="2">
+        <StackPanel Grid.Column="1">
           <TextBlock Text="Available LED Names:" Classes.ClassContentinfo="true"/>
-          <ComboBox Name="cbLedNames" Width="220" HorizontalAlignment="Center"/>
+          <ComboBox Name="cbLedNames" Width="220"/>
         </StackPanel>
       </Grid>
       <TextBlock Name="txInfoLedName" Classes.ClassInfo="true"/>
@@ -21,8 +21,8 @@
       <!-- LED Test -->
       <TextBlock Text="LED Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescLed" Classes.ClassDescription="true"/>
-      <Grid ColumnDefinitions="*,*,*">
-        <StackPanel Grid.Column="0" Grid.ColumnSpan="2">
+      <Grid ColumnDefinitions="*,*">
+        <StackPanel Grid.Column="0">
           <TextBlock Text="LED Name:" Classes.ClassContentinfo="true"/>
           <TextBox Name="tbLedName" Width="200"/>
         </StackPanel>

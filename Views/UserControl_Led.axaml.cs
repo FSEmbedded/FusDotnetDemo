@@ -9,15 +9,17 @@ public partial class UserControl_Led : UserControl
 {
     /* LED functions are in a separate class */
     private readonly Led_Tests Led;
-    private string ledName = "pca:red:power"; // default LED name on I2C-Extension-Board
+    private string ledName = "";
 
     public UserControl_Led()
     {
         InitializeComponent();
         AddButtonHandlers();
-        WriteStandardValuesInTextBox();
         FillTextBlockWithText();
         SetupComboBox();
+
+        tbLedName.IsReadOnly = true;
+        btnLed.IsEnabled = false;
         /* Create new object Led_Tests */
         Led = new Led_Tests();
     }
@@ -35,7 +37,7 @@ public partial class UserControl_Led : UserControl
         }
 
         /* Select ledName in ComboBox */
-        if (ledNames.Contains(ledName))
+        if (!string.IsNullOrEmpty(ledName) && ledNames.Contains(ledName))
         {
             cbLedNames.SelectedItem = ledName;
         }
@@ -52,19 +54,24 @@ public partial class UserControl_Led : UserControl
             tbLedName.Text = ledName;
             /* Close dropdown */
             cbLedNames.IsDropDownOpen = false;
-        }        
+
+            btnLed.IsEnabled = true;
+        }
+        else
+            btnLed.IsEnabled = false;
     }
 
     private void BtnLed_Clicked(object sender, RoutedEventArgs args)
     {
-        /* Get values from TextBox */
-        if (!string.IsNullOrEmpty(tbLedName.Text))
-            ledName = tbLedName.Text;
+        if (!string.IsNullOrEmpty(ledName))
+        {
+            /* Let LED blink */
+            Led.StartLedTest(ledName);
 
-        /* Let LED blink */
-        Led.StartLedTest(ledName);
-
-        txInfoLed.Text = $"LED {ledName} blinks";
+            txInfoLed.Text = $"LED {ledName} blinks";
+        }
+        else
+            txInfoLed.Text = "Select LED from Dropdown";
     }
 
     private void AddButtonHandlers()
@@ -74,16 +81,13 @@ public partial class UserControl_Led : UserControl
         btnLed.AddHandler(Button.ClickEvent, BtnLed_Clicked!);
     }
 
-    private void WriteStandardValuesInTextBox()
-    {
-        /* Write standard LED name in textbox */
-        tbLedName.Text = ledName;
-    }
-
     private void FillTextBlockWithText()
     {
+        //TODO: Desc Text verbessern: Pins in Doku/Readme, LED keyboard wird auch erkannt
+
         txDescLedName.Text = "Find all available LEDs on your Board. Us the desired LED name for the LED Test.";
         txDescLed.Text = "Connect BBDSI with I²C Extension Board: I2C_A_SCL = J11-16 -> J1-11, I2C_A_SDA = J11-17 -> J1-10, GND = J11-37 -> J1-16\r\n" +
+            "Default LED name for extension board: pca:red:power\r\n" +
             "Driver for PCA9532 must be enabled";
         txInfoLedName.Text = "";
         txInfoLed.Text = "";
