@@ -160,8 +160,8 @@ public partial class UserControl_Audio : UserControl
     private void FillTextBlockWithText()
     {
         txDescAudioOut.Text = "Audio file will be played until stopped.";
-        txDescAudioInCont.Text = "This test will record audio until stopped.";
-        txDescAudioInDur.Text = "This test will record audio for a defined time.";
+        txDescAudioInCont.Text = "This test will record audio until stopped. Recorded audio will then be played.";
+        txDescAudioInDur.Text = "This test will record audio for a defined time. Recorded audio will then be played.";
         txInfoAudioOut.Text = "";
         txInfoAudioInCont.Text = "";
         txInfoAudioInDur.Text = "";
