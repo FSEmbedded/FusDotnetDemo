@@ -132,7 +132,7 @@ namespace IoTLib_Test.Models.Hardware_Tests
         public bool PwmSwitchOnOff(bool toggleOn)
         {
             /* Write value to PWM device */
-            if (!toggleOn)
+            if (toggleOn)
                 i2cDevice!.Write([busId, pwmOn]);
             else
                 i2cDevice!.Write([busId, pwmOff]);

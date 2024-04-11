@@ -160,40 +160,40 @@ public partial class UserControl_I2c : UserControl
         }
 
         int counter = 0;
-        bool toggleOn = true;
+        bool toggleOn = false;
 
-        //TODO: in Thread starten, Live-Anzeige voltage in UI!?
-        while(counter < 6)
+        while (counter < 6)
         {
             /* Toggle PWM */
             I2cPwm!.PwmSwitchOnOff(toggleOn);
-            
-            /* Read ADC */
-            byte returnValue = I2cAdc!.ReadADC();
-            
-            /* calculate voltage from return value */
-            double voltage = (double)returnValue / (double)0xff * 100;
-            
-            /* If PWM switched on the OnBoard-LED, returnValue should be 0 */
-            if (toggleOn && returnValue != 0)
-            {
-                txPwmRead.Foreground = Brushes.Red;
-                txPwmRead.Text += $"PWM is on, Voltage should be 0V. ADC detected {voltage:F2}V\r\n";
-            }
-            else if (toggleOn && returnValue == 0)
-            {
-                txPwmRead.Foreground = Brushes.Green;
-                txPwmRead.Text += $"PWM is on, ADC detected: {voltage:F2}V\r\n";
-            }
-            else
-            {
-                txPwmRead.Foreground = Brushes.Green;
-                txPwmRead.Text += $"PWM is off, ADC detected: {voltage:F2}V\r\n";
-            }
-
             toggleOn = !toggleOn;
+
+            /* Read ADC */
+            byte adcValue = I2cAdc!.ReadADC();
+
+            /* Calculate voltage from adcvalue */
+            byte maxValue = 0xFF; /* Maximum value of the ADC */
+            double maxVoltage = 3.3; /* Maximum voltage of the PWM */
+            double voltage = ((double)adcValue / (double)maxValue) * maxVoltage;
+
+            /* Write results in UI */
+            UpdateUI(voltage, toggleOn);
+            
             counter++;
             Thread.Sleep(1000);
+        }
+    }
+
+    public void UpdateUI(double voltage, bool toggleOn)
+    {
+        /* If PWM switched on the OnBoard-LED, returnValue should be 0 */
+        if (toggleOn)
+        {
+            txPwmRead.Text += $"PWM on - ADC: {voltage:F4} V\r\n";
+        }
+        else if (!toggleOn)
+        {
+            txPwmRead.Text += $"PWM off - ADC: {voltage:F4} V\r\n";
         }
     }
 
@@ -201,7 +201,7 @@ public partial class UserControl_I2c : UserControl
     {
         switch (callerId)
         {
-            // BtnI2cRW_Clicked()
+            /* BtnI2cRW_Clicked() */
             case 0:
                 if (!string.IsNullOrEmpty(tbBusIdRW.Text))
                     busIdRW = Helper.ConvertHexStringToInt(tbBusIdRW.Text, busIdRW);
@@ -228,7 +228,7 @@ public partial class UserControl_I2c : UserControl
                 else
                     tbReg2.Text = register2.ToString("X");
                 break;
-            // BtnI2cLed_Clicked()
+            /* BtnI2cLed_Clicked() */
             case 1:
                 if (!string.IsNullOrEmpty(tbBusIdLed.Text))
                     busIdLed = Helper.ConvertHexStringToInt(tbBusIdLed.Text, busIdLed);
@@ -239,7 +239,7 @@ public partial class UserControl_I2c : UserControl
                 else
                     tbDevAddrLed.Text = devAddrLed.ToString("X");
                 break;
-            // BtnI2cPwm_Clicked()
+            /* BtnI2cPwm_Clicked() */
             case 2:
                 if (!string.IsNullOrEmpty(tbBusIdPwm.Text))
                     busIdPwm = Helper.ConvertHexStringToInt(tbBusIdPwm.Text, busIdPwm);
