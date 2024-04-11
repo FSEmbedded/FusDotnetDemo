@@ -149,18 +149,8 @@ public partial class UserControl_Spi : UserControl
 
     private void FillTextBlockWithText()
     {
-        //TODO: Desc Text verbessern: Pins in Doku/Readme
-
         /* Description Text */
-        txDescSpi.Text = "Connect BBDSI with SPI: " +
-            "SCLK: ADP-2 -> J11-3; " +
-            "MOSI: ADP-3 -> J11-6; " +
-            "MISO: ADP-4 -> J11-5; " +
-            "CS: ADP-6 -> J11-4; " +
-            "RESET: ADP-8 -> J11-39; " +
-            "GND: ADP-16 -> J11-42; " +
-            "+3V3: ADP-26 -> J11-1";
-
+        txDescSpi.Text = "Writes values to the SPI device, then reads values from the same device.";
         txInfoSpiWrite.Text = "";
         txInfoSpiRead.Text = "";
         txInfoSpi.Text = "";

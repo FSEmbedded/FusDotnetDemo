@@ -30,7 +30,7 @@ public partial class UserControl_Can : UserControl
         WriteStandardValuesInTextBox();
         FillTextBlockWithText();
         /* Button will be enabled after CAN is activated */
-        btnCanRW.IsEnabled = false;
+        ActivateButtonCanRW(false);
     }
 
     private void BtnCanAct_Clicked(object sender, RoutedEventArgs args)
@@ -46,7 +46,7 @@ public partial class UserControl_Can : UserControl
             Can = new Can_Tests(canDevice, bitrate, canIdWrite);
             txInfoCanAct.Text = "CAN device is active and connection to receiving device is validated";
             txInfoCanAct.Foreground = Brushes.Green;
-            btnCanRW.IsEnabled = true;
+            ActivateButtonCanRW(true);
         }
         catch (Exception ex)
         {
@@ -152,7 +152,21 @@ public partial class UserControl_Can : UserControl
         canDevice = $"can{canDevNo}";
     }
 
-    private void DeActivateBtnCanRW(object sender, KeyEventArgs e)
+    private void ActivateButtonCanRW(bool activate)
+    {
+        if (activate)
+        {
+            btnCanRW.IsEnabled = true;
+            txDescCanRW.Text = "External CAN device must echo the received message!";
+        }
+        else
+        {
+            btnCanRW.IsEnabled = false;
+            txDescCanRW.Text = "Activate CAN device first!";
+        }
+    }
+
+    private void TextBoxValuesChanged(object sender, KeyEventArgs e)
     {
         /* (De)Activate btnCanRW if values for CAN device changed.
          * Button will be activated again if right value is entered 
@@ -160,23 +174,23 @@ public partial class UserControl_Can : UserControl
         if (sender == tbCanDev)
         {
             if (tbCanDev.Text == canDevNo.ToString())
-                btnCanRW.IsEnabled = true;
+                ActivateButtonCanRW(true);
             else
-                btnCanRW.IsEnabled = false;
+                ActivateButtonCanRW(false);
         }
         else if (sender == tbCanId)
         {
             if (tbCanId.Text == canIdWrite.ToString("X"))
-                btnCanRW.IsEnabled = true;
+                ActivateButtonCanRW(true);
             else
-                btnCanRW.IsEnabled = false;
+                ActivateButtonCanRW(false);
         }
         else if (sender == tbBitrate)
         {
             if (tbBitrate.Text == bitrate.ToString())
-                btnCanRW.IsEnabled = true;
+                ActivateButtonCanRW(true);
             else
-                btnCanRW.IsEnabled = false;
+                ActivateButtonCanRW(false);
         }
         e.Handled = true;
     }
@@ -219,25 +233,17 @@ public partial class UserControl_Can : UserControl
         tbVal6.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
         tbVal7.AddHandler(KeyDownEvent, InputControl.TextBox_HexInput!, RoutingStrategies.Tunnel);
         /* Additional handlers, will disable btnCanRW */
-        tbCanDev.AddHandler(KeyUpEvent, DeActivateBtnCanRW!, RoutingStrategies.Tunnel);
-        tbCanId.AddHandler(KeyUpEvent, DeActivateBtnCanRW!, RoutingStrategies.Tunnel);
-        tbBitrate.AddHandler(KeyUpEvent, DeActivateBtnCanRW!, RoutingStrategies.Tunnel);
+        tbCanDev.AddHandler(KeyUpEvent, TextBoxValuesChanged!, RoutingStrategies.Tunnel);
+        tbCanId.AddHandler(KeyUpEvent, TextBoxValuesChanged!, RoutingStrategies.Tunnel);
+        tbBitrate.AddHandler(KeyUpEvent, TextBoxValuesChanged!, RoutingStrategies.Tunnel);
     }
 
     private void FillTextBlockWithText()
     {
-        //TODO: Desc Text verbessern: Pins in Doku/Readme
-
         /* Description Text */
-        txDescCanAct.Text = "Activate CAN device on your board\r\nValidate connection to receiving CAN device";
+        txDescCanAct.Text = "Activate the selected CAN device on your board and validate the connection to the external CAN device.";
         txInfoCanAct.Text = "";
-
-        txDescCanRW.Text = "Activate CAN device first!\r\n" +
-            "Connect second board, CAN_L - CAN_L & CAN_H - CAN_H\r\n" +
-            "On second device , run following comand under Linux to activate can0:\r\n" +
-            "ip link set can0 up type can bitrate 1000000 && ifconfig can0 up\r\n" +
-            "Run this command while CAN test is running to return the received value:\r\n" +
-            "STRING=$(candump can0 -L -n1 | cut -d '#' -f2) && cansend can0 01b#${STRING}";
+        txDescCanRW.Text = "Activate CAN device first!";
         txCanWrite.Text = "";
         txCanRead.Text = "";
         txInfoCanRW.Text = "";

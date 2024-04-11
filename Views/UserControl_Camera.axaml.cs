@@ -108,9 +108,7 @@ public partial class UserControl_Camera : UserControl
 
     private void FillTextBlockWithText()
     {
-        //TODO: Desc Text verbessern: Pins in Doku/Readme
-
-        txDescCamera.Text = "Connect Camera to USB-Port";
+        txDescCamera.Text = "This test will take a picture and show it below.";
         txInfoCamera.Text = "";
     }
 }

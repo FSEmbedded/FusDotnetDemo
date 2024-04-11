@@ -172,12 +172,10 @@ public partial class UserControl_Pwm : UserControl
 
     private void FillTextBlockWithText()
     {
-        //TODO: Desc Text verbessern: Pins in Doku/Readme
-
-        txDescPwmTS.Text = "Connect LED to PcoreBBDSI Rev1.40 - J11-8 / J11-11\r\n" +
-            "LED brightness will be increased by changing PWM values"; // GPIO_J1_54
-        txDescPwmV.Text = "Connect LED to PcoreBBDSI Rev1.40 - J11-8 / J11-11\r\n" +
-            "LED brightness is changed by moving the slider"; // GPIO_J1_54
+        txDescPwmTS.Text = "This test will light up the LED connected to the selected GPIO pin.\r\n" +
+            "The brightness will be increased over time by changing PWM values";
+        txDescPwmV.Text = "This test will light up the LED connected to the selected GPIO pin.\r\n" +
+            "LED brightness by changing the value for voltage using the slider";
         txInfoPwmTS.Text = "";
         txInfoPwmV.Text = "";
     }

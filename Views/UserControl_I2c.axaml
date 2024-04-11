@@ -18,7 +18,7 @@
             </StackPanel>
           </StackPanel>
           <StackPanel Grid.Column="0" Grid.Row="1">
-            <TextBlock Text="Address Storage:" Classes.ClassContentinfo="true"/>
+            <TextBlock Text="Address:" Classes.ClassContentinfo="true"/>
             <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
               <TextBlock Text="0x" Classes.Class0x="true"/>
               <TextBox Name="tbDevAddrRW"/>

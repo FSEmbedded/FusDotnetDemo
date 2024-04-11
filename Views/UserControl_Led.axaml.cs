@@ -2,6 +2,8 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using System.Collections.Generic;
 using IoTLib_Test.Models.Hardware_Tests;
+using System.Threading;
+using Avalonia.Media;
 
 namespace IoTLib_Test.Views;
 
@@ -10,6 +12,7 @@ public partial class UserControl_Led : UserControl
     /* LED functions are in a separate class */
     private readonly Led_Tests Led;
     private string ledName = "";
+    private bool ledBlinkIsActive = false;
 
     public UserControl_Led()
     {
@@ -19,7 +22,7 @@ public partial class UserControl_Led : UserControl
         SetupComboBox();
 
         tbLedName.IsReadOnly = true;
-        btnLed.IsEnabled = false;
+        ActivateButtonLed(false);
         /* Create new object Led_Tests */
         Led = new Led_Tests();
     }
@@ -41,8 +44,10 @@ public partial class UserControl_Led : UserControl
         {
             cbLedNames.SelectedItem = ledName;
         }
+        else
+            cbLedNames.SelectedIndex = 0;
 
-        txInfoLedName.Text = "Select LED name from dropdown";
+        txInfoLedName.Text = "Select LED from dropdown";
     }
 
     private void CbLedNames_SelectionChanged(object sender, RoutedEventArgs args)
@@ -55,23 +60,55 @@ public partial class UserControl_Led : UserControl
             /* Close dropdown */
             cbLedNames.IsDropDownOpen = false;
 
-            btnLed.IsEnabled = true;
+            ActivateButtonLed(true);
         }
         else
-            btnLed.IsEnabled = false;
+            ActivateButtonLed(false);
     }
 
     private void BtnLed_Clicked(object sender, RoutedEventArgs args)
     {
-        if (!string.IsNullOrEmpty(ledName))
+        if (!ledBlinkIsActive)
         {
-            /* Let LED blink */
-            Led.StartLedTest(ledName);
-
-            txInfoLed.Text = $"LED {ledName} blinks";
+            if (!string.IsNullOrEmpty(ledName))
+            {
+                /* Create new thread, let LED blink */
+                Thread ledBlinkThread = new(() => Led.StartLedBlink(ledName));
+                ledBlinkThread.Start();
+                ledBlinkIsActive = true;
+                /* Change UI */
+                btnLed.Content = "Stop LED";
+                btnLed.Background = Brushes.Red;
+                txInfoLed.Text = $"LED {ledName} blinks";
+            }
+            else
+                txInfoLed.Text = "Select LED from Dropdown";
         }
         else
-            txInfoLed.Text = "Select LED from Dropdown";
+        {
+            /* Create new thread, stop LED blink */
+            Thread stopBlinkThread = new(Led.StopLedBlink);
+            stopBlinkThread.Start();
+            ledBlinkIsActive = false;
+            /* Change UI */
+            btnLed.Content = "Blink LED";
+            btnLed.Background = Brushes.LightGreen;
+            txInfoLed.Text = $"LED {ledName} is off";
+        }
+    }
+
+    private void ActivateButtonLed(bool activate)
+    {
+        if (activate)
+        {
+            btnLed.IsEnabled = true;
+            txDescLed.Text = "Selected LED will blink until stopped.";
+        }
+        else
+        {
+            btnLed.IsEnabled = false;
+            txDescLed.Text = "Select LED first";
+        }
     }
 
     private void AddButtonHandlers()
@@ -83,12 +120,8 @@ public partial class UserControl_Led : UserControl
 
     private void FillTextBlockWithText()
     {
-        //TODO: Desc Text verbessern: Pins in Doku/Readme, LED keyboard wird auch erkannt
-
-        txDescLedName.Text = "Find all available LEDs on your Board. Us the desired LED name for the LED Test.";
-        txDescLed.Text = "Connect BBDSI with I²C Extension Board: I2C_A_SCL = J11-16 -> J1-11, I2C_A_SDA = J11-17 -> J1-10, GND = J11-37 -> J1-16\r\n" +
-            "Default LED name for extension board: pca:red:power\r\n" +
-            "Driver for PCA9532 must be enabled";
+        txDescLedName.Text = "Find all available LEDs on your Board.";
+        txDescLed.Text = "Select LED first";
         txInfoLedName.Text = "";
         txInfoLed.Text = "";
     }

@@ -306,15 +306,13 @@ public partial class UserControl_I2c : UserControl
 
     private void FillTextBlockWithText()
     {
-        //TODO: Desc Text verbessern: Pins in Doku/Readme
-
         /* Description Text */
-        txDescRW.Text = "Connect BBDSI with I²C Extension Board: I2C_A_SCL = J11-16 -> J1-11, I2C_A_SDA = J11-17 -> J1-10, GND = J11-37 -> J1-16";
+        txDescRW.Text = "Write the values to the I²C-Device at the defined Bus-ID and address.";
         txInfoWrite.Text = "";
         txInfoRead.Text = "";
-        txDescLed.Text = "Connect BBDSI with I²C Extension Board: I2C_A_SCL = J11-16 -> J1-11, I2C_A_SDA = J11-17 -> J1-10, GND = J11-37 -> J1-16";
+        txDescLed.Text = "Writes multiple values in a loop to the I²C-Device. On the I²C Extension Board you will get an LED chaser.";
         txInfoLed.Text = "";
-        txDescPwm.Text = "Connect I²C Extension Board Pins: J2-17 -> J2-27; Set S2-3 to ON";
+        txDescPwm.Text = "Toggles the PWM multiple times and reads the values measured by the ADC.";
         txInfoPwm.Text = "";
     }
 }

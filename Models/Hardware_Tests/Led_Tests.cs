@@ -6,6 +6,8 @@ namespace IoTLib_Test.Models.Hardware_Tests;
 
 internal class Led_Tests
 {
+    private bool runLedBlinkTest = false;
+
     public static List<string> GetAllLeds()
     {
         List<string> ledNames = new();
@@ -19,8 +21,10 @@ internal class Led_Tests
         return ledNames;
     }
 
-    public void StartLedTest(string ledName)
+    public void StartLedBlink(string ledName)
     {
+        runLedBlinkTest = true;
+
         /* Open the LED with the specified name */
         using BoardLed led = new BoardLed(ledName);
 
@@ -36,7 +40,7 @@ internal class Led_Tests
         int maxBrightness = led.MaxBrightness;
 
         /* Let LED blink for 10 times */
-        for (int i = 0; i < 10; i++)
+        while (runLedBlinkTest)
         {
             /* Set brightness to max */
             led.Brightness = maxBrightness;
@@ -47,5 +51,10 @@ internal class Led_Tests
         }
         /* Reset trigger */
         led.Trigger = defaultTrigger;
+    }
+
+    public void StopLedBlink()
+    {
+        runLedBlinkTest = false;
     }
 }
