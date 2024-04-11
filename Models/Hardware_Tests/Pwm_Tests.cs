@@ -2,88 +2,87 @@
 using System.Threading;
 using System.Device.Pwm.Drivers;
 
-namespace IoTLib_Test.Models.Hardware_Tests
+namespace IoTLib_Test.Models.Hardware_Tests;
+
+internal class Pwm_Tests
 {
-    internal class Pwm_Tests
+    private readonly SoftwarePwmChannel pwmChannel;
+
+    /* PWM Pin Number */
+    private readonly int pin;
+    private readonly int frequency = 200;
+
+    private double voltageValue;
+    private bool sliderIsActive = false;
+
+    public Pwm_Tests(int _pin)
     {
-        private readonly SoftwarePwmChannel pwmChannel;
+        pin = _pin;
 
-        /* PWM Pin Number */
-        private readonly int pin;
-        private readonly int frequency = 200;
-
-        private double voltageValue;
-        private bool sliderIsActive = false;
-
-        public Pwm_Tests(int _pin)
+        try
         {
-            pin = _pin;
-
-            try
-            {
-                /* Create PWM Channel */
-                pwmChannel = new SoftwarePwmChannel(pin, frequency);
-            }
-            catch (Exception ex)
-            {
-                throw new($"Exception: {ex.Message}");
-            }
+            /* Create PWM Channel */
+            pwmChannel = new SoftwarePwmChannel(pin, frequency);
         }
-
-        public void PwmDimTimespan(int sleep)
+        catch (Exception ex)
         {
-            /* Increase PWM voltage over a defined time span */
-            int dutyCycle = 0;
-            /* Start with LED off */
-            pwmChannel.DutyCycle = dutyCycle;
-            pwmChannel.Start();
-
-            /* Increase DutyCycle -> increase brightness */
-            for (double fill = 0.0; fill <= 1.0; fill += 0.01)
-            {
-                pwmChannel.DutyCycle = fill;
-                Thread.Sleep(sleep);
-            }
-            /* Clear channel */
-            pwmChannel.Dispose();
+            throw new($"Exception: {ex.Message}");
         }
+    }
 
-        public void PwmDimValue(double startValue)
+    public void PwmDimTimespan(int sleep)
+    {
+        /* Increase PWM voltage over a defined time span */
+        int dutyCycle = 0;
+        /* Start with LED off */
+        pwmChannel.DutyCycle = dutyCycle;
+        pwmChannel.Start();
+
+        /* Increase DutyCycle -> increase brightness */
+        for (double fill = 0.0; fill <= 1.0; fill += 0.01)
         {
-            /* Change PWM voltage by setting the voltage */
-            voltageValue = startValue;
-            sliderIsActive = true;
-
-            while (sliderIsActive)
-            {
-                /* Set PWM voltage to a defined value */
-                pwmChannel.DutyCycle = voltageValue;
-                pwmChannel.Start();
-            }
+            pwmChannel.DutyCycle = fill;
+            Thread.Sleep(sleep);
         }
+        /* Clear channel */
+        pwmChannel.Dispose();
+    }
 
-        public void StopPwmDimValue()
-        {
-            /* Clear channel */
-            sliderIsActive = false;
-            pwmChannel.Dispose();
-        }
+    public void PwmDimValue(double startValue)
+    {
+        /* Change PWM voltage by setting the voltage */
+        voltageValue = startValue;
+        sliderIsActive = true;
 
-        public void SetVoltageValue(double value)
-        {
-            /* Set value for while-loop in PwmDimValue */
-            if (value >= 0.0 && value <= 1.0)
-                voltageValue = value;
-        }
-
-        public static bool SetPwm(int pin, double value)
+        while (sliderIsActive)
         {
             /* Set PWM voltage to a defined value */
-            SoftwarePwmChannel pwmChannel = new(pin);
-            pwmChannel.DutyCycle = value;
+            pwmChannel.DutyCycle = voltageValue;
             pwmChannel.Start();
-
-            return true;
         }
+    }
+
+    public void StopPwmDimValue()
+    {
+        /* Clear channel */
+        sliderIsActive = false;
+        pwmChannel.Dispose();
+    }
+
+    public void SetVoltageValue(double value)
+    {
+        /* Set value for while-loop in PwmDimValue */
+        if (value >= 0.0 && value <= 1.0)
+            voltageValue = value;
+    }
+
+    public static bool SetPwm(int pin, double value)
+    {
+        /* Set PWM voltage to a defined value */
+        SoftwarePwmChannel pwmChannel = new(pin);
+        pwmChannel.DutyCycle = value;
+        pwmChannel.Start();
+
+        return true;
     }
 }
