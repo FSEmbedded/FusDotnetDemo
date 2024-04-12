@@ -21,7 +21,7 @@
         <Button Name="btnPwmTS" Content="Start PWM Test"/>
       </Grid>
       <TextBlock Name="txInfoPwmTS" Classes.ClassInfo="true"/>
-      <Border BorderThickness="0.6" Margin="0,5,0,20"/>
+      <Border Classes.ClassDivider="true"/>
       <!-- PWM Test - Value -->
       <TextBlock Text="PWM: Set Voltage" Classes.ClassName="true"/>
       <TextBlock Name="txDescPwmV" Classes.ClassDescription="true"/>

@@ -16,8 +16,8 @@
           </StackPanel>
           <StackPanel>
             <TextBlock Text="CAN ID:" Classes.ClassContentinfo="true"/>
-            <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
-              <TextBlock Text="0x" Classes.Class0x="true"/>
+            <StackPanel  Classes.Class0x="true">
+              <TextBlock Classes.Class0x="true"/>
               <TextBox Name="tbCanId"/>
             </StackPanel>
           </StackPanel>
@@ -29,31 +29,31 @@
         <Button Name="btnCanAct" Content="Activate CAN" Grid.Row="0"/>
       </Grid>
       <TextBlock Name="txInfoCanAct" Classes.ClassInfo="true"/>
-      <Border BorderThickness="0.6" Margin="0,5,0,20"/>
+      <Border Classes.ClassDivider="true"/>
       <!-- CAN Read-Write Test -->
       <TextBlock Text="CAN: Read / Write Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescCanRW" Classes.ClassDescription="true"/>
       <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto">
         <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
           <TextBlock Text="Value to send (byte array):" Classes.ClassContentinfo="true"/>
-          <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
-            <TextBlock Text="0x" Classes.Class0x="true"/>
+          <StackPanel  Classes.Class0x="true">
+            <TextBlock Classes.Class0x="true"/>
             <TextBox Name="tbVal0"/>
-            <TextBlock Text="0x" Classes.Class0x="true"/>
+            <TextBlock Classes.Class0x="true"/>
             <TextBox Name="tbVal1"/>
-            <TextBlock Text="0x" Classes.Class0x="true"/>
+            <TextBlock Classes.Class0x="true"/>
             <TextBox Name="tbVal2"/>
-            <TextBlock Text="0x" Classes.Class0x="true"/>
+            <TextBlock Classes.Class0x="true"/>
             <TextBox Name="tbVal3"/>
           </StackPanel>
-          <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
-            <TextBlock Text="0x" Classes.Class0x="true"/>
+          <StackPanel  Classes.Class0x="true">
+            <TextBlock Classes.Class0x="true"/>
             <TextBox Name="tbVal4"/>
-            <TextBlock Text="0x" Classes.Class0x="true"/>
+            <TextBlock Classes.Class0x="true"/>
             <TextBox Name="tbVal5"/>
-            <TextBlock Text="0x" Classes.Class0x="true"/>
+            <TextBlock Classes.Class0x="true"/>
             <TextBox Name="tbVal6"/>
-            <TextBlock Text="0x" Classes.Class0x="true"/>
+            <TextBlock Classes.Class0x="true"/>
             <TextBox Name="tbVal7"/>
           </StackPanel>
         </StackPanel>

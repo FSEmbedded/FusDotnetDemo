@@ -13,7 +13,7 @@
         <Button Name="btnAudioOut" Content="Play Audio"/>
       </Grid>
       <TextBlock Name="txInfoAudioOut" Classes.ClassInfo="true"/>
-      <Border BorderThickness="0.6" Margin="0,5,0,20"/>
+      <Border Classes.ClassDivider="true"/>
       <!-- Audio Record Test -->
       <TextBlock Text="Audio: Input Test (Continuous)" Classes.ClassName="true"/>
       <TextBlock Name="txDescAudioInCont" Classes.ClassDescription="true"/>
@@ -25,7 +25,7 @@
         <Button Name="btnAudioInCont" Content="Start Recording"/>
       </Grid>
       <TextBlock Name="txInfoAudioInCont" Classes.ClassInfo="true"/>
-      <Border BorderThickness="0.6" Margin="0,5,0,20"/>
+      <Border Classes.ClassDivider="true"/>
       <!-- Audio Record Timer Test -->
       <TextBlock Text="Audio: Input Test (Fixed Time)" Classes.ClassName="true"/>
       <TextBlock Name="txDescAudioInDur" Classes.ClassDescription="true"/>

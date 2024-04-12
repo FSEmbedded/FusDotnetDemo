@@ -16,7 +16,7 @@
         <Button Name="btnLedSwitch" Content="Switch On" Grid.Row="0"/>
       </Grid>
       <TextBlock Name="txInfoLed" Classes.ClassInfo="true"/>
-      <Border BorderThickness="0.6" Margin="0,5,0,20"/>
+      <Border Classes.ClassDivider="true"/>
       <!-- Input Test -->
       <TextBlock Text="GPIO: Input Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescInput" Classes.ClassDescription="true"/>

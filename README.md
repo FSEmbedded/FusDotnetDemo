@@ -88,3 +88,6 @@ start-on-startup=true
 # Remote Debugging
 copy_to_board.ps1
 IP anpassen, automatisch ausführen lassen
+
+# Avalonia
+UI Settings in /Views/AppStyles.axaml
