@@ -10,7 +10,7 @@
       <TextBlock Name="txDescLed" Classes.ClassDescription="true"/>
       <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto">
         <StackPanel Grid.Column="1">
-          <TextBlock Text="GPIO Pin:" Classes.ClassContentinfo="true"/>
+          <TextBlock Text="GPIO Pin - LED:" Classes.ClassContentinfo="true"/>
           <TextBox Name="tbLedPin"/>
         </StackPanel>
         <Button Name="btnLedSwitch" Content="Switch On" Grid.Row="0"/>
@@ -22,7 +22,7 @@
       <TextBlock Name="txDescInput" Classes.ClassDescription="true"/>
       <Grid ColumnDefinitions="*,*,*">
         <StackPanel Grid.Column="1">
-          <TextBlock Text="GPIO Pin:" Classes.ClassContentinfo="true"/>
+          <TextBlock Text="GPIO Pin - Button:" Classes.ClassContentinfo="true"/>
           <TextBox Name="tbInputPin"/>
         </StackPanel>
         <Button Name="btnGpioInput" Content="Activate Input" />

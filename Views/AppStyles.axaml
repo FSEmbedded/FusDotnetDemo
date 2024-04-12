@@ -27,7 +27,6 @@
   <!-- TabControl -->
   <Style Selector="TabControl">
     <Setter Property="TabStripPlacement" Value="Left"/>
-    <Setter Property="Background" Value="White"/> <!-- Use Color3 -->
   </Style>
   <Style Selector="TabControl WrapPanel">
     <Setter Property="ItemHeight" Value="38"/>
@@ -67,6 +66,7 @@
     <Setter Property="HorizontalContentAlignment" Value="Center"/>
     <Setter Property="CornerRadius" Value="8"/>
     <Setter Property="Background" Value="LightGreen"/>
+    <Setter Property="Foreground" Value="Black"/>
     <Setter Property="BorderBrush" Value="Black"/>
     <Setter Property="Grid.Column" Value="2"/>
   </Style>
@@ -80,7 +80,6 @@
     <Setter Property="VerticalAlignment" Value="Bottom"/>
     <Setter Property="HorizontalContentAlignment" Value="Center"/>
     <Setter Property="CornerRadius" Value="8"/>
-    <Setter Property="Background" Value="White"/>
   </Style>
   <Style Selector="TextBox">
     <Setter Property="Margin" Value="5"/>
@@ -93,7 +92,6 @@
     <Setter Property="VerticalContentAlignment" Value="Top"/>
     <Setter Property="HorizontalContentAlignment" Value="Center"/>
     <Setter Property="CornerRadius" Value="8"/>
-    <Setter Property="Background" Value="White"/>
   </Style>
   <Style Selector="TextBlock.ClassName">
     <Setter Property="FontSize" Value="16"/>

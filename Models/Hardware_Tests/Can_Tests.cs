@@ -33,7 +33,7 @@ internal class Can_Tests
             /* Throw exception if canDev couldn't be activated */
             if (!IsCanDevUp())
             {
-                throw new Exception($"Exception: Could not activate CAN device {canDev}");
+                throw new Exception($"Could not activate CAN device {canDev}");
             }
         }
 
@@ -138,7 +138,7 @@ internal class Can_Tests
             catch (Exception ex)
             {
                 rwTestIsRunning = false;
-                throw new Exception("CAN Write Exception: " + ex.Message);
+                throw new Exception(ex.Message);
             }
             Thread.Sleep(1000);
         }

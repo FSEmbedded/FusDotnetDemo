@@ -83,7 +83,7 @@ public partial class UserControl_I2c : UserControl
         /* Check if values read and write are equal */
         if (valueRead1 == valueWrite1 && valueRead2 == valueWrite2)
         {
-            txInfoRead.Text = $"Value 0x{valueRead1:X} & 0x{valueRead2:X} read from I²C Device";
+            txInfoRead.Text = $"Values 0x{valueRead1:X} & 0x{valueRead2:X} read from I²C Device";
             txInfoRead.Foreground = Brushes.Green;
         }
         else

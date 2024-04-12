@@ -42,7 +42,7 @@ public partial class UserControl_Audio : UserControl
             /* Change UI */
             btnAudioOut.Content = "Stop Audio";
             btnAudioOut.Background = Brushes.Red;
-            txInfoAudioOut.Text = "Speaker should play music";
+            txInfoAudioOut.Text = "Speaker plays music";
         }
         else
         {
