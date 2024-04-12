@@ -6,6 +6,8 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using IoTLib_Test.Models.Tools;
 using IoTLib_Test.Models.Hardware_Tests;
+using Avalonia;
+using DynamicData;
 
 namespace IoTLib_Test.Views;
 
@@ -19,6 +21,8 @@ public partial class UserControl_Audio : UserControl
     private readonly string audioTestfile = "IoTLib_Test/Assets/Audio_Test.wav"; // comes with this tool
     private readonly string recFileCont = "/home/root/record_continuous.wav"; // is created from software
     private readonly string recFileDur = "/home/root/record_fixedduration.wav"; // is created from software
+
+    private string inputSignal = "LINE_IN";
 
     public UserControl_Audio()
     {
@@ -62,6 +66,10 @@ public partial class UserControl_Audio : UserControl
         /* Recording until Stop is clicked */
         if (!isRecording)
         {
+            /* Get selected Input Signal, set alsamixer to this input */
+            inputSignal = GetSelectedInputSignal(0);
+            Audio_Tests.SetAudioInput(inputSignal);
+
             /* Start Recording */
             Audio.RecordContinuous(recFileCont);
             isRecording = true;
@@ -69,6 +77,7 @@ public partial class UserControl_Audio : UserControl
             btnAudioInCont.Content = "Stop Recording";
             btnAudioInCont.Background = Brushes.Red;
             txInfoAudioInCont.Text = "Device is recording";
+            btnAudioInTime.IsEnabled = false;
         }
         else
         {
@@ -80,6 +89,7 @@ public partial class UserControl_Audio : UserControl
                 btnAudioInCont.Content = "Start Recording";
                 btnAudioInCont.Background = Brushes.LightGreen;
                 txInfoAudioInCont.Text = "Recording finished";
+                btnAudioInTime.IsEnabled = true;
                 /* Play recorded file */
                 Audio.PlayAudioFile(recFileCont);
 
@@ -105,36 +115,64 @@ public partial class UserControl_Audio : UserControl
         /* Get duration from TextBox */
         GetValuesFromTextBox();
 
+        /* Get selected Input Signal, set alsamixer to this input */
+        inputSignal = GetSelectedInputSignal(1);
+        Audio_Tests.SetAudioInput(inputSignal);
+
         /* Start recording */
-        if (Audio.RecordFixedDuration(recFileDur, recDuration))
+        if (Audio.RecordFixedTime(recFileDur, recDuration))
         {
             /* Play recorded file */
             Audio.PlayAudioFile(recFileDur);
-            txInfoAudioInDur.Text = "Recording success";
+            txInfoAudioInTime.Text = "Recording success";
         }
         else
         {
-            txInfoAudioInDur.Text = "Recording failed";
+            txInfoAudioInTime.Text = "Recording failed";
             return;
         }
 
-        if (!(bool)cbKeepFileDur.IsChecked!)
+        if (!(bool)cbKeepFileTime.IsChecked!)
         {
             /* Delete recorded file */
             File.Delete(recFileDur);
         }
         else
         {
-            txInfoAudioInDur.Text += $"\r\nFile is stored at {recFileDur}";
+            txInfoAudioInTime.Text += $"\r\nFile is stored at {recFileDur}";
         }
+    }
+
+    private string GetSelectedInputSignal(int caller)
+    {
+        string signal = "";
+
+        switch (caller)
+        {
+            /* BtnAudioInCont_Clicked */
+            case 0:
+                if (rbSigContLineIn.IsChecked == true)
+                    signal = "LINE_IN";
+                else
+                    signal = "MIC_IN";
+                break;
+            /* BtnAudioInDur_Clicked */
+            case 1:
+                if (rbSigTimeLineIn.IsChecked == true)
+                    signal = "LINE_IN";
+                else
+                    signal = "MIC_IN";
+                break;
+        }
+        return signal;
     }
 
     public void GetValuesFromTextBox()
     {
-        if (!string.IsNullOrEmpty(tbAudioInDur.Text))
-            recDuration = Convert.ToUInt32(tbAudioInDur.Text);
+        if (!string.IsNullOrEmpty(tbAudioInTime.Text))
+            recDuration = Convert.ToUInt32(tbAudioInTime.Text);
         else
-            tbAudioInDur.Text = recDuration.ToString();
+            tbAudioInTime.Text = recDuration.ToString();
     }
 
     private void AddButtonHandlers()
@@ -142,28 +180,28 @@ public partial class UserControl_Audio : UserControl
         /* Button bindings */
         btnAudioOut.AddHandler(Button.ClickEvent, BtnAudioOut_Clicked!);
         btnAudioInCont.AddHandler(Button.ClickEvent, BtnAudioInCont_Clicked!);
-        btnAudioInDur.AddHandler(Button.ClickEvent, BtnAudioInDur_Clicked!);
+        btnAudioInTime.AddHandler(Button.ClickEvent, BtnAudioInDur_Clicked!);
     }
 
     private void WriteStandardValuesInTextBox()
     {
         /* Write standard values in textboxes */
-        tbAudioInDur.Text = Convert.ToString(recDuration);
+        tbAudioInTime.Text = Convert.ToString(recDuration);
     }
 
     private void AddTextBoxHandlers()
     {
         /* Handler to only allow decimal value inputs */
-        tbAudioInDur.AddHandler(KeyDownEvent, InputControl.TextBox_DecimalInput!, RoutingStrategies.Tunnel);
+        tbAudioInTime.AddHandler(KeyDownEvent, InputControl.TextBox_DecimalInput!, RoutingStrategies.Tunnel);
     }
 
     private void FillTextBlockWithText()
     {
         txDescAudioOut.Text = "Audio file will be played until stopped.";
-        txDescAudioInCont.Text = "This test will record audio until stopped. Recorded audio will then be played.";
-        txDescAudioInDur.Text = "This test will record audio for a defined time. Recorded audio will then be played.";
         txInfoAudioOut.Text = "";
+        txDescAudioInCont.Text = "This test will record audio until stopped. Recorded audio will then be played.";
         txInfoAudioInCont.Text = "";
-        txInfoAudioInDur.Text = "";
+        txDescAudioInTime.Text = "This test will record audio for a defined time. Recorded audio will then be played.";
+        txInfoAudioInTime.Text = "";
     }
 }

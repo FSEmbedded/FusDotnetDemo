@@ -43,7 +43,7 @@ Default LED name for extension board: pca:red:power
 Driver for PCA9532 must be enabled
 
 # Audio
-include alsa-dev to yocto release
+include alsa-dev to yocto release.
 ## Output Test
 Connect Speaker to PcoreBBDSI Rev1.40 - AUDIO_A_LOUT_L - J11-49, AUDIO_A_LOUT_R - J11-45, GND - J11-47
 ## Input Test (Continuous)

@@ -1,4 +1,5 @@
-﻿using Iot.Device.Media;
+﻿using System.Diagnostics;
+using Iot.Device.Media;
 
 namespace IoTLib_Test.Models.Hardware_Tests;
 
@@ -21,17 +22,12 @@ internal class Audio_Tests
         /* Different settings for Recording Device */
         recordingSettings = new()
         {
-            //MixerDeviceName = "Capture Mux",
-            //RecordingDeviceName = "hw:0,1",
             RecordingSampleRate = 48000,
             RecordingChannels = 2,
             RecordingBitsPerSample = 16
         };
         /* Unmute the recording device on creation */
         recordingDevice = SoundDevice.Create(recordingSettings, unmute);
-
-        //TODO: ALSA Einstellungen aus C# anpassen?
-        // alsamixer - capture -> mute, LINE_IN
     }
 
     #region Playback
@@ -77,7 +73,7 @@ internal class Audio_Tests
         return true;
     }
 
-    public bool RecordFixedDuration(string outputFile, uint duration)
+    public bool RecordFixedTime(string outputFile, uint time)
     {
         /* Stop if device is already recording */
         if (isRecording)
@@ -85,11 +81,26 @@ internal class Audio_Tests
 
         isRecording = true;
         /* Start recording for defined duration, save as file */
-        recordingDevice.Record(duration, outputFile);
+        recordingDevice.Record(time, outputFile);
         /* false after recording finished */
         isRecording = false;
 
         return true;
+    }
+
+    public static void SetAudioInput(string input)
+    {
+        /* Set 'Capture Mux' to the select input signal (LINE_IN / MIC_IN) */
+        string argument = $"-c \"amixer -c 0 set 'Capture Mux' {input}\"";
+
+        ProcessStartInfo startInfo = new()
+        {
+            FileName = "/bin/bash",
+            Arguments = argument,
+        };
+
+        using Process process = Process.Start(startInfo)!;
+        process.WaitForExit();
     }
     #endregion
 }

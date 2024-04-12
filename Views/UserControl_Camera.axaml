@@ -23,7 +23,7 @@
           <TextBox Name="tbCamBus"/>
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="1">
-          <TextBlock Text="Keep file:" Classes.ClassContentinfo="true"/>
+          <TextBlock Text="Keep file" Classes.ClassContentinfo="true"/>
           <CheckBox Name="cbKeepFile" />
         </StackPanel>
         <Button Name="btnCamera" Content="Capture Camera" Grid.Row="1"/>

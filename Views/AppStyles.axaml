@@ -131,6 +131,10 @@
   <Style Selector="CheckBox">
     <Setter Property="HorizontalAlignment" Value="Center"/>
   </Style>
+  <Style Selector="RadioButton">
+    <Setter Property="HorizontalAlignment" Value="Left"/>
+    <Setter Property="Margin" Value="5,0,5,0"/>
+  </Style>
   <Style Selector="Border.ClassDivider">
     <Setter Property="BorderBrush" Value="Black"/>
     <Setter Property="BorderThickness" Value="0.6"/>
