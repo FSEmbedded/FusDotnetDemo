@@ -49,6 +49,12 @@
       </TabItem>
       <TabItem>
         <TabItem.Header>
+          <TextBlock Text="UART" Classes.ClassTab="true"/>
+        </TabItem.Header>
+        <views:UserControl_Uart/>
+      </TabItem>
+      <TabItem>
+        <TabItem.Header>
           <TextBlock Text="PWM" Classes.ClassTab="true"/>
         </TabItem.Header>
         <views:UserControl_Pwm/>

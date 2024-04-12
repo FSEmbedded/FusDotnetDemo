@@ -28,12 +28,17 @@ Connect I²C Extension Board Pins: J2-17 -> J2-27; Set S2-3 to ON
 Connect BBDSI with SPI: SCLK: ADP-2 -> J11-3; MOSI: ADP-3 -> J11-6; MISO: ADP-4 -> J11-5;
 CS: ADP-6 -> J11-4; RESET: ADP-8 -> J11-39; GND: ADP-16 -> J11-42; +3V3: ADP-26 -> J11-1
 
+# UART
+
+
+
 # PWM
 Connect LED to PcoreBBDSI Rev1.40 - J11-8 / J11-11 (GPIO_J1_54)
 
 # LED
 ## LED Blink Test
 PCA9532 auf I2C-Extension-Board
+sudo cp drivers/leds/leds-pca9532.ko /rootfs/home/root
 Treiber für leds-pca9532 muss in Kernel und Device Tree integriert werden!
 Treiber in Linux laden:
 insmod leds-pca9532.ko
@@ -53,6 +58,13 @@ Connect Line In to PcoreBBDSI Rev1.40 - AUDIO_A_LIN_L - J11-48, AUDIO_A_LIN_R - 
 
 # Camera
 https://github.com/dotnet/iot/tree/ab3f910a76568d8a0c234aee0227c65705729da8/src/devices/Camera
+
+## Added to yocto:
+https://github.com/gjasny/v4l-utils
+https://salsa.debian.org/glibc-team/glibc
+https://github.com/mono/libgdiplus
+https://github.com/mirror/libX11
+
 Connect Camera to USB-Port
 
 # Allgemein
