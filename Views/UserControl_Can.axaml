@@ -33,7 +33,7 @@
       <!-- CAN Read-Write Test -->
       <TextBlock Text="CAN: Read / Write Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescCanRW" Classes.ClassDescription="true"/>
-      <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto">
+      <Grid ColumnDefinitions="*,*,*">
         <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
           <TextBlock Text="Value to send (byte array):" Classes.ClassContentinfo="true"/>
           <StackPanel  Classes.Class0x="true">
@@ -58,10 +58,10 @@
           </StackPanel>
         </StackPanel>
         <Button Name="btnCanRW" Content="Start RW Test" Grid.Row="0" VerticalAlignment="Bottom"/>
-        <TextBlock Name="txCanWrite" Classes.ClassInfo="true" Grid.Column="0" Grid.Row="1"/>
-        <TextBlock Name="txCanRead" Classes.ClassInfo="true" Grid.Column="1" Grid.Row="1"/>
-        <TextBlock Name="txInfoCanRW" Classes.ClassInfo="true" Grid.Column="2" Grid.Row="1"/>
       </Grid>
+      <TextBlock Name="txCanWrite" Classes.ClassInfo="true" HorizontalAlignment="Left"/>
+      <TextBlock Name="txCanRead" Classes.ClassInfo="true" HorizontalAlignment="Left"/>
+      <TextBlock Name="txInfoCanRW" Classes.ClassInfo="true"/>
     </StackPanel>
   </ScrollViewer>
 </UserControl>

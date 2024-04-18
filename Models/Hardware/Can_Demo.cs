@@ -135,10 +135,9 @@ internal class Can_Demo
                 /* Write data */
                 CanWriteFrame(valueWrite);
             }
-            catch (Exception ex)
+            catch
             {
                 rwTestIsRunning = false;
-                throw new Exception(ex.Message);
             }
             Thread.Sleep(1000);
         }

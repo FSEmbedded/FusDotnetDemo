@@ -80,8 +80,8 @@ public partial class UserControl_Can : UserControl
         }
 
         /* Convert the byte array values to strings to display in UI */
-        txCanWrite.Text = "CAN Write\r\n" + CreateResultString(canIdWrite, valueSend);
-        txCanRead.Text = "CAN Read\r\n" + CreateResultString(canIdRead, valueRead);
+        txCanWrite.Text = "CAN Write - " + CreateResultString(canIdWrite, valueSend);
+        txCanRead.Text = "CAN Read - " + CreateResultString(canIdRead, valueRead);
 
         /* Compare CanIds and byte arrays - CanId must be different, but byte array the same */
         if (canIdRead != canIdWrite && Helper.ByteArraysEqual(valueRead, valueSend))
@@ -100,15 +100,12 @@ public partial class UserControl_Can : UserControl
     private static string CreateResultString(uint id, byte[] bytes)
     {
         /* Convert the byte array values to strings, to display in UI */
-        string result = $"CAN ID: {id:X}\r\n" +
-            $"Values:\r\n";
+        string result = $"CAN ID: {id:X} - " +
+            $"Values: ";
 
         for(int i = 0; i < bytes.Length; i++)
         {
             result += $"0x{bytes[i]:X} ";
-            /* insert new line after half */
-            if (i == (bytes.Length/2)-1)
-                result += "\r\n";
         }
 
         return result;
