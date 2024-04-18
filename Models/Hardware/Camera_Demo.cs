@@ -4,14 +4,14 @@ using Iot.Device.Media;
 using Iot.Device.Camera.Settings;
 using Iot.Device.Common;
 
-namespace IoTLib_Test.Models.Hardware_Tests;
+namespace dotnetIot_Demo.Models.Hardware;
 
-internal class Camera_Tests
+internal class Camera_Demo
 {
     private readonly VideoConnectionSettings settings;
     private readonly VideoDevice videoDevice;
 
-    public Camera_Tests(int _busid, uint _width, uint _height)
+    public Camera_Demo(int _busid, uint _width, uint _height)
     {
         try
         {
@@ -58,7 +58,6 @@ internal class Camera_Tests
             using var proc2 = new ProcessRunner(process2);
             var text = proc2.ExecuteReadOutputAsStringAsync(string.Empty);
             //IEnumerable<CameraInfo> cameras = CameraInfo.From(text);
-
         }
 
         return true;

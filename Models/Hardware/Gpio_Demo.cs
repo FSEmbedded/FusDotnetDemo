@@ -1,10 +1,10 @@
-﻿using IoTLib_Test.Models.Tools;
+﻿using dotnetIot_Demo.Models.Tools;
 using System.Device.Gpio;
 using System.Device.Gpio.Drivers;
 
-namespace IoTLib_Test.Models.Hardware_Tests;
+namespace dotnetIot_Demo.Models.Hardware;
 
-internal class Gpio_Tests
+internal class Gpio_Demo
 {
     /* GPIO_Output values */
     private GpioDriver? drvGpioOut;
@@ -18,7 +18,7 @@ internal class Gpio_Tests
     private readonly int bankIn;
     private readonly int pinIn;
 
-    public Gpio_Tests(int gpioNoOut)
+    public Gpio_Demo(int gpioNoOut)
     {
         /* Use this constructor if you only need the LED test */
         /* Get bank and pin for selected GPIO pin */
@@ -26,7 +26,7 @@ internal class Gpio_Tests
         pinOut = Helper.GetGpioPin(gpioNoOut);
     }
 
-    public Gpio_Tests(int gpioNoOut, int gpioNoIn)
+    public Gpio_Demo(int gpioNoOut, int gpioNoIn)
     {
         /* Use this constructor for GPIO input test - will listen for input and light up LED */
         /* Get bank and pin for selected GPIO pin */

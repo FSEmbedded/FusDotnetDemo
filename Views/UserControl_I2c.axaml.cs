@@ -3,17 +3,17 @@ using System.Threading;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using IoTLib_Test.Models.Tools;
-using IoTLib_Test.Models.Hardware_Tests;
+using dotnetIot_Demo.Models.Tools;
+using dotnetIot_Demo.Models.Hardware;
 
-namespace IoTLib_Test.Views;
+namespace dotnetIot_Demo.Views;
 
 public partial class UserControl_I2c : UserControl
 {
     /* I²C functions are in a separate class */
-    I2c_Tests? I2c;
-    I2c_Tests? I2cPwm;
-    I2c_Tests? I2cAdc;
+    I2c_Demo? I2c;
+    I2c_Demo? I2cPwm;
+    I2c_Demo? I2cAdc;
     /* Standard IDs and addresses */
     private int busIdRW = 0x5;
     private int devAddrRW = 0x23;
@@ -48,7 +48,7 @@ public partial class UserControl_I2c : UserControl
         try
         {
             /* Create new object I2c_Tests */
-            I2c = new I2c_Tests(busIdRW, devAddrRW);
+            I2c = new I2c_Demo(busIdRW, devAddrRW);
         }
         catch (Exception ex)
         {
@@ -103,7 +103,7 @@ public partial class UserControl_I2c : UserControl
             try
             {
                 /* Create new object I2c_Tests */
-                I2c = new I2c_Tests(busIdLed, devAddrLed);
+                I2c = new I2c_Demo(busIdLed, devAddrLed);
             }
             catch (Exception ex)
             {
@@ -148,9 +148,9 @@ public partial class UserControl_I2c : UserControl
         try
         {
             /* Create new object I2c_Tests for PWM device */
-            I2cPwm = new I2c_Tests(busIdPwm, devAddrPwm);
+            I2cPwm = new I2c_Demo(busIdPwm, devAddrPwm);
             /* Create new object I2c_Tests for ADC device */
-            I2cAdc = new I2c_Tests(busIdAdc, devAddrAdc);
+            I2cAdc = new I2c_Demo(busIdAdc, devAddrAdc);
         }
         catch (Exception ex)
         {

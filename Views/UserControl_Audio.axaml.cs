@@ -4,17 +4,15 @@ using System.Threading;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using IoTLib_Test.Models.Tools;
-using IoTLib_Test.Models.Hardware_Tests;
-using Avalonia;
-using DynamicData;
+using dotnetIot_Demo.Models.Tools;
+using dotnetIot_Demo.Models.Hardware;
 
-namespace IoTLib_Test.Views;
+namespace dotnetIot_Demo.Views;
 
 public partial class UserControl_Audio : UserControl
 {
     /* Audio functions are in a separate class */
-    private readonly Audio_Tests Audio;
+    private readonly Audio_Demo Audio;
     private bool speakerIsOn = false;
     private bool isRecording = false;
     private uint recDuration = 5; // seconds
@@ -32,7 +30,7 @@ public partial class UserControl_Audio : UserControl
         WriteStandardValuesInTextBox();
         FillTextBlockWithText();
         /* Create new object Audio_Tests */
-        Audio = new Audio_Tests();
+        Audio = new Audio_Demo();
     }
 
     private void BtnAudioOut_Clicked(object sender, RoutedEventArgs args)
@@ -68,7 +66,7 @@ public partial class UserControl_Audio : UserControl
         {
             /* Get selected Input Signal, set alsamixer to this input */
             inputSignal = GetSelectedInputSignal(0);
-            Audio_Tests.SetAudioInput(inputSignal);
+            Audio_Demo.SetAudioInput(inputSignal);
 
             /* Start Recording */
             Audio.RecordContinuous(recFileCont);
@@ -117,7 +115,7 @@ public partial class UserControl_Audio : UserControl
 
         /* Get selected Input Signal, set alsamixer to this input */
         inputSignal = GetSelectedInputSignal(1);
-        Audio_Tests.SetAudioInput(inputSignal);
+        Audio_Demo.SetAudioInput(inputSignal);
 
         /* Start recording */
         if (Audio.RecordFixedTime(recFileDur, recDuration))

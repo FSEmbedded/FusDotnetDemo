@@ -4,16 +4,15 @@ using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using IoTLib_Test.Models.Tools;
-using IoTLib_Test.Models.Hardware_Tests;
+using dotnetIot_Demo.Models.Hardware;
 
-namespace IoTLib_Test.Views;
+namespace dotnetIot_Demo.Views;
 
 public partial class UserControl_Uart : UserControl
 {
     /* UART functions are in a separate class */
-    Uart_Tests? UartSender;
-    Uart_Tests? UartReceiver;
+    Uart_Demo? UartSender;
+    Uart_Demo? UartReceiver;
 
     /* Standard values */
     private string portSender = "/dev/ttymxc1";
@@ -53,7 +52,7 @@ public partial class UserControl_Uart : UserControl
         //cbUartReceiver.Items.Clear();
 
         /* Find all available Serial Ports */
-        List<string> ports = Uart_Tests.GetAvailableSerialPorts();
+        List<string> ports = Uart_Demo.GetAvailableSerialPorts();
 
         /* Add all available ports to the ComboBoxes */
         cbUartSender.ItemsSource = ports;
@@ -81,8 +80,8 @@ public partial class UserControl_Uart : UserControl
         try
         {
             /* Create new objects Uart_Tests for read and write */
-            UartSender = new Uart_Tests(portSender, baudrate, dataBit, stopBit, parity, handshake);
-            UartReceiver = new Uart_Tests(portReceiver, baudrate, dataBit, stopBit, parity, handshake);
+            UartSender = new Uart_Demo(portSender, baudrate, dataBit, stopBit, parity, handshake);
+            UartReceiver = new Uart_Demo(portReceiver, baudrate, dataBit, stopBit, parity, handshake);
         }
         catch (Exception ex)
         {

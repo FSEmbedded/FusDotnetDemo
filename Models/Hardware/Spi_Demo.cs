@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Device.Spi;
 
-namespace IoTLib_Test.Models.Hardware_Tests;
+namespace dotnetIot_Demo.Models.Hardware;
 
-internal class Spi_Tests
+internal class Spi_Demo
 {
     private readonly SpiConnectionSettings spiConnectionSettings;
     private readonly SpiDevice spiDevice;
 
-    public Spi_Tests(int spidev)
+    public Spi_Demo(int spidev)
     {
         try
         {

@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using Iot.Device.Media;
 
-namespace IoTLib_Test.Models.Hardware_Tests;
+namespace dotnetIot_Demo.Models.Hardware;
 
-internal class Audio_Tests
+internal class Audio_Demo
 {
     private readonly SoundConnectionSettings playbackSettings;
     private readonly SoundConnectionSettings recordingSettings;
@@ -14,7 +14,7 @@ internal class Audio_Tests
     /* Unmute SoundDevice? */
     readonly bool unmute = true;
 
-    public Audio_Tests()
+    public Audio_Demo()
     {
         /* Create Playback Device with standard values */
         playbackSettings = new();

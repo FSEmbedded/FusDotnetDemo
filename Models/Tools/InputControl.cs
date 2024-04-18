@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 
-namespace IoTLib_Test.Models.Tools
+namespace dotnetIot_Demo.Models.Tools
 {
     internal class InputControl
     {

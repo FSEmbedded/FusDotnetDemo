@@ -3,16 +3,16 @@ using System.Threading;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using IoTLib_Test.Models.Tools;
-using IoTLib_Test.Models.Hardware_Tests;
+using dotnetIot_Demo.Models.Tools;
+using dotnetIot_Demo.Models.Hardware;
 
-namespace IoTLib_Test.Views;
+namespace dotnetIot_Demo.Views;
 
 public partial class UserControl_Pwm : UserControl
 {
     /* PWM functions are in a separate class */
-    private Pwm_Tests? PwmTS;
-    private Pwm_Tests? PwmV;
+    private Pwm_Demo? PwmTS;
+    private Pwm_Demo? PwmV;
 
     /* GPIO Pin # */
     private int gpioNoPwm = 1; // GPIO_J1_54
@@ -51,7 +51,7 @@ public partial class UserControl_Pwm : UserControl
         try
         {
             /* Create new object Pwm_Tests */
-            PwmTS = new Pwm_Tests(pinPwmTS);
+            PwmTS = new Pwm_Demo(pinPwmTS);
         }
         catch (Exception ex)
         {
@@ -81,7 +81,7 @@ public partial class UserControl_Pwm : UserControl
             try
             {
                 /* Create new object Pwm_Tests */
-                PwmV = new Pwm_Tests(pinPwmV);
+                PwmV = new Pwm_Demo(pinPwmV);
             }
             catch (Exception ex)
             {

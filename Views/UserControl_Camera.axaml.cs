@@ -3,16 +3,16 @@ using System.IO;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using IoTLib_Test.Models.Tools;
-using IoTLib_Test.Models.Hardware_Tests;
+using dotnetIot_Demo.Models.Tools;
+using dotnetIot_Demo.Models.Hardware;
 
 
-namespace IoTLib_Test.Views;
+namespace dotnetIot_Demo.Views;
 
 public partial class UserControl_Camera : UserControl
 {
     /* Camera functions are in a separate class */
-    private Camera_Tests? Camera;
+    private Camera_Demo? Camera;
     private readonly string imgFile = "/home/root/img_camtest.png";
     private int busId = 1;
     private uint width = 1920;
@@ -35,7 +35,7 @@ public partial class UserControl_Camera : UserControl
         try
         {
             /* Create new object Camera_Tests */
-            Camera = new Camera_Tests(busId, width, height);
+            Camera = new Camera_Demo(busId, width, height);
         }
         catch (Exception ex)
         {

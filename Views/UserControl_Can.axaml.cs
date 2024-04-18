@@ -3,15 +3,15 @@ using Avalonia.Input;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using IoTLib_Test.Models.Tools;
-using IoTLib_Test.Models.Hardware_Tests;
+using dotnetIot_Demo.Models.Tools;
+using dotnetIot_Demo.Models.Hardware;
 
-namespace IoTLib_Test.Views;
+namespace dotnetIot_Demo.Views;
 
 public partial class UserControl_Can : UserControl
 {
     /* CAN functions are in a separate class */
-    private Can_Tests? Can;
+    private Can_Demo? Can;
     /* Standard values */
     private string canDevNo = "0"; //can0
     private string canDevice = "can0";
@@ -43,7 +43,7 @@ public partial class UserControl_Can : UserControl
             /* Create new object Can_Tests
              * Will activate CAN device in constructor
              * Writes to external CAN device to check if connection is established */
-            Can = new Can_Tests(canDevice, bitrate, canIdWrite);
+            Can = new Can_Demo(canDevice, bitrate, canIdWrite);
             txInfoCanAct.Text = "CAN device is active and connection to receiving device is validated";
             txInfoCanAct.Foreground = Brushes.Green;
             ActivateButtonCanRW(true);

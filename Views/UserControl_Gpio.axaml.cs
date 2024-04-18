@@ -3,15 +3,15 @@ using System.Threading;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using IoTLib_Test.Models.Tools;
-using IoTLib_Test.Models.Hardware_Tests;
+using dotnetIot_Demo.Models.Tools;
+using dotnetIot_Demo.Models.Hardware;
 
-namespace IoTLib_Test.Views;
+namespace dotnetIot_Demo.Views;
 
 public partial class UserControl_Gpio : UserControl
 {
     /* GPIO functions are in a separate class */
-    private Gpio_Tests? Gpio;
+    private Gpio_Demo? Gpio;
     /* GPIO Pin # */
     private int gpioNoLed = 1; // GPIO_J1_54
     private int gpioNoInput = 78; // GPIO_J1_52
@@ -36,7 +36,7 @@ public partial class UserControl_Gpio : UserControl
             GetValuesFromTextBox();
 
             /* Create new object Gpio_Tests */
-            Gpio = new Gpio_Tests(gpioNoLed);
+            Gpio = new Gpio_Demo(gpioNoLed);
             /* Create new thread, light up LED */
             Thread ledOnThread = new(() => Gpio.LedSwitchOn());
             ledOnThread.Start();
@@ -67,7 +67,7 @@ public partial class UserControl_Gpio : UserControl
             GetValuesFromTextBox();
 
             /* Create new object Gpio_Tests */
-            Gpio = new Gpio_Tests(gpioNoLed, gpioNoInput);
+            Gpio = new Gpio_Demo(gpioNoLed, gpioNoInput);
             /* Create new thread, turn off LED */
             Thread inputThread = new(() => Gpio.ActivateInputListener());
             inputThread.Start();

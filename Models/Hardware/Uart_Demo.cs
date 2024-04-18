@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO.Ports;
 
-namespace IoTLib_Test.Models.Hardware_Tests;
+namespace dotnetIot_Demo.Models.Hardware;
 
-internal class Uart_Tests
+internal class Uart_Demo
 {
     private readonly SerialPort serialPort;
     private string valueRead = "";
 
-    public Uart_Tests(string port, int baudrate, int dataBit, double stopBit, string parity, string handshake)
+    public Uart_Demo(string port, int baudrate, int dataBit, double stopBit, string parity, string handshake)
     {
         try
         {
@@ -35,7 +35,7 @@ internal class Uart_Tests
     public static List<string> GetAvailableSerialPorts()
     {
         /* Collect Port values in a list. */
-        List<string> ports = SerialPort.GetPortNames().ToList();
+        List<string> ports = [.. SerialPort.GetPortNames()];
 
         return ports;
     }
@@ -76,84 +76,45 @@ internal class Uart_Tests
         serialPort.Close();
     }
 
+    #region Converter
     private static Parity ConvertParity(string parityString)
     {
-        Parity parity;
-
-        switch (parityString)
+        var parity = parityString switch
         {
-            case "None":
-                parity = Parity.None;
-                break;
-            case "Odd":
-                parity = Parity.Odd;
-                break;
-            case "Even":
-                parity = Parity.Even;
-                break;
-            case "Mark":
-                parity = Parity.Mark;
-                break;
-            case "Space":
-                parity = Parity.Space;
-                break;
-            default:
-                parity = Parity.None;
-                break;
-        }
-
+            "None" => Parity.None,
+            "Odd" => Parity.Odd,
+            "Even" => Parity.Even,
+            "Mark" => Parity.Mark,
+            "Space" => Parity.Space,
+            _ => Parity.None,
+        };
         return parity;
     }
 
     private static StopBits ConvertStopBit(double stopBitDouble)
     {
-        StopBits stopBits;
-
-        switch (stopBitDouble)
+        var stopBits = stopBitDouble switch
         {
-            case 0:
-                stopBits = StopBits.None;
-                break;
-            case 1:
-                stopBits = StopBits.One;
-                break;
-            case 1.5:
-                stopBits = StopBits.OnePointFive;
-                break;
-            case 2:
-                stopBits = StopBits.Two;
-                break;
-            default:
-                stopBits = StopBits.One;
-                break;
-        }
-
+            0 => StopBits.None,
+            1 => StopBits.One,
+            1.5 => StopBits.OnePointFive,
+            2 => StopBits.Two,
+            _ => StopBits.One,
+        };
         return stopBits;
     }
 
     private static Handshake ConvertHandshake(string handshakeString)
     {
-        Handshake handshake;
-
-        switch (handshakeString)
+        var handshake = handshakeString switch
         {
-            case "None":
-                handshake = Handshake.None;
-                break;
-            case "XOnXOff":
-                handshake = Handshake.XOnXOff;
-                break;
-            case "RequestToSend":
-                handshake = Handshake.RequestToSend;
-                break;
-            case "RequestToSendXOnXOff":
-                handshake = Handshake.RequestToSendXOnXOff;
-                break;
-            default:
-                handshake = Handshake.None;
-                break;
-        }
-
+            "None" => Handshake.None,
+            "XOnXOff" => Handshake.XOnXOff,
+            "RequestToSend" => Handshake.RequestToSend,
+            "RequestToSendXOnXOff" => Handshake.RequestToSendXOnXOff,
+            _ => Handshake.None,
+        };
         return handshake;
     }
+    #endregion
 }

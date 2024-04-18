@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using Iot.Device.BoardLed;
 
-namespace IoTLib_Test.Models.Hardware_Tests;
+namespace dotnetIot_Demo.Models.Hardware;
 
-internal class Led_Tests
+internal class Led_Demo
 {
     private bool runLedBlinkTest = false;
 
     public static List<string> GetAllLeds()
     {
-        List<string> ledNames = new();
+        List<string> ledNames = [];
         /* Get all BoardLed instances of on-board LEDs */
         IEnumerable<BoardLed> leds = BoardLed.EnumerateLeds();
         /* Return a list with all LED names */
@@ -26,7 +26,7 @@ internal class Led_Tests
         runLedBlinkTest = true;
 
         /* Open the LED with the specified name */
-        using BoardLed led = new BoardLed(ledName);
+        using BoardLed led = new(ledName);
 
         /* Set trigger.
         /* The kernel provides some triggers which let the kernel control the LED.

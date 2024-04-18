@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Iot.Device.SocketCan;
 
-namespace IoTLib_Test.Models.Hardware_Tests;
+namespace dotnetIot_Demo.Models.Hardware;
 
-internal class Can_Tests
+internal class Can_Demo
 {
     private readonly string canDev;
     private readonly string bitrate;
@@ -18,7 +18,7 @@ internal class Can_Tests
     private bool rwTestIsRunning; // Is used to stop while-loop
     private readonly int maxReadCount = 10; // counter for repeating Read task
 
-    public Can_Tests(string _candev, string _bitrate, uint _canIdWriteValue)
+    public Can_Demo(string _candev, string _bitrate, uint _canIdWriteValue)
     {
         canDev = _candev; // eg. "can0"
         bitrate = _bitrate;

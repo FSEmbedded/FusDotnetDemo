@@ -2,15 +2,15 @@ using System;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using IoTLib_Test.Models.Tools;
-using IoTLib_Test.Models.Hardware_Tests;
+using dotnetIot_Demo.Models.Tools;
+using dotnetIot_Demo.Models.Hardware;
 
-namespace IoTLib_Test.Views;
+namespace dotnetIot_Demo.Views;
 
 public partial class UserControl_Spi : UserControl
 {
     /* SPI functions are in a separate class */
-    private Spi_Tests? Spi;
+    private Spi_Demo? Spi;
     private int spidev = 0x1;
     private byte register1 = 0x2b;
     private byte register2 = 0x2c;
@@ -43,7 +43,7 @@ public partial class UserControl_Spi : UserControl
         try
         {
             /* Create new object Spi_Tests */
-            Spi = new Spi_Tests(spidev);
+            Spi = new Spi_Demo(spidev);
         }
         catch (Exception ex)
         {

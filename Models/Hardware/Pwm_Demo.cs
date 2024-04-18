@@ -2,16 +2,16 @@
 using System.Threading;
 using System.Device.Pwm.Drivers;
 
-namespace IoTLib_Test.Models.Hardware_Tests;
+namespace dotnetIot_Demo.Models.Hardware;
 
-internal class Pwm_Tests
+internal class Pwm_Demo
 {
     private readonly SoftwarePwmChannel pwmChannel;
     private readonly int frequency = 200;
     private double voltageValue;
     private bool sliderIsActive = false;
 
-    public Pwm_Tests(int pin)
+    public Pwm_Demo(int pin)
     {
         try
         {

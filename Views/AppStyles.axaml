@@ -12,9 +12,10 @@
     <Setter Property="Margin" Value="0"/>
   </Style>
   <Style Selector="TextBlock.ClassHeader">
-    <Setter Property="FontSize" Value="20"/>
+    <Setter Property="FontSize" Value="18"/>
     <Setter Property="FontWeight" Value="Bold"/>
     <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="HorizontalAlignment" Value="Center"/>
     <Setter Property="Foreground" Value="White"/> <!-- Use Color2-->
   </Style>
   <Style Selector="TextBlock.ClassHeaderDevInfo">
@@ -58,7 +59,7 @@
     <Setter Property="Margin" Value="5"/>
     <Setter Property="FontSize" Value="12"/>
     <Setter Property="FontWeight" Value="DemiBold"/>
-    <Setter Property="MinWidth" Value="60"/>
+    <Setter Property="MinWidth" Value="120"/>
     <Setter Property="MinHeight" Value="50"/>
     <Setter Property="HorizontalAlignment" Value="Center"/>
     <Setter Property="VerticalAlignment" Value="Center"/>

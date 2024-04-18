@@ -2,9 +2,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        x:Class="IoTLib_Test.Views.MainWindow"
-        xmlns:vm="clr-namespace:IoTLib_Test.Views"
-        xmlns:views="clr-namespace:IoTLib_Test.Views"
+        x:Class="dotnetIot_Demo.Views.MainWindow"
+        xmlns:vm="clr-namespace:dotnetIot_Demo.Views"
+        xmlns:views="clr-namespace:dotnetIot_Demo.Views"
         x:DataType="vm:MainWindow"
         Width="400"
         Height="300"
@@ -13,10 +13,11 @@
         ExtendClientAreaToDecorationsHint="False"
         ExtendClientAreaChromeHints="NoChrome"
         ExtendClientAreaTitleBarHeightHint="0">
+  
   <Grid RowDefinitions="50,*">
-    <Grid ColumnDefinitions="*,*,*" Classes.ClassHeader="true" Grid.Row="0">
+    <Grid ColumnDefinitions="Auto,*,Auto" Classes.ClassHeader="true" Grid.Row="0">
       <Image Source="/Assets/fs_logo.png" Margin="5" Grid.Column="0" HorizontalAlignment="Left"/>
-      <TextBlock Name="txHeader" Classes.ClassHeader="true" Grid.Column="1" HorizontalAlignment="Center"/>
+      <TextBlock Name="txHeader" Classes.ClassHeader="true" Grid.Column="1"/>
       <StackPanel Grid.Column="2" HorizontalAlignment="Right">
         <TextBlock Name="txArchName" Classes.ClassHeaderDevInfo="true"/>
         <TextBlock Name="txIp" Classes.ClassHeaderDevInfo="true"/>

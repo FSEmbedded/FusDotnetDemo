@@ -1,16 +1,16 @@
+using System.Collections.Generic;
+using System.Threading;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using System.Collections.Generic;
-using IoTLib_Test.Models.Hardware_Tests;
-using System.Threading;
 using Avalonia.Media;
+using dotnetIot_Demo.Models.Hardware;
 
-namespace IoTLib_Test.Views;
+namespace dotnetIot_Demo.Views;
 
 public partial class UserControl_Led : UserControl
 {
     /* LED functions are in a separate class */
-    private readonly Led_Tests Led;
+    private readonly Led_Demo Led;
     private string ledName = "";
     private bool ledBlinkIsActive = false;
 
@@ -24,7 +24,7 @@ public partial class UserControl_Led : UserControl
         tbLedName.IsReadOnly = true;
         ActivateButtonLed(false);
         /* Create new object Led_Tests */
-        Led = new Led_Tests();
+        Led = new Led_Demo();
     }
 
     private void BtnLedName_Clicked(object sender, RoutedEventArgs args)
@@ -32,7 +32,7 @@ public partial class UserControl_Led : UserControl
         /* Empty ComboBox */
         cbLedNames.Items.Clear();
 
-        List<string> ledNames = Led_Tests.GetAllLeds();
+        List<string> ledNames = Led_Demo.GetAllLeds();
         /* Add all names to the ComboBox */
         foreach (string name in ledNames)
         {

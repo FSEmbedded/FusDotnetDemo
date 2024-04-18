@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Device.I2c;
 
-namespace IoTLib_Test.Models.Hardware_Tests;
+namespace dotnetIot_Demo.Models.Hardware;
 
-internal class I2c_Tests
+internal class I2c_Demo
 {
     private readonly I2cDevice i2cDevice;
     private readonly byte busId;
@@ -13,7 +13,7 @@ internal class I2c_Tests
     private readonly byte pwmOff = 0x1;
     private bool runLedTest;
 
-    public I2c_Tests(int _busId, int _devAddr)
+    public I2c_Demo(int _busId, int _devAddr)
     {
         busId = (byte)_busId;
 
