@@ -34,4 +34,3 @@ namespace IoTLib_Test
 
 //TODO: Readme bearbeiten
 //TODO: AppName ändern?
-//TODO: UART

@@ -29,7 +29,7 @@ public partial class UserControl_Led : UserControl
 
     private void BtnLedName_Clicked(object sender, RoutedEventArgs args)
     {
-        /* Empty list */
+        /* Empty ComboBox */
         cbLedNames.Items.Clear();
 
         List<string> ledNames = Led_Tests.GetAllLeds();
@@ -47,7 +47,7 @@ public partial class UserControl_Led : UserControl
         else
             cbLedNames.SelectedIndex = 0;
 
-        txInfoLedName.Text = "Select LED from dropdown";
+        txInfoLedName.Text = "Select LED from dropdown to continue.";
     }
 
     private void CbLedNames_SelectionChanged(object sender, RoutedEventArgs args)

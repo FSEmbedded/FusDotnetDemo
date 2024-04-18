@@ -17,7 +17,7 @@
         </StackPanel>
       </Grid>
       <TextBlock Name="txInfoLedName" Classes.ClassInfo="true"/>
-      <Border/>
+      <Border Classes.ClassDivider="true"/>
       <!-- LED Test -->
       <TextBlock Text="LED: Blink Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescLed" Classes.ClassDescription="true"/>

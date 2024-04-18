@@ -29,7 +29,13 @@ Connect BBDSI with SPI: SCLK: ADP-2 -> J11-3; MOSI: ADP-3 -> J11-6; MISO: ADP-4 
 CS: ADP-6 -> J11-4; RESET: ADP-8 -> J11-39; GND: ADP-16 -> J11-42; +3V3: ADP-26 -> J11-1
 
 # UART
+Add NuGet-Package: system.io.port
+runtimes/unix/lib/net8.0/System.IO.Ports.dll muss enthalten sein!
 
+ttymxc0 -> uart1 -> UART_C
+ttymxc1 -> uart2 -> UART_A
+ttymxc2 -> uart3 -> UART_D
+ttymxc3 -> uart4 -> UART_B
 
 
 # PWM
