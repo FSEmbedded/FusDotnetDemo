@@ -198,7 +198,7 @@ public partial class UserControl_I2c : UserControl
         }
     }
 
-    public void GetValuesFromTextBox(int callerId)
+    private void GetValuesFromTextBox(int callerId)
     {
         switch (callerId)
         {

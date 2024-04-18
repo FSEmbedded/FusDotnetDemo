@@ -90,7 +90,7 @@ public partial class UserControl_Gpio : UserControl
         }
     }
 
-    public void GetValuesFromTextBox()
+    private void GetValuesFromTextBox()
     {
         /* Get Pin numbers from TextBoxes */
         if (!string.IsNullOrEmpty(tbLedPin.Text))

@@ -122,7 +122,7 @@ public partial class UserControl_Pwm : UserControl
         }
     }
 
-    public void GetValuesFromTextBox(int callerId)
+    private void GetValuesFromTextBox(int callerId)
     {
         switch (callerId)
         {

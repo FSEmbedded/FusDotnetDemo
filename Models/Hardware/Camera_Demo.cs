@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using Iot.Device.Media;
-using Iot.Device.Camera.Settings;
-using Iot.Device.Common;
+
 
 namespace dotnetIot_Demo.Models.Hardware;
 
@@ -15,7 +16,9 @@ internal class Camera_Demo
     {
         try
         {
-            settings = new(busId: _busid, captureSize: (_width, _height));
+            /* Create new object VideoDevice.
+             * Set VideoPixelFormat to RGB24 (other settings may work, but must be tested) */
+            settings = new(busId: _busid, captureSize: (_width, _height), VideoPixelFormat.RGB24);
             videoDevice = VideoDevice.Create(settings);
         }
         catch (Exception ex)
@@ -24,42 +27,46 @@ internal class Camera_Demo
         }
     }
 
-
     public bool CaptureCam(string imgFile)
     {
         /* Capture static image */
         videoDevice.Capture(imgFile);
 
-        //TODO: Datei wird erzeugt, hat keinen Inhalt
-        {
-            /* Test - innerhalb Klammern kann gelöscht werden */
-            byte[] buffer = videoDevice.Capture();
+        FileInfo imageSize = new(imgFile);
 
 
-            var processSettings = ProcessSettingsFactory.CreateForLibcamerastill();
-
-            var builder = new CommandOptionsBuilder()
-            .WithTimeout(1)
-            .WithVflip()
-            .WithHflip()
-            .WithPictureOptions(90, "jpg")
-            .WithResolution(640, 480);
-            var args = builder.GetArguments();
-
-            using var proc = new ProcessRunner(processSettings);
-
-            var filename = "test.jpg";
-            using var file = File.OpenWrite(filename);
-            proc.ExecuteAsync(args, file);
-
-
-
-            var process2 = ProcessSettingsFactory.CreateForLibcamerastillAndStderr();
-            using var proc2 = new ProcessRunner(process2);
-            var text = proc2.ExecuteReadOutputAsStringAsync(string.Empty);
-            //IEnumerable<CameraInfo> cameras = CameraInfo.From(text);
-        }
+        if (imageSize.Length == 0)
+            return false;
 
         return true;
+    }
+
+    public static List<string> GetAvailableCameras()
+    {
+        List<string> cameras = new();
+
+        /* This command first filters the output of ls to only include lines 
+         * starting with 'l' (indicating symbolic links), then uses awk to print the last field of each line */
+        string argument = $"-c \"ls -l /dev/v4l/by-id/ | grep '^l' | awk '{{print $NF}}'\"";
+
+        ProcessStartInfo startInfo = new()
+        {
+            FileName = "/bin/bash",
+            Arguments = argument,
+            RedirectStandardOutput = true,
+        };
+
+        using Process process = Process.Start(startInfo)!;
+
+        while (!process.StandardOutput.EndOfStream)
+        {
+            /* Add the values read to the list */
+            string line = process.StandardOutput.ReadLine()!;
+            if (!string.IsNullOrEmpty(line))
+            {
+                cameras.Add(line);
+            }
+        }
+        return cameras;
     }
 }

@@ -47,10 +47,6 @@ public partial class UserControl_Uart : UserControl
 
     private void BtnGetSerialPorts_Clicked(object sender, RoutedEventArgs args)
     {
-        /* Empty ComboBox */
-        //cbUartSender.Items.Clear();
-        //cbUartReceiver.Items.Clear();
-
         /* Find all available Serial Ports */
         List<string> ports = Uart_Demo.GetAvailableSerialPorts();
 
@@ -224,7 +220,7 @@ public partial class UserControl_Uart : UserControl
         }
     }
 
-    public void GetValuesFromTextBox()
+    private void GetValuesFromTextBox()
     {
         if (!string.IsNullOrEmpty(tbMessage.Text))
             valueWrite = tbMessage.Text;

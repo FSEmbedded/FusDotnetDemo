@@ -128,7 +128,7 @@ public partial class UserControl_Can : UserControl
         return bytes;
     }
 
-    public void GetValuesFromTextBox()
+    private void GetValuesFromTextBox()
     {
         /* Get CAN Device and Bitrate from TextBoxes */
         if (!string.IsNullOrEmpty(tbCanDev.Text))

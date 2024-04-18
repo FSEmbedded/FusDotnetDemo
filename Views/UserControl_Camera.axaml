@@ -4,28 +4,38 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Class="dotnetIot_Demo.Views.UserControl_Camera">
   <ScrollViewer>
-    <!-- Camera Test -->
     <StackPanel>
+      <!-- Get available cameras -->
+      <TextBlock Text="Get available cameras" Classes.ClassName="true"/>
+      <TextBlock Name="txDescGetCams" Classes.ClassDescription="true"/>
+      <Grid ColumnDefinitions="*,*">
+        <Button Name="btnGetCams" Content="Get Cameras" Grid.Column="0"/>
+        <StackPanel Grid.Column="1">
+          <TextBlock Text="Available Cameras:" Classes.ClassContentinfo="true"/>
+          <ComboBox Name="cbCams" Width="220"/>
+        </StackPanel>
+      </Grid>
+      <TextBlock Name="txInfoGetCams" Classes.ClassInfo="true"/>
+      <Border Classes.ClassDivider="true"/>
+      <!-- Camera Test -->
       <TextBlock Text="Camera: Capture Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescCamera" Classes.ClassDescription="true"/>
-      <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto">
-        <StackPanel Grid.Column="0" Grid.Row="0">
-          <TextBlock Text="Image Width:" Classes.ClassContentinfo="true"/>
-          <TextBox Name="tbCamWidth" Width="80"/>
+      <Grid ColumnDefinitions="*,*,*">
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="0" Margin="0">
+          <StackPanel>
+            <TextBlock Text="Image Width:" Classes.ClassContentinfo="true"/>
+            <TextBox Name="tbCamWidth" Width="80"/>
+          </StackPanel>
+          <StackPanel>
+            <TextBlock Text="Image Height:" Classes.ClassContentinfo="true"/>
+            <TextBox Name="tbCamHeight" Width="80"/>
+          </StackPanel>
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="0">
-          <TextBlock Text="Image Height:" Classes.ClassContentinfo="true"/>
-          <TextBox Name="tbCamHeight" Width="80"/>
-        </StackPanel>
-        <StackPanel Grid.Column="0" Grid.Row="1">
-          <TextBlock Text="Camera bus:" Classes.ClassContentinfo="true"/>
-          <TextBox Name="tbCamBus"/>
-        </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="1">
           <TextBlock Text="Keep file" Classes.ClassContentinfo="true"/>
           <CheckBox Name="cbKeepFile" />
         </StackPanel>
-        <Button Name="btnCamera" Content="Capture Camera" Grid.Row="1"/>
+        <Button Name="btnCamera" Content="Capture Camera" Grid.Row="0"/>
       </Grid>
       <TextBlock Name="txInfoCamera" Classes.ClassInfo="true"/>
       <!-- Picture Preview -->

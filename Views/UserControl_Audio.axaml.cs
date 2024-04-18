@@ -165,7 +165,7 @@ public partial class UserControl_Audio : UserControl
         return signal;
     }
 
-    public void GetValuesFromTextBox()
+    private void GetValuesFromTextBox()
     {
         if (!string.IsNullOrEmpty(tbAudioInTime.Text))
             recDuration = Convert.ToUInt32(tbAudioInTime.Text);

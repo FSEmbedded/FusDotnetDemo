@@ -1,4 +1,7 @@
-﻿# GPIO
+﻿https://github.com/dotnet/iot
+https://learn.microsoft.com/de-de/dotnet/iot/tutorials/blink-led
+
+# GPIO
 ## Output Test
 Connect LED to PcoreBBDSI Rev1.40 - J11-8 / J11-11 (GPIO_J1_54)
 ## Input Test
@@ -64,13 +67,6 @@ Connect Line In to PcoreBBDSI Rev1.40 - AUDIO_A_LIN_L - J11-48, AUDIO_A_LIN_R - 
 
 # Camera
 https://github.com/dotnet/iot/tree/ab3f910a76568d8a0c234aee0227c65705729da8/src/devices/Camera
-
-## Added to yocto:
-https://github.com/gjasny/v4l-utils
-https://salsa.debian.org/glibc-team/glibc
-https://github.com/mono/libgdiplus
-https://github.com/mirror/libX11
-
 Connect Camera to USB-Port
 
 # Allgemein
