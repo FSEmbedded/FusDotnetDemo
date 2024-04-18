@@ -67,10 +67,17 @@ public partial class UserControl_Camera : UserControl
                 /* Show image in UI */
                 Avalonia.Media.Imaging.Bitmap bitmap = new(imgFile);
                 imgCamCapture.Source = bitmap;
+
                 if ((bool)cbKeepFile.IsChecked!)
                 {
                     txInfoCamera.Text = $"Image is stored at {imgFile}";
                     txInfoCamera.Foreground = Brushes.Green;
+                }
+                else
+                {
+                    /* Delete image testfile */
+                    File.Delete(imgFile);
+                    txInfoCamera.Text = "";
                 }
             }
             catch (Exception ex)
@@ -85,12 +92,6 @@ public partial class UserControl_Camera : UserControl
             imgCamCapture.Source = null;
             txInfoCamera.Text = $"Is {cbCams.SelectedItem} a valid camera?\r\n{imgFile} has a size of 0 byte, please select another camera from the dropdown.";
             txInfoCamera.Foreground = Brushes.Red;
-        }
-
-        if (!(bool)cbKeepFile.IsChecked!)
-        {
-            /* Delete image testfile */
-            File.Delete(imgFile);
         }
     }
 
