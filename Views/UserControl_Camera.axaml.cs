@@ -6,7 +6,6 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using dotnetIot_Demo.Models.Tools;
 using dotnetIot_Demo.Models.Hardware;
-using Iot.Device.Card.CreditCardProcessing;
 
 
 namespace dotnetIot_Demo.Views;
