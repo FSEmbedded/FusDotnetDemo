@@ -49,8 +49,8 @@ public partial class UserControl_Uart : UserControl
     private void BtnGetSerialPorts_Clicked(object sender, RoutedEventArgs args)
     {
         /* Empty ComboBox */
-        cbUartSender.Items.Clear();
-        cbUartReceiver.Items.Clear();
+        //cbUartSender.Items.Clear();
+        //cbUartReceiver.Items.Clear();
 
         /* Find all available Serial Ports */
         List<string> ports = Uart_Tests.GetAvailableSerialPorts();
@@ -89,7 +89,6 @@ public partial class UserControl_Uart : UserControl
             /* Show exception */
             txInfoUart.Text = ex.Message;
             txInfoUart.Foreground = Brushes.Red;
-            txInfoUart.Text = "";
             return;
         }
 
@@ -106,8 +105,8 @@ public partial class UserControl_Uart : UserControl
         uartReadThread.Join();
 
         /* Show results in UI */
-        txUartSend.Text = $"Message sent: {valueWrite}";
-        txUartReceive.Text = $"Message read: {valueRead}";
+        txUartSend.Text = $"Message sent on port {portSender}: {valueWrite}";
+        txUartReceive.Text = $"Message read on port {portReceiver}: {valueRead}";
 
         if (valueWrite == valueRead)
         {

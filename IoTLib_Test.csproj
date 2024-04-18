@@ -46,6 +46,6 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="powershell.exe .\copy_to_board.ps1" />
+    <Exec Command="powershell.exe .\copy_debug_to_board.ps1" />
   </Target>
 </Project>

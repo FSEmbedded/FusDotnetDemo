@@ -1,7 +1,6 @@
 ﻿using Avalonia.Controls;
 using System;
 using System.Net;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace IoTLib_Test.Views
 {
@@ -10,8 +9,8 @@ namespace IoTLib_Test.Views
         public MainWindow()
         {
             InitializeComponent();
-            /* Add IP Address to Header */
-
+            /* Add Infos to Header */
+            txHeader.Text = ".NET on Linux with F&S Boards";
             string archName = Environment.MachineName;
             txArchName.Text = archName;
             txIp.Text = GetIPAddress(archName);
