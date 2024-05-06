@@ -14,6 +14,7 @@ public partial class UserControl_Gpio : UserControl
     private Gpio_Demo? Gpio;
     /* GPIO Pin # */
     private int gpioNoLed = 1; // GPIO_J1_54
+    private int gpioNoInputLed = 1; // GPIO_J1_54
     private int gpioNoInput = 78; // GPIO_J1_52
 
     private bool ledIsOn = false;
@@ -67,7 +68,7 @@ public partial class UserControl_Gpio : UserControl
             GetValuesFromTextBox();
 
             /* Create new object Gpio_Tests */
-            Gpio = new Gpio_Demo(gpioNoLed, gpioNoInput);
+            Gpio = new Gpio_Demo(gpioNoInputLed, gpioNoInput);
             /* Create new thread, turn off LED */
             Thread inputThread = new(() => Gpio.ActivateInputListener());
             inputThread.Start();
@@ -97,11 +98,16 @@ public partial class UserControl_Gpio : UserControl
             gpioNoLed = Convert.ToInt32(tbLedPin.Text);
         else
             tbLedPin.Text = Convert.ToString(gpioNoLed);
-        
-        if (!string.IsNullOrEmpty(tbInputPin.Text))
-            gpioNoInput = Convert.ToInt32(tbInputPin.Text);
+
+        if (!string.IsNullOrEmpty(tbInputLedPin.Text))
+            gpioNoInputLed = Convert.ToInt32(tbInputLedPin.Text);
         else
-            tbInputPin.Text = Convert.ToString(gpioNoInput);
+            tbInputLedPin.Text = Convert.ToString(gpioNoInputLed);
+
+        if (!string.IsNullOrEmpty(tbInputButtonPin.Text))
+            gpioNoInput = Convert.ToInt32(tbInputButtonPin.Text);
+        else
+            tbInputButtonPin.Text = Convert.ToString(gpioNoInput);
     }
 
     private void AddButtonHandlers()
@@ -116,20 +122,22 @@ public partial class UserControl_Gpio : UserControl
     {
         /* Write standard GPIO pins in textboxes */
         tbLedPin.Text = Convert.ToString(gpioNoLed);
-        tbInputPin.Text = Convert.ToString(gpioNoInput);
+        tbInputLedPin.Text = Convert.ToString(gpioNoInputLed);
+        tbInputButtonPin.Text = Convert.ToString(gpioNoInput);
     }
 
     private void AddTextBoxHandlers()
     {
         /* Handler to only allow decimal value inputs */
         tbLedPin.AddHandler(KeyDownEvent, InputControl.TextBox_DecimalInput!, RoutingStrategies.Tunnel);
-        tbInputPin.AddHandler(KeyDownEvent, InputControl.TextBox_DecimalInput!, RoutingStrategies.Tunnel);
+        tbInputLedPin.AddHandler(KeyDownEvent, InputControl.TextBox_DecimalInput!, RoutingStrategies.Tunnel);
+        tbInputButtonPin.AddHandler(KeyDownEvent, InputControl.TextBox_DecimalInput!, RoutingStrategies.Tunnel);
     }
 
     private void FillTextBlockWithText()
     {
         txDescLed.Text = "This test will light up the LED connected to the selected GPIO pin.";
-        txDescInput.Text = "This test will light up the LED defined in \"GPIO: Output Test\" on hardware button click."; // 
+        txDescInput.Text = "This test will light up the LED on hardware button click."; // 
         txInfoLed.Text = "";
         txInfoInput.Text = "";
     }

@@ -21,9 +21,13 @@
       <TextBlock Text="GPIO: Input Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescInput" Classes.ClassDescription="true"/>
       <Grid ColumnDefinitions="*,*,*">
+        <StackPanel Grid.Column="0">
+          <TextBlock Text="GPIO Pin - LED:" Classes.ClassContentinfo="true"/>
+          <TextBox Name="tbInputLedPin"/>
+        </StackPanel>
         <StackPanel Grid.Column="1">
           <TextBlock Text="GPIO Pin - Button:" Classes.ClassContentinfo="true"/>
-          <TextBox Name="tbInputPin"/>
+          <TextBox Name="tbInputButtonPin"/>
         </StackPanel>
         <Button Name="btnGpioInput" Content="Activate Input" />
       </Grid>
