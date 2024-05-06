@@ -154,7 +154,9 @@ public partial class UserControl_Can : UserControl
         if (activate)
         {
             btnCanRW.IsEnabled = true;
-            txDescCanRW.Text = "External CAN device must echo the received message!";
+            txDescCanRW.Text = "External CAN device must echo the received message!\r\n" +
+                "Use this command in Linux on your external device:\r\n" +
+                "STRING=$(candump can0 -L -n1 | cut -d '#' -f2) && cansend can0 01b#${STRING}";
         }
         else
         {
