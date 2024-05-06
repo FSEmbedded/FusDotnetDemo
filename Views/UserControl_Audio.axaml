@@ -4,8 +4,24 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Class="dotnetIot_Demo.Views.UserControl_Audio">
   <ScrollViewer>
-    <!-- Audio Output Test -->
     <StackPanel>
+      <!-- Get Audio Devices -->
+      <TextBlock Text="Get Audio Devices" Classes.ClassName="true"/>
+      <TextBlock Name="txDescGetAudioDev" Classes.ClassDescription="true"/>
+      <Grid ColumnDefinitions="*,*" RowDefinitions="*,*">
+        <Button Name="btnGetAudioDev" Content="Get Audio Devices" Grid.Column="0" Grid.Row="0"/>
+        <StackPanel Grid.Column="1" Grid.Row="0">
+          <TextBlock Text="Playback Devices:" Classes.ClassContentinfo="true"/>
+          <ComboBox Name="cbPlaybackDev" Width="220"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="1">
+          <TextBlock Text="Recording Devices:" Classes.ClassContentinfo="true"/>
+          <ComboBox Name="cbRecordDev" Width="220"/>
+        </StackPanel>
+      </Grid>
+      <TextBlock Name="txInfoGetAudioDev" Classes.ClassInfo="true"/>
+      <Border Classes.ClassDivider="true"/>
+      <!-- Audio Output Test -->
       <TextBlock Text="Audio: Output Test" Classes.ClassName="true"/>
       <TextBlock Name="txDescAudioOut" Classes.ClassDescription="true"/>
       <Grid ColumnDefinitions="*,*,*">

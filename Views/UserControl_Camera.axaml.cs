@@ -49,7 +49,7 @@ public partial class UserControl_Camera : UserControl
 
         try
         {
-            /* Create new object Camera_Tests */
+            /* Create new object Camera_Demo */
             Camera = new Camera_Demo(busId, width, height);
         }
         catch (Exception ex)

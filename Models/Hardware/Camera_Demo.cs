@@ -43,10 +43,10 @@ internal class Camera_Demo
 
     public static List<string> GetAvailableCameras()
     {
-        List<string> cameras = new();
+        List<string> cameras = [];
 
-        /* This command first filters the output of ls to only include lines 
-         * starting with 'l' (indicating symbolic links), then uses awk to print the last field of each line */
+        /* This command first filters the output of ls to only include lines starting with 'l' (indicating symbolic links),
+         * then uses awk to print the last field of each line */
         string argument = $"-c \"ls -l /dev/v4l/by-id/ | grep '^l' | awk '{{print $NF}}'\"";
 
         ProcessStartInfo startInfo = new()
