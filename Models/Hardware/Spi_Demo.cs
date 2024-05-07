@@ -4,14 +4,14 @@
 *                                                       *
 *    Author: Simon Brügel                               *
 *                                                       *
-*    This file is part of dotnetIoT_Demo.               *
+*    This file is part of FusDotnetDemo.                *
 *                                                       *
 *********************************************************/
 
 using System;
 using System.Device.Spi;
 
-namespace dotnetIot_Demo.Models.Hardware;
+namespace FusDotnetDemo.Models.Hardware;
 
 internal class Spi_Demo
 {

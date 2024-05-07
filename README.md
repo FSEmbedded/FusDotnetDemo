@@ -40,7 +40,7 @@ dotnet add package Avalonia.Themes.Fluent --version 11.0.10
 Compile the code, copy the binaries to your board and run following command in Linux to start the app. Use a serial terminal like TeraTerm or SSH in PowerShell to start the app from your development machine. Adapt the path to the dll-file according to your setup.
 
 ```shell
-dotnet dotnetIot_Demo/_dotnetIot_Demo.dll
+dotnet FusDotnetDemo/FusDotnetDemo.dll
 ```
 
 ### Automation of the copy process
@@ -49,7 +49,7 @@ Included in this project is the PowerShell-Script *copy_debug_to_board.ps1*. Thi
 
 **Change the IP address in the script to your board IP!**
 
-If you use Visual Studio, you can execute this script as a "PostBuildEvent", defined in the file dotnetIot_Demo.csproj:
+If you use Visual Studio, you can execute this script as a "PostBuildEvent", defined in the file FusDotnetDemo.csproj:
 
 ```
 <Target Name="PostBuild" AfterTargets="PostBuildEvent">
@@ -87,7 +87,7 @@ To start RDP in Linux you can run this command:
 If you have no physical display connected to your board, using only RDP, you can start the app as usual:
 
 ```shell
-dotnet dotnetIot_Demo/_dotnetIot_Demo.dll
+dotnet FusDotnetDemo/FusDotnetDemo.dll
 ```
 
 If you have a physical display and RDP connected, you must define on which display the app should run, default is the physical display.

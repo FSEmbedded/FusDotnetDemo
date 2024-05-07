@@ -4,7 +4,7 @@
 *                                                       *
 *    Author: Simon Brügel                               *
 *                                                       *
-*    This file is part of dotnetIoT_Demo.               *
+*    This file is part of FusDotnetDemo.                *
 *                                                       *
 *********************************************************/
 
@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Device.I2c;
 
-namespace dotnetIot_Demo.Models.Hardware;
+namespace FusDotnetDemo.Models.Hardware;
 
 internal class I2c_Demo
 {

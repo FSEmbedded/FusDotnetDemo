@@ -4,15 +4,15 @@
 *                                                       *
 *    Author: Simon Brügel                               *
 *                                                       *
-*    This file is part of dotnetIoT_Demo.               *
+*    This file is part of FusDotnetDemo.                *
 *                                                       *
 *********************************************************/
 
-using dotnetIot_Demo.Models.Tools;
+using FusDotnetDemo.Models.Tools;
 using System.Device.Gpio;
 using System.Device.Gpio.Drivers;
 
-namespace dotnetIot_Demo.Models.Hardware;
+namespace FusDotnetDemo.Models.Hardware;
 
 internal class Gpio_Demo
 {

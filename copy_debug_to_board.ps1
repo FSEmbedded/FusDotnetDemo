@@ -1,5 +1,5 @@
 # Define the IP address as a variable, change as needed
-$ipAddress = "10.0.0.113"
+$ipAddress = "10.0.0.85"
 # Directories to copy from the local runtimes directory
 $runtimesToCopy = @("linux-arm", "linux-arm64", "unix")
 
@@ -8,7 +8,7 @@ $localDir = ".\bin\Debug\net8.0"
 $runtimesDir = "${localDir}/runtimes"
 # Remote board
 $remoteHost = "root@${ipAddress}"
-$remoteDir = "/home/root/dotnetIot_Demo"
+$remoteDir = "/home/root/FusDotnetDemo"
 $destination = "${remoteHost}:${remoteDir}"
 
 # Create the destination directory on the remote server

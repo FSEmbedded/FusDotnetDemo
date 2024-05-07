@@ -4,7 +4,7 @@
 *                                                       *
 *    Author: Simon Brügel                               *
 *                                                       *
-*    This file is part of dotnetIoT_Demo.               *
+*    This file is part of FusDotnetDemo.                *
 *                                                       *
 *********************************************************/
 
@@ -12,7 +12,7 @@ using System.Threading;
 using System.Collections.Generic;
 using Iot.Device.BoardLed;
 
-namespace dotnetIot_Demo.Models.Hardware;
+namespace FusDotnetDemo.Models.Hardware;
 
 internal class Led_Demo
 {

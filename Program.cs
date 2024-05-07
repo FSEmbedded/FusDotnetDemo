@@ -4,7 +4,7 @@
 *                                                       *
 *    Author: Simon Brügel                               *
 *                                                       *
-*    This file is part of dotnetIoT_Demo.               *
+*    This file is part of FusDotnetDemo.                *
 *                                                       *
 *********************************************************/
 
@@ -13,7 +13,7 @@ using Avalonia;
 using Avalonia.Media;
 using Avalonia.ReactiveUI;
 
-namespace dotnetIot_Demo;
+namespace FusDotnetDemo;
 
 internal class Program
 {

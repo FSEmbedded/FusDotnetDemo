@@ -4,14 +4,14 @@
 *                                                       *
 *    Author: Simon Brügel                               *
 *                                                       *
-*    This file is part of dotnetIoT_Demo.               *
+*    This file is part of FusDotnetDemo.                *
 *                                                       *
 *********************************************************/
 
 using System;
 using System.Globalization;
 
-namespace dotnetIot_Demo.Models.Tools
+namespace FusDotnetDemo.Models.Tools
 {
     static class Helper
     {

@@ -4,7 +4,7 @@
 *                                                       *
 *    Author: Simon Brügel                               *
 *                                                       *
-*    This file is part of dotnetIoT_Demo.               *
+*    This file is part of FusDotnetDemo.                *
 *                                                       *
 *********************************************************/
 
@@ -12,7 +12,7 @@ using Avalonia.Controls;
 using System;
 using System.Net;
 
-namespace dotnetIot_Demo.Views;
+namespace FusDotnetDemo.Views;
 
 public partial class MainWindow : Window
 {

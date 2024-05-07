@@ -29,10 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Assets\pcmx8mpr2.md" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="Assets\Audio_Test.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CustomToolNamespace>Assets</CustomToolNamespace>

@@ -4,7 +4,7 @@
 *                                                       *
 *    Author: Simon Brügel                               *
 *                                                       *
-*    This file is part of dotnetIoT_Demo.               *
+*    This file is part of FusDotnetDemo.                *
 *                                                       *
 *********************************************************/
 
@@ -14,9 +14,9 @@ using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using dotnetIot_Demo.Models.Hardware;
+using FusDotnetDemo.Models.Hardware;
 
-namespace dotnetIot_Demo.Views;
+namespace FusDotnetDemo.Views;
 
 public partial class UserControl_Uart : UserControl
 {

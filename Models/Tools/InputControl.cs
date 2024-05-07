@@ -4,7 +4,7 @@
 *                                                       *
 *    Author: Simon Brügel                               *
 *                                                       *
-*    This file is part of dotnetIoT_Demo.               *
+*    This file is part of FusDotnetDemo.                *
 *                                                       *
 *********************************************************/
 
@@ -12,7 +12,7 @@ using System;
 using Avalonia.Controls;
 using Avalonia.Input;
 
-namespace dotnetIot_Demo.Models.Tools
+namespace FusDotnetDemo.Models.Tools
 {
     internal class InputControl
     {

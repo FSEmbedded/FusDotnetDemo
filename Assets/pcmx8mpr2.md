@@ -1,6 +1,6 @@
 ﻿# Default Pins for PicoCoreMX8MPr2
 
-The connections and pins defined in this document are meant to be used with the default values that are set in the dotnetIoT_Demo App.
+The connections and pins defined in this document are meant to be used with the default values that are set in the FusDotnetDemo App.
 
 
 ## GPIO
