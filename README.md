@@ -11,6 +11,7 @@ If you want to see which interface demos are implemented in this app you can jum
 
 This software is targeting .NET 8.0.
 If you use Yocto, [meta-dotnet-core](https://github.com/RDunkley/meta-dotnet-core) might be helpful to add .NET Core and Visual Studio Remote Debugger to your Linux image.
+Avalonia needs X11, Wayland might be supported in future versions.
 
 ### Installed NuGet Packages
 
@@ -73,6 +74,24 @@ openssl genrsa -out tls.key 2048
 openssl req -new -key tls.key -out tls.csr
 openssl x509 -req -days 365 -signkey tls.key -in tls.csr -out tls.crt
 ```
+
+If '/etc/freerdp/keys/' does not exist on your board, first create it and continue with the above commands.
+
+### Start Display Server on Startup
+
+The display server won't start automatically if no physical display is connected to your board. This can be changed by editing weston.ini:
+
+```shell
+vi /etc/xdg/weston/weston.ini
+```
+
+Under [screen-share], this line is by default uncommented:
+
+```
+#start-on-startup=true
+```
+
+Remove the '#', save weston.ini and reboot.
 
 ### Start RDP server
 
