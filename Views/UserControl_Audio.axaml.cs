@@ -111,13 +111,13 @@ public partial class UserControl_Audio : UserControl
             /* Create new thread, stop sound */
             Thread stopAudioOutThread = new(new ThreadStart(Audio!.StopPlayInLoop));
             stopAudioOutThread.Start();
+            Thread.Sleep(1500);
             speakerIsOn = false;
             /* Change UI */
             btnAudioOut.Content = "Play Audio";
             btnAudioOut.Background = Brushes.LightGreen;
             txInfoAudioOut.Text = "Speaker is off";
             txInfoAudioOut.Foreground = Brushes.Blue;
-            Thread.Sleep(1200);
         }
     }
 
@@ -276,7 +276,7 @@ public partial class UserControl_Audio : UserControl
         if (activate)
         {
             btnAudioOut.IsEnabled = true;
-            txDescAudioOut.Text = "Audio file will be played until stopped.";
+            txDescAudioOut.Text = "Audio file will be played until stopped. If the speaker is connected to lineout, try unmuting using 'alsamixer'.";
         }
         else
         {

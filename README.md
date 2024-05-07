@@ -160,6 +160,7 @@ STRING=$(candump can0 -L -n1 | cut -d '#' -f2) && cansend can0 01b#${STRING}
 
 Bus for "I2C Extension Board" must be activated in the Device Tree of your board.
 If you don't have the F&S I2C Extension Board, at least the Read / Write test should be adaptable to your setup. The "I2C Extension Board" has LEDs and PWM / ADC that are used in the other tests.
+For the PWM / ADC Test, connect the pins for PWM and ADC!
 
 
 ### SPI
