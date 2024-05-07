@@ -1,4 +1,14 @@
-﻿using System;
+﻿/********************************************************
+*                                                       *
+*    Copyright (C) 2024 F&S Elektronik Systeme GmbH     *
+*                                                       *
+*    Author: Simon Brügel                               *
+*                                                       *
+*    This file is part of dotnetIoT_Demo.               *
+*                                                       *
+*********************************************************/
+
+using System;
 using System.Globalization;
 
 namespace dotnetIot_Demo.Models.Tools

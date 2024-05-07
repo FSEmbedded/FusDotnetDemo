@@ -1,4 +1,14 @@
-﻿using dotnetIot_Demo.Models.Tools;
+﻿/********************************************************
+*                                                       *
+*    Copyright (C) 2024 F&S Elektronik Systeme GmbH     *
+*                                                       *
+*    Author: Simon Brügel                               *
+*                                                       *
+*    This file is part of dotnetIoT_Demo.               *
+*                                                       *
+*********************************************************/
+
+using dotnetIot_Demo.Models.Tools;
 using System.Device.Gpio;
 using System.Device.Gpio.Drivers;
 

@@ -1,13 +1,27 @@
-$ipAddress = "10.0.0.130" # Define the IP address as a variable
+# Define the IP address as a variable, change as needed
+$ipAddress = "10.0.0.113"
+# Directories to copy from the local runtimes directory
+$runtimesToCopy = @("linux-arm", "linux-arm64", "unix")
+
+# Folder where the binaries are stored
 $localDir = ".\bin\Debug\net8.0"
-$remotePath = "root@${ipAddress}:/home/root/dotnetIot_Demo" # Use the $ipAddress variable in the $remotePath
-$runtimesPath = "$localDir/runtimes"
+$runtimesDir = "${localDir}/runtimes"
+# Remote board
+$remoteHost = "root@${ipAddress}"
+$remoteDir = "/home/root/dotnetIot_Demo"
+$destination = "${remoteHost}:${remoteDir}"
 
-# Remove directories except "linux-arm64" and "unix" from the runtimes directory
-Get-ChildItem -Path $runtimesPath -Directory -Exclude "linux-arm64", "unix" | Remove-Item -Recurse -Force
+# Create the destination directory on the remote server
+ssh $remoteHost "mkdir -p ${remoteDir}"
 
-# Create the destination directory on the remote server if it doesn't exist
-ssh root@$ipAddress "mkdir -p /home/root/dotnetIot_Demo"
+# Copy everything from localDir to remotePath, excluding "runtimes"
+Get-ChildItem -Path $localDir -Exclude "runtimes" | foreach {
+    scp -r $_.FullName $destination
+}
 
-# Copy files from the local directory to the remote server
-scp -r $localDir/* $remotePath
+# Copy only defined runtimes $runtimesToCopy from the local runtimes directory to the remote server
+ssh $remoteHost "mkdir -p ${remoteDir}/runtimes"
+# Loop through the array and copy each directory to the remote server
+foreach ($dir in $runtimesToCopy) {
+    scp -r "${runtimesDir}/${dir}" "${destination}/runtimes/${dir}"
+}

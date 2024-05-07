@@ -218,7 +218,7 @@ You can use a webcam connected via USB.
 * [Official Microsoft IoT Documentation](https://docs.microsoft.com/dotnet/iot/) - Concepts, quickstarts, tutorials and API reference documentation.
 * [Avalonia  UI Documentation](https://docs.avaloniaui.net/) - All infos needed to build a cross-platform app UI
 
-* 
+
 ## Copyright
 
 Copyright (C) 2024 [F&S Elektronik Systeme GmbH](https://fs-net.de/)

@@ -1,3 +1,13 @@
+/********************************************************
+*                                                       *
+*    Copyright (C) 2024 F&S Elektronik Systeme GmbH     *
+*                                                       *
+*    Author: Simon Brügel                               *
+*                                                       *
+*    This file is part of dotnetIoT_Demo.               *
+*                                                       *
+*********************************************************/
+
 using System;
 using System.IO;
 using System.Threading;
@@ -348,7 +358,7 @@ public partial class UserControl_Audio : UserControl
 
     private void FillTextBlockWithText()
     {
-        txDescGetAudioDev.Text = "Find playback and recording audio devices";
+        txDescGetAudioDev.Text = "Find playback and recording audio devices. Devices marked with (*) are the Linux default.";
         txInfoGetAudioDev.Text = "";
         txDescAudioOut.Text = "Select Playback Device first.";
         txInfoAudioOut.Text = "";

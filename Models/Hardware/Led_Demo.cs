@@ -1,4 +1,14 @@
-﻿using System.Threading;
+﻿/********************************************************
+*                                                       *
+*    Copyright (C) 2024 F&S Elektronik Systeme GmbH     *
+*                                                       *
+*    Author: Simon Brügel                               *
+*                                                       *
+*    This file is part of dotnetIoT_Demo.               *
+*                                                       *
+*********************************************************/
+
+using System.Threading;
 using System.Collections.Generic;
 using Iot.Device.BoardLed;
 
