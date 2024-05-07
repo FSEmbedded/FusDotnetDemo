@@ -1,107 +1,224 @@
-﻿https://github.com/dotnet/iot
-https://learn.microsoft.com/de-de/dotnet/iot/tutorials/blink-led
+﻿# .NET on Linux with F&S Boards
 
-# GPIO
-## Output Test
-Connect LED to PcoreBBDSI Rev1.40 - J11-8 / J11-11 (GPIO_J1_54)
-## Input Test
-Connect Button to PcoreBBDSI Rev1.40 - J11-18 / J11-27 (GPIO_J1_52)
+[![F&S Elektronik Systeme GmbH](Assets/fs_logo.png "F&S Elektronik Systeme GmbH")](https://fs-net.de/en/)
 
-# CAN
-## Activate CAN
-Will run terminal commands to activate CAN device on local board.
-External CAN receiver should be connected:
-- Connect second board, CAN_L - CAN_L & CAN_H - CAN_H
-- On second device , run following comand under Linux to activate can0:
-    ip link set can0 up type can bitrate 1000000 && ifconfig can0 up
-## Read / Write Test
-Run this command on external CAN device while CAN test is running to return the received value
-    STRING=$(candump can0 -L -n1 | cut -d '#' -f2) && cansend can0 01b#${STRING}
+This software demonstrates the possibilities of [dotnet on Linux](https://github.com/RDunkley/meta-dotnet-core).
+The software implements the [.NET IoT Libraries](https://github.com/dotnet/iot), which make it easy to use the hardware features of [F&S Boards](https://fs-net.de/en)).
+The [UI](#avalonia-ui) is built with [Avalonia UI](https://www.avaloniaui.net/), so it is a multiplatform app and can be started on Linux as well as Windows (on Windows, at least the program starts. The hardware tests are designed to work on Linux only and will propably lead to crashes on Windows!).
+If you want to see which interface demos are implemented in this app you can jump right to the [descriptions](#implemented-hardware-interfaces).
 
-# I2C
-Bus for I2C-Extension-Board must be activated in Device Tree
-## Read / Write Test
-Connect BBDSI with I²C Extension Board: I2C_A_SCL = J11-16 -> J1-11, I2C_A_SDA = J11-17 -> J1-10, GND = J11-37 -> J1-16
-## I²C Extension Board: LED Test
-Connect BBDSI with I²C Extension Board: I2C_A_SCL = J11-16 -> J1-11, I2C_A_SDA = J11-17 -> J1-10, GND = J11-37 -> J1-16
-## I²C Extension Board: PWM / ADC Test
-Connect I²C Extension Board Pins: J2-17 -> J2-27; Set S2-3 to ON
+## Software Requirements
 
-# SPI
-Connect BBDSI with SPI: SCLK: ADP-2 -> J11-3; MOSI: ADP-3 -> J11-6; MISO: ADP-4 -> J11-5;
-CS: ADP-6 -> J11-4; RESET: ADP-8 -> J11-39; GND: ADP-16 -> J11-42; +3V3: ADP-26 -> J11-1
+This software is targeting .NET 8.0.
+If you use Yocto, [meta-dotnet-core](https://github.com/RDunkley/meta-dotnet-core) might be helpful to add .NET Core and Visual Studio Remote Debugger to your Linux image.
 
-# UART
-Add NuGet-Package: system.io.port
-runtimes/unix/lib/net8.0/System.IO.Ports.dll muss enthalten sein!
+### Installed NuGet Packages
 
-ttymxc0 -> uart1 -> UART_C
-ttymxc1 -> uart2 -> UART_A
-ttymxc2 -> uart3 -> UART_D
-ttymxc3 -> uart4 -> UART_B
+These packages are already included in this project, but you will need them for creating your own apps.
 
+#### Device Bindings
 
-# PWM
-Connect LED to PcoreBBDSI Rev1.40 - J11-8 / J11-11 (GPIO_J1_54)
+```shell
+dotnet add package System.Device.Gpio --version 3.1.0
+dotnet add package Iot.Device.Bindings --version 3.1.0
+dotnet add package System.IO.Ports --version 8.0.0
+```
 
-# LED
-## LED Blink Test
-PCA9532 auf I2C-Extension-Board
-sudo cp drivers/leds/leds-pca9532.ko /rootfs/home/root
-Treiber für leds-pca9532 muss in Kernel und Device Tree integriert werden!
-Treiber in Linux laden:
-insmod leds-pca9532.ko
+#### User Interface
 
-Connect BBDSI with I²C Extension Board: I2C_A_SCL = J11-16 -> J1-11, I2C_A_SDA = J11-17 -> J1-10, GND = J11-37 -> J1-16
-Default LED name for extension board: pca:red:power
-Driver for PCA9532 must be enabled
+```shell
+dotnet add package Avalonia --version 11.0.10
+dotnet add package Avalonia.Desktop --version 11.0.10
+dotnet add package Avalonia.Diagnostics --version 11.0.10
+dotnet add package Avalonia.Fonts.Inter --version 11.0.10
+dotnet add package Avalonia.ReactiveUI --version 11.0.10
+dotnet add package Avalonia.Themes.Fluent --version 11.0.10
+```
 
-# Audio
-include alsa-dev to yocto release.
-## Output Test
-Connect Speaker to PcoreBBDSI Rev1.40 - AUDIO_A_LOUT_L - J11-49, AUDIO_A_LOUT_R - J11-45, GND - J11-47
-## Input Test (Continuous)
-Connect Line In to PcoreBBDSI Rev1.40 - AUDIO_A_LIN_L - J11-48, AUDIO_A_LIN_R - J11-44, GND - J11-46
-## Input Test (Fixed Time)
-Connect Line In to PcoreBBDSI Rev1.40 - AUDIO_A_LIN_L - J11-48, AUDIO_A_LIN_R - J11-44, GND - J11-46
+## How to run this software on Linux
 
-# Camera
-https://github.com/dotnet/iot/tree/ab3f910a76568d8a0c234aee0227c65705729da8/src/devices/Camera
-Connect Camera to USB-Port
+Compile the code, copy the binaries to your board and run following command in Linux to start the app. Use a serial terminal like TeraTerm or SSH in PowerShell to start the app from your development machine. Adapt the path to the dll-file according to your setup.
 
-# Allgemein
-Standartwerte für PicoCoreMX8MPr2, Rev1.10
+```shell
+dotnet dotnetIot_Demo/_dotnetIot_Demo.dll
+```
 
+### Automation of the copy process
 
+Included in this project is the PowerShell-Script *copy_debug_to_board.ps1*. This script copies the content of your local directory *.\bin\Debug\net8.0* to the board using SSH, excluding all runtimes that are not needed for execution on Linux.
 
-# NuGet Packages
-IoT.Device.Bindings
-System.Device.Gpio
+**Change the IP address in the script to your board IP!**
 
+If you use Visual Studio, you can execute this script as a "PostBuildEvent", defined in the file dotnetIot_Demo.csproj:
 
-# Remote Desktop über RDP
-## Keys erzeugen:
+```
+<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="powershell.exe .\copy_debug_to_board.ps1" />
+  </Target>
+```
+
+If enabled, the files in your Debug directory will automatically be copied to the board whenever you create a new build!
+
+## Remote Desktop using RDP
+
+With RDP, you can control the Demo-App from your development machine while it is running on your Linux-Board, without the need of a physical display connected to the board.
+
+### Generate keys
+
+First, you need to generate keys in Linux, this is only needed to be done once:
+
+``` shell
 cd /etc/freerdp/keys/
 openssl genrsa -out tls.key 2048
 openssl req -new -key tls.key -out tls.csr
 openssl x509 -req -days 365 -signkey tls.key -in tls.csr -out tls.crt
-## RDP starten
+```
+
+### Start RDP server
+
+To start RDP in Linux you can run this command:
+
+```shell
 /usr/bin/weston --backend=rdp-backend.so --shell=kiosk-shell.so --no-clients-resize --rdp-tls-cert=/etc/freerdp/keys/tls.crt --rdp-tls-key=/etc/freerdp/keys/tls.key
-## Software auf RDP-Display ausführen
+```
+
+### Start App using RDP
+
+If you have no physical display connected to your board, using only RDP, you can start the app as usual:
+
+```shell
+dotnet dotnetIot_Demo/_dotnetIot_Demo.dll
+```
+
+If you have a physical display and RDP connected, you must define on which display the app should run, default is the physical display.
+To start the app on RDP, use this command:
+
+```shell
 WAYLAND_DISPLAY=wayland-1 DISPLAY=:1 dotnet /home/root/IoTLib_Test/IoTLib_Test.dll
+```
 
-## RDP automatisch bei Boot starten
-Spiegelt Display, Hardware-Display muss angeschlossen sein! -> Avalonia App startet nicht!
-Eintrag in /etc/xdg/weston/weston.ini
+## Remote Debugging
 
-[screen-share]
-command=/usr/bin/weston --backend=rdp-backend.so --shell=fullscreen-shell.so --no-clients-resize --rdp-tls-cert=/etc/freerdp/keys/tls.crt --rdp-tls-key=/etc/freerdp/keys/tls.key
-start-on-startup=true
+Using Visual Studio on Windows, a simple solution for remote debugging on your Linux board is to use the option "Attach To Process".
+* Start the app on your board as [explained](#how-to-run-this-software-on-linux).
+* Now you can select "Attach To Process" in Visual Studio (or use the shortcut: Strg + Alt + P)
+    * Select "Connection Type": SSH
+    * "Connection Target": your board IP
+    * If you are connected, find the process "dotnet" in the list of available processes
+    * Select the process, click "Attach"
+    * Debug as usual
 
 
-# Remote Debugging
-copy_to_board.ps1
-IP anpassen, automatisch ausführen lassen
+## Avalonia UI
 
-# Avalonia
-UI Settings in /Views/AppStyles.axaml
+To make this application work on different platforms, it is important to adapt Program.cs. For Linux you have to set a default font, otherwise the software won't start.
+
+UI Styles are defined globally in /Views/AppStyles.axaml
+
+
+## Implemented Hardware Interfaces
+
+All interface demos have default values already set, for example GPIO pins, device IDs, register addresses etc.
+These default values are meant to be used with the [PicoCoreMX8MPr2, Rev1.10](https://www.fs-net.de/assets/download/docu/PicoCore/PicoCoreMX8MP_eng.pdf). In [this document](Assets/pcmx8mpr2.md) all hardware pins to be used with the default values are listed!
+If you use any other board, the default values are propably not working. Find your needed values in the [documentation for your board](https://www.fs-net.de/en/embedded-modules/product-overview/).
+
+
+### GPIO
+
+![GPIO](Assets/screenshots/gpio.png)
+
+
+### CAN
+
+![CAN](Assets/screenshots/can.png)
+
+For this test you need a second board which will receive the CAN signal and send a response to your board.
+Connect second board: CAN_L to CAN_L & CAN_H to CAN_H
+
+#### Activate CAN
+
+CAN needs to be activated in Linux to run this test.
+However, on your board which runs this app this will be done through this software.
+On the second board which receives and responds to the CAN signal, the activation must be done manually. Run the following comand under Linux to activate can0:
+
+```shell
+ip link set can0 up type can bitrate 1000000 && ifconfig can0 up
+```
+
+#### Read / Write Test
+
+Run this command on external Linux device while CAN test in this app is running to return the received value:
+
+```shell
+STRING=$(candump can0 -L -n1 | cut -d '#' -f2) && cansend can0 01b#${STRING}
+```
+
+
+### I2C
+
+![I2C](Assets/screenshots/i2c.png)
+
+Bus for "I2C Extension Board" must be activated in the Device Tree of your board.
+If you don't have the F&S I2C Extension Board, at least the Read / Write test should be adaptable to your setup. The "I2C Extension Board" has LEDs and PWM / ADC that are used in the other tests.
+
+
+### SPI
+
+![SPI](Assets/screenshots/spi.png)
+
+You need an external SPI device connected to your board.
+
+
+### UART
+
+![UART](Assets/screenshots/uart.png)
+
+First, let the app find all available Serial Ports on your board. Select sender and receiver port and connect the corresponding pins on your board to run the Loopback Test.
+
+
+### PWM
+
+![PWM](Assets/screenshots/pwm.png)
+
+Connect an LED to your board (or use a voltmeter to measure the voltage increase).
+The first test will increase the voltage from 0V to 3.3V over the defined timespan, in the second test you can change the voltage using the slider.
+
+
+### LED
+
+![LED](Assets/screenshots/led.png)
+
+Find all available LEDs connected to your board. This will also find for example the LED for CapsLock on a keyboard connected via USB.
+Select an LED and let it blink.
+
+
+### Audio
+
+![Audio](Assets/screenshots/audio.png)
+
+**Include alsa-dev to your yocto release!**
+
+If you use the headphone jack on your board or baseboard, it should be automatically unmuted for playback. When using lineout, you propably have to unmute manually, using:
+
+``` shell
+alsamixer
+```
+
+
+### Camera
+
+![Camera](Assets/screenshots/camera.png)
+
+You can use a webcam connected via USB.
+
+
+## Further Information
+
+* [F&S Product Overview](https://fs-net.de/de/embedded-module/produktuebersicht/) - See all available boards, get hardware documentations for your board
+* [Official Microsoft IoT Documentation](https://docs.microsoft.com/dotnet/iot/) - Concepts, quickstarts, tutorials and API reference documentation.
+* [Avalonia  UI Documentation](https://docs.avaloniaui.net/) - All infos needed to build a cross-platform app UI
+
+* 
+## Copyright
+
+Copyright (C) 2024 [F&S Elektronik Systeme GmbH](https://fs-net.de/)
