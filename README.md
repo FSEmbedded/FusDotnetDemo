@@ -11,8 +11,12 @@ If you want to see which interface demos are implemented in this app you can jum
 ## Software Requirements
 
 This software is targeting .NET 8.0.
-If you use Yocto, [meta-dotnet-core](https://github.com/RDunkley/meta-dotnet-core) might be helpful to add .NET Core and Visual Studio Remote Debugger to your Linux image.
-Avalonia needs X11, Wayland might be supported in future versions.
+
+### Linux
+
+If you use Yocto, [meta-dotnet-core](https://github.com/RDunkley/meta-dotnet-core) might be helpful to add .NET Core and Visual Studio Remote Debugger to your Yocto Linux image.
+Avalonia on Linux needs X11, Wayland might be supported in future versions.
+For implementing audio with the Iot.Device.Media library, alsa-dev is needed.
 
 ### Installed NuGet Packages
 
