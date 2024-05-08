@@ -42,7 +42,7 @@ dotnet add package Avalonia.Themes.Fluent --version 11.0.10
 
 Compile the code, copy the binaries to your board and run following command in Linux to start the app. Use a serial terminal like TeraTerm or SSH in PowerShell to start the app from your development machine. Adapt the path to the dll-file according to your setup.
 
-```shell
+```bash
 dotnet FusDotnetDemo/FusDotnetDemo.dll
 ```
 
@@ -71,7 +71,7 @@ With RDP, you can control the Demo-App from your development machine while it is
 
 First, you need to generate keys in Linux, this is only needed to be done once:
 
-``` shell
+```bash
 cd /etc/freerdp/keys/
 openssl genrsa -out tls.key 2048
 openssl req -new -key tls.key -out tls.csr
@@ -84,7 +84,7 @@ If '/etc/freerdp/keys/' does not exist on your board, first create it and contin
 
 The display server won't start automatically if no physical display is connected to your board. This can be changed by editing weston.ini:
 
-```shell
+```bash
 vi /etc/xdg/weston/weston.ini
 ```
 
@@ -100,7 +100,7 @@ Remove the '#', save weston.ini and reboot.
 
 To start RDP in Linux you can run this command:
 
-```shell
+```bash
 /usr/bin/weston --backend=rdp-backend.so --shell=kiosk-shell.so --no-clients-resize --rdp-tls-cert=/etc/freerdp/keys/tls.crt --rdp-tls-key=/etc/freerdp/keys/tls.key
 ```
 
@@ -108,14 +108,14 @@ To start RDP in Linux you can run this command:
 
 If you have no physical display connected to your board, using only RDP, you can start the app as usual:
 
-```shell
+```bash
 dotnet FusDotnetDemo/FusDotnetDemo.dll
 ```
 
 If you have a physical display and RDP connected, you must define on which display the app should run, default is the physical display.
 To start the app on RDP, use this command:
 
-```shell
+```bash
 WAYLAND_DISPLAY=wayland-1 DISPLAY=:1 dotnet /home/root/IoTLib_Test/IoTLib_Test.dll
 ```
 
@@ -136,7 +136,21 @@ Using Visual Studio on Windows, a simple solution for remote debugging on your L
 
 To make this application work on different platforms, it is important to adapt Program.cs. For Linux you have to set a default font, otherwise the software won't start.
 
-UI Styles are defined globally in /Views/AppStyles.axaml
+UI Styles are defined globally in */Views/AppStyles.axaml*.
+
+The App is intended to be run in fullscreen / weston kiosk-shell, for this reason window decorations etc. are disabled. If you want FusDotnetDemo to behave like a regular windowed program, change some lines in */Views/Mainwindow.axaml*:
+
+```axaml
+<Window...
+
+    SystemDecorations="BorderOnly"
+    CanResize="False"
+    ExtendClientAreaToDecorationsHint="False"
+    ExtendClientAreaChromeHints="NoChrome"
+    ExtendClientAreaTitleBarHeightHint="0"
+
+    ...>
+```
 
 
 ## Implemented Hardware Interfaces
@@ -164,7 +178,7 @@ CAN needs to be activated in Linux to run this test.
 However, on your board which runs this app this will be done through this software.
 On the second board which receives and responds to the CAN signal, the activation must be done manually. Run the following comand under Linux to activate can0:
 
-```shell
+```bash
 ip link set can0 up type can bitrate 1000000 && ifconfig can0 up
 ```
 
@@ -172,7 +186,7 @@ ip link set can0 up type can bitrate 1000000 && ifconfig can0 up
 
 Run this command on external Linux device while CAN test in this app is running to return the received value:
 
-```shell
+```bash
 STRING=$(candump can0 -L -n1 | cut -d '#' -f2) && cansend can0 01b#${STRING}
 ```
 
@@ -224,7 +238,7 @@ Select an LED and let it blink.
 
 If you use the headphone jack on your board or baseboard, it should be automatically unmuted for playback. When using lineout, you propably have to unmute manually, using:
 
-``` shell
+```bash
 alsamixer
 ```
 
