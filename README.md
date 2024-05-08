@@ -7,6 +7,7 @@ The software implements the [.NET IoT Libraries](https://github.com/dotnet/iot),
 The [UI](#avalonia-ui) is built with [Avalonia UI](https://www.avaloniaui.net/), so it is a multiplatform app and can be started on Linux as well as Windows (on Windows, at least the program starts. The hardware tests are designed to work on Linux only and will propably lead to crashes on Windows!).
 If you want to see which interface demos are implemented in this app you can jump right to the [descriptions](#implemented-hardware-interfaces).
 
+
 ## Software Requirements
 
 This software is targeting .NET 8.0.
@@ -36,6 +37,7 @@ dotnet add package Avalonia.ReactiveUI --version 11.0.10
 dotnet add package Avalonia.Themes.Fluent --version 11.0.10
 ```
 
+
 ## How to run this software on Linux
 
 Compile the code, copy the binaries to your board and run following command in Linux to start the app. Use a serial terminal like TeraTerm or SSH in PowerShell to start the app from your development machine. Adapt the path to the dll-file according to your setup.
@@ -59,6 +61,7 @@ If you use Visual Studio, you can execute this script as a "PostBuildEvent", def
 ```
 
 If enabled, the files in your Debug directory will automatically be copied to the board whenever you create a new build!
+
 
 ## Remote Desktop using RDP
 
@@ -115,6 +118,7 @@ To start the app on RDP, use this command:
 ```shell
 WAYLAND_DISPLAY=wayland-1 DISPLAY=:1 dotnet /home/root/IoTLib_Test/IoTLib_Test.dll
 ```
+
 
 ## Remote Debugging
 
