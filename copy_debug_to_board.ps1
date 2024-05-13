@@ -45,6 +45,6 @@ scp $tarFilePath "${remoteHost}:${remoteDir}"
 ssh $remoteHost "tar -xf ${tarFileName} && rm ${tarFileName}"
 
 # Clean up temporary directory
-#Remove-Item -Path $tempDir -Recurse
+Remove-Item -Path $tempDir -Recurse
 # Delete local .tar file
-#Remove-Item -Path $tarFilePath
+Remove-Item -Path $tarFilePath
