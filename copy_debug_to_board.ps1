@@ -1,25 +1,50 @@
-# Define the IP address as a variable, change as needed
-$ipAddress = "10.0.0.76"
-# Directories to copy from the local runtimes directory
-$runtimesToCopy = @("linux-arm", "linux-arm64", "unix")
+# Define variables, adapt as needed
+$ipAddress = "10.0.0.61"
+$projectName = "FusDotnetDemo"
 
+# Directories to copy from the local runtimes directory
+$runtimesToCopy = @("unix", "linux-arm", "linux-arm64")
 # Local folder where the binaries are stored
-$localDir = ".\bin\Debug\net8.0"
-$runtimesDir = "${localDir}\runtimes"
+$sourceDir = ".\bin\Debug\net8.0"
 # Remote board
 $remoteHost = "root@${ipAddress}"
-$remoteDir = "/home/root/FusDotnetDemo"
-$destination = "${remoteHost}:${remoteDir}"
+$remoteDir = "/home/root"
+# Temporary files and folders for the tar process
+$tempDir = ".\bin\Debug\tempDir"
+$tempSource = "${tempDir}\${projectName}"
+$tarFileName = "${projectName}_Debug.tar"
+$tarFilePath = ".\bin\Debug\${tarFileName}"
 
-# Create the destination directory on the remote server
-ssh $remoteHost "mkdir -p ${remoteDir} && mkdir -p ${remoteDir}/runtimes"
-
-# Copy everything from localDir to remotePath, excluding "runtimes"
-Get-ChildItem -Path $localDir -Exclude "runtimes" | foreach {
-    & scp -r $_.FullName $destination
+# Function to copy files and folders
+function Copy-Files {
+    param (
+        [string]$source,
+        [string]$destination,
+        [string]$exclude
+    )
+    robocopy $source $destination /e /xd $exclude | Out-Null
 }
 
-# Copy only defined runtimes $runtimesToCopy from the local runtimes directory to the remote server
-foreach ($dir in $runtimesToCopy) {
-    & scp -r "${runtimesDir}/${dir}" "${destination}/runtimes/${dir}"
+# Copy files and folders to temporary directory, exclude runtimes directory
+Copy-Files -source $sourceDir -destination $tempSource -exclude "runtimes"
+
+# Copy required runtimes to the temporary directory
+foreach ($runtime in $runtimesToCopy) {
+    $runtimePath = Join-Path -Path $sourceDir -ChildPath "runtimes\$runtime"
+    if (Test-Path $runtimePath) {
+        Copy-Files -source $runtimePath -destination "${tempSource}\runtimes\$runtime"
+    }
 }
+
+# Create .tar archive with all contents from tempDir
+tar -cf $tarFilePath -C $tempDir .
+
+# Copy tar archive to remote board
+scp $tarFilePath "${remoteHost}:${remoteDir}"
+# Extract tar archive on remote board and remove it
+ssh $remoteHost "tar -xf ${tarFileName} && rm ${tarFileName}"
+
+# Clean up temporary directory
+#Remove-Item -Path $tempDir -Recurse
+# Delete local .tar file
+#Remove-Item -Path $tarFilePath
