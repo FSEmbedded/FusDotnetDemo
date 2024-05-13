@@ -3,8 +3,8 @@
 [![F&S Elektronik Systeme GmbH](Assets/fs_logo.png "F&S Elektronik Systeme GmbH")](https://fs-net.de/en/)
 
 This software demonstrates the possibilities of [dotnet on Linux](https://github.com/RDunkley/meta-dotnet-core).
-The software implements the [.NET IoT Libraries](https://github.com/dotnet/iot), which make it easy to use the hardware features of [F&S Boards](https://fs-net.de/en)).
-The [UI](#avalonia-ui) is built with [Avalonia UI](https://www.avaloniaui.net/), so it is a multiplatform app and can be started on Linux as well as Windows (on Windows, at least the program starts. The hardware tests are designed to work on Linux only and will propably lead to crashes on Windows!).
+FusDotnetDemo implements the [.NET IoT Libraries](https://github.com/dotnet/iot), which make it easy to use the hardware features of [F&S Boards](https://fs-net.de/en)).
+The [UI](#avalonia-ui) is built with [Avalonia UI](https://www.avaloniaui.net/), so it is a multiplatform app and can be started on Linux as well as Windows (on Windows at least the program starts. The hardware tests are designed to work on Linux only and will propably lead to crashes on Windows!).
 If you want to see which interface demos are implemented in this app you can jump right to the [descriptions](#implemented-hardware-interfaces).
 
 
@@ -14,37 +14,14 @@ This software is targeting .NET 8.0.
 
 ### Linux
 
-If you use Yocto, [meta-dotnet-core](https://github.com/RDunkley/meta-dotnet-core) might be helpful to add .NET Core and Visual Studio Remote Debugger to your Yocto Linux image.
+If you use Yocto, [meta-dotnet-core](https://github.com/RDunkley/meta-dotnet-core) might be helpful to add *.NET Core* and *Visual Studio Remote Debugger* to your Yocto Linux image.
 Avalonia on Linux needs X11, Wayland might be supported in future versions.
 For implementing audio with the Iot.Device.Media library, alsa-dev is needed.
-
-### Installed NuGet Packages
-
-These packages are already included in this project, but you will need them for creating your own apps.
-
-#### Device Bindings
-
-```shell
-dotnet add package System.Device.Gpio --version 3.1.0
-dotnet add package Iot.Device.Bindings --version 3.1.0
-dotnet add package System.IO.Ports --version 8.0.0
-```
-
-#### User Interface
-
-```shell
-dotnet add package Avalonia --version 11.0.10
-dotnet add package Avalonia.Desktop --version 11.0.10
-dotnet add package Avalonia.Diagnostics --version 11.0.10
-dotnet add package Avalonia.Fonts.Inter --version 11.0.10
-dotnet add package Avalonia.ReactiveUI --version 11.0.10
-dotnet add package Avalonia.Themes.Fluent --version 11.0.10
-```
 
 
 ## How to run this software on Linux
 
-Compile the code, copy the binaries to your board and run following command in Linux to start the app. Use a serial terminal like TeraTerm or SSH in PowerShell to start the app from your development machine. Adapt the path to the dll-file according to your setup.
+Compile the code, copy the binaries to your board and run following command in Linux to start the app. Adapt the path to the dll-file according to your setup:
 
 ```bash
 dotnet FusDotnetDemo/FusDotnetDemo.dll
@@ -67,82 +44,9 @@ If you use Visual Studio, you can execute this script as a "PostBuildEvent", def
 If enabled, the files in your Debug directory will automatically be copied to the board whenever you create a new build!
 
 
-## Remote Desktop using RDP
-
-With RDP, you can control the Demo-App from your development machine while it is running on your Linux-Board, without the need of a physical display connected to the board.
-
-### Generate keys
-
-First, you need to generate keys in Linux, this is only needed to be done once:
-
-```bash
-cd /etc/freerdp/keys/
-openssl genrsa -out tls.key 2048
-openssl req -new -key tls.key -out tls.csr
-openssl x509 -req -days 365 -signkey tls.key -in tls.csr -out tls.crt
-```
-
-If '/etc/freerdp/keys/' does not exist on your board, first create it and continue with the above commands.
-
-### Start Display Server on Startup
-
-The display server won't start automatically if no physical display is connected to your board. This can be changed by editing weston.ini:
-
-```bash
-vi /etc/xdg/weston/weston.ini
-```
-
-Under [screen-share], this line is by default uncommented:
-
-```
-#start-on-startup=true
-```
-
-Remove the '#', save weston.ini and reboot.
-
-### Start RDP server
-
-To start RDP in Linux you can run this command:
-
-```bash
-/usr/bin/weston --backend=rdp-backend.so --shell=kiosk-shell.so --no-clients-resize --rdp-tls-cert=/etc/freerdp/keys/tls.crt --rdp-tls-key=/etc/freerdp/keys/tls.key
-```
-
-### Start App using RDP
-
-If you have no physical display connected to your board, using only RDP, you can start the app as usual:
-
-```bash
-dotnet FusDotnetDemo/FusDotnetDemo.dll
-```
-
-If you have a physical display and RDP connected, you must define on which display the app should run, default is the physical display.
-To start the app on RDP, use this command:
-
-```bash
-WAYLAND_DISPLAY=wayland-1 DISPLAY=:1 dotnet /home/root/IoTLib_Test/IoTLib_Test.dll
-```
-
-
-## Remote Debugging
-
-Using Visual Studio on Windows, a simple solution for remote debugging on your Linux board is to use the option "Attach To Process".
-* Start the app on your board as [explained](#how-to-run-this-software-on-linux).
-* Now you can select "Attach To Process" in Visual Studio (or use the shortcut: Strg + Alt + P)
-    * Select "Connection Type": SSH
-    * "Connection Target": your board IP
-    * If you are connected, find the process "dotnet" in the list of available processes
-    * Select the process, click "Attach"
-    * Debug as usual
-
-
 ## Avalonia UI
 
-To make this application work on different platforms, it is important to adapt Program.cs. For Linux you have to set a default font, otherwise the software won't start.
-
-UI Styles are defined globally in */Views/AppStyles.axaml*.
-
-The App is intended to be run in fullscreen / weston kiosk-shell, for this reason window decorations etc. are disabled. If you want FusDotnetDemo to behave like a regular windowed program, change some lines in */Views/Mainwindow.axaml*:
+The App is intended to be run in fullscreen (*weston kiosk-shell*), for this reason window decorations etc. are disabled. If you want FusDotnetDemo to behave like a regular windowed program, change some lines in */Views/Mainwindow.axaml*:
 
 ```axaml
 <Window...
@@ -257,6 +161,7 @@ You can use a webcam connected via USB.
 ## Further Information
 
 * [F&S Product Overview](https://fs-net.de/de/embedded-module/produktuebersicht/) - See all available boards, get hardware documentations for your board
+* [DOTNET on F&S Boards](https://fs-net.de/assets/download/docu/common/en/DOTNET%20on%20FS%20Boards.pdf) - Find information how to get startet with .NET on F&S Boards
 * [Official Microsoft IoT Documentation](https://docs.microsoft.com/dotnet/iot/) - Concepts, quickstarts, tutorials and API reference documentation.
 * [Avalonia  UI Documentation](https://docs.avaloniaui.net/) - All infos needed to build a cross-platform app UI
 
