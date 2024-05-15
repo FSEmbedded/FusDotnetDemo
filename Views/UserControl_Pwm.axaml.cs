@@ -2,7 +2,7 @@
 *                                                       *
 *    Copyright (C) 2024 F&S Elektronik Systeme GmbH     *
 *                                                       *
-*    Author: Simon Brügel                               *
+*    Author: Simon Bruegel                              *
 *                                                       *
 *    This file is part of FusDotnetDemo.                *
 *                                                       *
@@ -25,12 +25,12 @@ public partial class UserControl_Pwm : UserControl
     private Pwm_Demo? PwmV;
 
     /* GPIO Pin # */
-    private int gpioNoPwm = 1; // GPIO_J1_54
+    private int gpioNoPwm = DefaultBoardValues.GpioNoPwm;
     private int pinPwmTS;
     private int pinPwmV;
 
-    private int duration = 10;
-    private double voltageValue = 0.5;
+    private int duration = DefaultBoardValues.PwmDuration;
+    private double voltageValue = DefaultBoardValues.PwmVoltageValue;
     private bool sliderIsActive = false;
 
     public UserControl_Pwm()

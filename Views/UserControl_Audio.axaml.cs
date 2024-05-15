@@ -2,7 +2,7 @@
 *                                                       *
 *    Copyright (C) 2024 F&S Elektronik Systeme GmbH     *
 *                                                       *
-*    Author: Simon Brügel                               *
+*    Author: Simon Bruegel                              *
 *                                                       *
 *    This file is part of FusDotnetDemo.                *
 *                                                       *
@@ -27,16 +27,17 @@ public partial class UserControl_Audio : UserControl
     private Audio_Demo? Audio;
     private bool speakerIsOn = false;
     private bool isRecording = false;
-    private uint recDuration = 5; // seconds
+    private uint recDuration = DefaultBoardValues.RecDuration; // seconds
     private readonly string audioTestfile = AppContext.BaseDirectory + "Assets/Audio_Test.wav"; // comes with this tool
-    private readonly string recFileCont = "/home/root/record_continuous.wav"; // is created from software
-    private readonly string recFileDur = "/home/root/record_fixedduration.wav"; // is created from software
+    //TODO: Pfad anpassen, /home/root entfernen
+    private readonly string recFileCont = DefaultBoardValues.RecFileCont; // is created from software
+    private readonly string recFileDur = DefaultBoardValues.RecFileDur; // is created from software
 
-    private string inputSignal = "LINE_IN";
+    private string inputSignal = DefaultBoardValues.InputSignal;
     List<string[]>? playbackDevices;
     List<string[]>? recordingDevices;
-    private string? linuxPlaybackDev = "";
-    private string? linuxRecordingDev = "";
+    private string? linuxPlaybackDev = DefaultBoardValues.LinuxPlaybackDevice;
+    private string? linuxRecordingDev = DefaultBoardValues.LinuxRecordingDevice;
 
     public UserControl_Audio()
     {

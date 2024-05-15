@@ -2,7 +2,7 @@
 *                                                       *
 *    Copyright (C) 2024 F&S Elektronik Systeme GmbH     *
 *                                                       *
-*    Author: Simon Brügel                               *
+*    Author: Simon Bruegel                              *
 *                                                       *
 *    This file is part of FusDotnetDemo.                *
 *                                                       *
@@ -24,10 +24,11 @@ public partial class UserControl_Camera : UserControl
 {
     /* Camera functions are in a separate class */
     private Camera_Demo? Camera;
-    private readonly string imgFile = "/home/root/img_camtest.png";
+    //TODO: Pfad Ã¤ndern, home/root/ entfernen
+    private readonly string imgFile = DefaultBoardValues.ImgFile;
     private int busId;
-    private uint width = 1920;
-    private uint height = 1080;
+    private uint width = DefaultBoardValues.Width;
+    private uint height = DefaultBoardValues.Height;
 
     public UserControl_Camera()
     {

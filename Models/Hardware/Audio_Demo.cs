@@ -2,7 +2,7 @@
 *                                                       *
 *    Copyright (C) 2024 F&S Elektronik Systeme GmbH     *
 *                                                       *
-*    Author: Simon Brügel                               *
+*    Author: Simon Bruegel                              *
 *                                                       *
 *    This file is part of FusDotnetDemo.                *
 *                                                       *

@@ -2,7 +2,7 @@
 *                                                       *
 *    Copyright (C) 2024 F&S Elektronik Systeme GmbH     *
 *                                                       *
-*    Author: Simon Brügel                               *
+*    Author: Simon Bruegel                              *
 *                                                       *
 *    This file is part of FusDotnetDemo.                *
 *                                                       *
@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using FusDotnetDemo.Models.Tools;
 using FusDotnetDemo.Models.Hardware;
 
 namespace FusDotnetDemo.Views;
@@ -25,25 +26,25 @@ public partial class UserControl_Uart : UserControl
     Uart_Demo? UartReceiver;
 
     /* Standard values */
-    private string portSender = "/dev/ttymxc1";
-    private string portReceiver = "/dev/ttymxc2";
-    private string valueWrite = "TestMessage1234567890";
-    private int baudrate = 115200;
-    private int dataBit = 8;
-    private double stopBit = 1;
-    private string parity = "None";
-    private string handshake = "None";
+    private string portSender = DefaultBoardValues.UartPortSender;
+    private string portReceiver = DefaultBoardValues.UartPortReceiver;
+    private string valueWrite = DefaultBoardValues.TestMessage;
+    private int baudrate = DefaultBoardValues.Baudrate;
+    private int dataBit = DefaultBoardValues.DataBit;
+    private double stopBit = DefaultBoardValues.StopBit;
+    private string parity = DefaultBoardValues.Parity;
+    private string handshake = DefaultBoardValues.Handshake;
 
     private bool senderSet = false;
     private bool receiverSet = false;
     private string valueRead = "";
-    
+
     /* Values to fill in ComboBoxes */
-    private readonly List<int> baudrates = new([110, 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 57600, 115200, 230400, 460800, 921600]);
-    private readonly List<int> dataBits = new([7, 8]);
-    private readonly List<double> stopBits = new([0, 1, 1.5, 2]);
-    private readonly List<string> parities = new(["None", "Odd", "Even", "Mark", "Space"]);
-    private readonly List<string> handshakes = new(["None", "XOnXOff", "RequestToSend", "RequestToSendXOnXOff"]);
+    private readonly List<int> baudrates = DefaultBoardValues.Baudrates;
+    private readonly List<int> dataBits = DefaultBoardValues.DataBits;
+    private readonly List<double> stopBits = DefaultBoardValues.StopBits;
+    private readonly List<string> parities = DefaultBoardValues.Parities;
+    private readonly List<string> handshakes = DefaultBoardValues.Handshakes;
 
     public UserControl_Uart()
     {

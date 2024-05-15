@@ -1,5 +1,5 @@
 # Define variables, adapt as needed
-$ipAddress = "10.0.0.61"
+$ipAddress = "10.0.135"
 $projectName = "FusDotnetDemo"
 
 # Directories to copy from the local runtimes directory
@@ -39,12 +39,17 @@ foreach ($runtime in $runtimesToCopy) {
 # Create .tar archive with all contents from tempDir
 tar -cf $tarFilePath -C $tempDir .
 
+# Stop the app and delete old project folder on remote board
+ssh $remoteHost "killall dotnet && rm -rf ${projectName}"
 # Copy tar archive to remote board
 scp $tarFilePath "${remoteHost}:${remoteDir}"
 # Extract tar archive on remote board and remove it
 ssh $remoteHost "tar -xf ${tarFileName} && rm ${tarFileName}"
 
+# Start the app on the remote board
+#ssh $remoteHost "dotnet ${projectName}/${projectName}.dll"
+
 # Clean up temporary directory
-Remove-Item -Path $tempDir -Recurse
+#Remove-Item -Path $tempDir -Recurse
 # Delete local .tar file
-Remove-Item -Path $tarFilePath
+#Remove-Item -Path $tarFilePath

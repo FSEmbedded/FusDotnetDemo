@@ -2,7 +2,7 @@
 *                                                       *
 *    Copyright (C) 2024 F&S Elektronik Systeme GmbH     *
 *                                                       *
-*    Author: Simon Brügel                               *
+*    Author: Simon Bruegel                              *
 *                                                       *
 *    This file is part of FusDotnetDemo.                *
 *                                                       *
@@ -21,12 +21,12 @@ public partial class UserControl_Spi : UserControl
 {
     /* SPI functions are in a separate class */
     private Spi_Demo? Spi;
-    private int spidev = 0x1;
-    private byte register1 = 0x2b;
-    private byte register2 = 0x2c;
+    private int spidev = DefaultBoardValues.SpiDev;
+    private byte register1 = DefaultBoardValues.SpiRegister1;
+    private byte register2 = DefaultBoardValues.SpiRegister2;
     /* Values to write */
-    private byte valueWrite1 = 0x5;
-    private byte valueWrite2 = 0x6;
+    private byte valueWrite1 = DefaultBoardValues.SpiValueWrite1;
+    private byte valueWrite2 = DefaultBoardValues.SpiValueWrite2;
     /* Values read from SPI device */
     private byte valueRead1;
     private byte valueRead2;

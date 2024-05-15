@@ -2,7 +2,7 @@
 *                                                       *
 *    Copyright (C) 2024 F&S Elektronik Systeme GmbH     *
 *                                                       *
-*    Author: Simon Brügel                               *
+*    Author: Simon Bruegel                              *
 *                                                       *
 *    This file is part of FusDotnetDemo.                *
 *                                                       *
@@ -15,6 +15,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using FusDotnetDemo.Models.Tools;
 using FusDotnetDemo.Models.Hardware;
+using Iot.Device.Ssd13xx.Commands;
 
 namespace FusDotnetDemo.Views;
 
@@ -23,11 +24,11 @@ public partial class UserControl_Can : UserControl
     /* CAN functions are in a separate class */
     private Can_Demo? Can;
     /* Standard values */
-    private string canDevNo = "0"; //can0
-    private string canDevice = "can0";
-    private string bitrate = "1000000";
-    private byte[] valueSend = [1, 2, 3, 40, 50, 60, 70, 80];
-    private uint canIdWrite = 0x1a;
+    private string canDevNo = DefaultBoardValues.CanDevNo; //can0
+    private string canDevice = string.Empty; //TODO -> benötigt?
+    private string bitrate = DefaultBoardValues.Bitrate;
+    private byte[] valueSend = DefaultBoardValues.ValueSend;
+    private uint canIdWrite = DefaultBoardValues.CanIdWrite;
     /* values that are read */
     private byte[] valueRead = [];
     private uint canIdRead;

@@ -20,6 +20,7 @@
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.10" />
     <PackageReference Include="Iot.Device.Bindings" Version="3.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Device.Gpio" Version="3.1.0" />
     <PackageReference Include="System.IO.Ports" Version="8.0.0" />
   </ItemGroup>
@@ -28,10 +29,17 @@
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
 
+ <ItemGroup>
+   <None Remove="boardvalues.json" />
+ </ItemGroup>
+
   <ItemGroup>
     <Content Include="Assets\Audio_Test.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CustomToolNamespace>Assets</CustomToolNamespace>
+    </Content>
+    <Content Include="boardvalues.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
@@ -40,9 +48,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <AvaloniaResource Update="Assets\Audio_Test.wav">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </AvaloniaResource>
     <AvaloniaResource Update="Assets\fs_logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AvaloniaResource>

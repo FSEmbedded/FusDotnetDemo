@@ -2,7 +2,7 @@
 *                                                       *
 *    Copyright (C) 2024 F&S Elektronik Systeme GmbH     *
 *                                                       *
-*    Author: Simon Brügel                               *
+*    Author: Simon Bruegel                              *
 *                                                       *
 *    This file is part of FusDotnetDemo.                *
 *                                                       *
@@ -23,9 +23,10 @@ public partial class UserControl_Gpio : UserControl
     /* GPIO functions are in a separate class */
     private Gpio_Demo? Gpio;
     /* GPIO Pin # */
-    private int gpioNoLed = 1; // GPIO_J1_54
-    private int gpioNoInputLed = 1; // GPIO_J1_54
-    private int gpioNoInput = 78; // GPIO_J1_52
+    private int gpioNoLed = DefaultBoardValues.GpioNoLed; // GPIO_J1_54
+    //TODO: Namen verbessern!
+    private int gpioNoInputLed = DefaultBoardValues.GpioNoInputLed; // GPIO_J1_54
+    private int gpioNoInput = DefaultBoardValues.GpioNoInput; // GPIO_J1_52
 
     private bool ledIsOn = false;
     private bool buttonIsActive = false;

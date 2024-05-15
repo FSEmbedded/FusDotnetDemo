@@ -11,6 +11,7 @@
 using Avalonia.Controls;
 using System;
 using System.Net;
+using FusDotnetDemo.Models.Tools;
 
 namespace FusDotnetDemo.Views;
 
@@ -18,6 +19,9 @@ public partial class MainWindow : Window
 {
     public MainWindow()
     {
+        /* Get default values for board type first */
+        DefaultBoardValues.GetDefaultValues();
+
         InitializeComponent();
         /* Add Infos to Header */
         txHeader.Text = ".NET on Linux with F&S Boards";

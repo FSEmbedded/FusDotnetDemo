@@ -2,7 +2,7 @@
 *                                                       *
 *    Copyright (C) 2024 F&S Elektronik Systeme GmbH     *
 *                                                       *
-*    Author: Simon Brügel                               *
+*    Author: Simon Bruegel                              *
 *                                                       *
 *    This file is part of FusDotnetDemo.                *
 *                                                       *
@@ -13,6 +13,7 @@ using System.Threading;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using FusDotnetDemo.Models.Tools;
 using FusDotnetDemo.Models.Hardware;
 
 namespace FusDotnetDemo.Views;
@@ -21,7 +22,7 @@ public partial class UserControl_Led : UserControl
 {
     /* LED functions are in a separate class */
     private readonly Led_Demo Led;
-    private string ledName = "";
+    private string ledName = DefaultBoardValues.LedName;
     private bool ledBlinkIsActive = false;
 
     public UserControl_Led()

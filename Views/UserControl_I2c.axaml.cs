@@ -2,7 +2,7 @@
 *                                                       *
 *    Copyright (C) 2024 F&S Elektronik Systeme GmbH     *
 *                                                       *
-*    Author: Simon Brügel                               *
+*    Author: Simon Bruegel                              *
 *                                                       *
 *    This file is part of FusDotnetDemo.                *
 *                                                       *
@@ -20,24 +20,24 @@ namespace FusDotnetDemo.Views;
 
 public partial class UserControl_I2c : UserControl
 {
-    /* I²C functions are in a separate class */
+    /* I2C functions are in a separate class */
     I2c_Demo? I2c;
     I2c_Demo? I2cPwm;
     I2c_Demo? I2cAdc;
     /* Standard IDs and addresses */
-    private int busIdRW = 0x5;
-    private int devAddrRW = 0x23;
-    private int busIdLed = 0x5;
-    private int devAddrLed = 0x23;
-    private int busIdPwm = 0x5;
-    private int devAddrPwm = 0x63;
-    private int busIdAdc = 0x5;
-    private int devAddrAdc = 0x4b;
+    private int busIdRW = DefaultBoardValues.BusId;
+    private int devAddrRW = DefaultBoardValues.DevAddrRW;
+    private int busIdLed = DefaultBoardValues.BusId;
+    private int devAddrLed = DefaultBoardValues.DevAddrLed;
+    private int busIdPwm = DefaultBoardValues.BusId;
+    private int devAddrPwm = DefaultBoardValues.DevAddrPwm;
+    private int busIdAdc = DefaultBoardValues.BusId;
+    private int devAddrAdc = DefaultBoardValues.DevAddrAdc;
     /* Values to write to I2C device */
-    private byte valueWrite1 = 0xAA;
-    private byte valueWrite2 = 0x55;
-    private byte register1 = 0x02;
-    private byte register2 = 0x03;
+    private byte valueWrite1 = DefaultBoardValues.ValueWrite1;
+    private byte valueWrite2 = DefaultBoardValues.ValueWrite2;
+    private byte register1 = DefaultBoardValues.I2cRegister1;
+    private byte register2 = DefaultBoardValues.I2cRegister2;
 
     private bool ledThreadStarted = false;
 
@@ -83,7 +83,7 @@ public partial class UserControl_I2c : UserControl
             return;
         }
 
-        txInfoWrite.Text = $"Values 0x{valueWrite1:X} & 0x{valueWrite2:X} sent to I²C Device";
+        txInfoWrite.Text = $"Values 0x{valueWrite1:X} & 0x{valueWrite2:X} sent to Iï¿½C Device";
         txInfoWrite.Foreground = Brushes.Blue;
 
         /* Read values from I2C Device */
@@ -93,12 +93,12 @@ public partial class UserControl_I2c : UserControl
         /* Check if values read and write are equal */
         if (valueRead1 == valueWrite1 && valueRead2 == valueWrite2)
         {
-            txInfoRead.Text = $"Values 0x{valueRead1:X} & 0x{valueRead2:X} read from I²C Device";
+            txInfoRead.Text = $"Values 0x{valueRead1:X} & 0x{valueRead2:X} read from Iï¿½C Device";
             txInfoRead.Foreground = Brushes.Green;
         }
         else
         {
-            txInfoRead.Text = $"Values 0x{valueRead1:X} & 0x{valueRead2:X} don't match the values written to I²C Device";
+            txInfoRead.Text = $"Values 0x{valueRead1:X} & 0x{valueRead2:X} don't match the values written to Iï¿½C Device";
             txInfoRead.Foreground = Brushes.Red;
         }
     }
@@ -130,7 +130,7 @@ public partial class UserControl_I2c : UserControl
             /* Change UI */
             btnI2cLed.Content = "Stop LED Test";
             btnI2cLed.Background = Brushes.Red;
-            txInfoLed.Text = "LEDs on I²C-Extension Board are blinking";
+            txInfoLed.Text = "LEDs on Iï¿½C-Extension Board are blinking";
             txInfoLed.Foreground = Brushes.Blue;
         }
         else
@@ -141,7 +141,7 @@ public partial class UserControl_I2c : UserControl
             /* Change UI */
             btnI2cLed.Content = "Start LED Test";
             btnI2cLed.Background = Brushes.LightGreen;
-            txInfoLed.Text = "LEDs on I²C-Extension Board stopped blinking";
+            txInfoLed.Text = "LEDs on Iï¿½C-Extension Board stopped blinking";
             txInfoLed.Foreground = Brushes.Blue;
         }
     }
@@ -317,10 +317,10 @@ public partial class UserControl_I2c : UserControl
     private void FillTextBlockWithText()
     {
         /* Description Text */
-        txDescRW.Text = "Write the values to the I²C-Device at the defined Bus-ID and address.";
+        txDescRW.Text = "Write the values to the IÂ²C-Device at the defined Bus-ID and address.";
         txInfoWrite.Text = "";
         txInfoRead.Text = "";
-        txDescLed.Text = "Writes multiple values in a loop to the I²C-Device. On the I²C Extension Board you will get an LED chaser.";
+        txDescLed.Text = "Writes multiple values in a loop to the IÂ²C-Device. On the IÂ²C Extension Board you will get an LED chaser.";
         txInfoLed.Text = "";
         txDescPwm.Text = "Toggles the PWM multiple times and reads the values measured by the ADC.";
         txInfoPwm.Text = "";
