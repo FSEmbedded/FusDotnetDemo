@@ -24,11 +24,13 @@ public partial class UserControl_Camera : UserControl
 {
     /* Camera functions are in a separate class */
     private Camera_Demo? Camera;
-    //TODO: Pfad ändern, home/root/ entfernen
-    private readonly string imgFile = DefaultBoardValues.ImgFile;
-    private int busId;
-    private uint width = DefaultBoardValues.Width;
-    private uint height = DefaultBoardValues.Height;
+
+    private int BusId;
+
+    /* Default values from boardvalues.json */
+    private readonly string FilePathImage = DefaultValues.CameraFilePathImage;
+    private uint ImageWidth = DefaultValues.CameraImageWidth;
+    private uint ImageHeigth = DefaultValues.CameraImageHeigth;
 
     public UserControl_Camera()
     {
@@ -61,7 +63,7 @@ public partial class UserControl_Camera : UserControl
         try
         {
             /* Create new object Camera_Demo */
-            Camera = new Camera_Demo(busId, width, height);
+            Camera = new Camera_Demo(BusId, ImageWidth, ImageHeigth);
         }
         catch (Exception ex)
         {
@@ -70,37 +72,37 @@ public partial class UserControl_Camera : UserControl
             return;
         }
 
-        if (Camera.CaptureCam(imgFile))
+        if (Camera.CaptureCam(FilePathImage))
         {
             try
             {
                 /* Show image in UI */
-                Avalonia.Media.Imaging.Bitmap bitmap = new(imgFile);
+                Avalonia.Media.Imaging.Bitmap bitmap = new(FilePathImage);
                 imgCamCapture.Source = bitmap;
 
                 if ((bool)cbKeepFile.IsChecked!)
                 {
-                    txInfoCamera.Text = $"Image is stored at {imgFile}";
+                    txInfoCamera.Text = $"Image is stored at {FilePathImage}";
                     txInfoCamera.Foreground = Brushes.Green;
                 }
                 else
                 {
                     /* Delete image testfile */
-                    File.Delete(imgFile);
+                    File.Delete(FilePathImage);
                     txInfoCamera.Text = "";
                 }
             }
             catch (Exception ex)
             {
                 imgCamCapture.Source = null;
-                txInfoCamera.Text = $"Error showing image \"{imgFile}\":\r\n{ex.Message}";
+                txInfoCamera.Text = $"Error showing image \"{FilePathImage}\":\r\n{ex.Message}";
                 txInfoCamera.Foreground = Brushes.Red;
             }
         }
         else
         {
             imgCamCapture.Source = null;
-            txInfoCamera.Text = $"Is {cbCams.SelectedItem} a valid camera?\r\n{imgFile} has a size of 0 byte, please select another camera from the dropdown.";
+            txInfoCamera.Text = $"Is {cbCams.SelectedItem} a valid camera?\r\n{FilePathImage} has a size of 0 byte, please select another camera from the dropdown.";
             txInfoCamera.Foreground = Brushes.Red;
         }
     }
@@ -124,7 +126,7 @@ public partial class UserControl_Camera : UserControl
         if (cbCams.SelectedItem != null && !string.IsNullOrEmpty(cbCams.SelectedItem.ToString()))
         {
             /* Set Camera */
-            busId = ExtractNumber(cbCams.SelectedItem.ToString()!);
+            BusId = ExtractNumber(cbCams.SelectedItem.ToString()!);
             /* Close dropdown */
             cbCams.IsDropDownOpen = false;
             ActivateButtonCamera(true);
@@ -164,13 +166,13 @@ public partial class UserControl_Camera : UserControl
     private void GetValuesFromTextBox()
     {
         if (!string.IsNullOrEmpty(tbCamWidth.Text))
-            width = Convert.ToUInt32(tbCamWidth.Text);
+            ImageWidth = Convert.ToUInt32(tbCamWidth.Text);
         else
-            tbCamWidth.Text = width.ToString();
+            tbCamWidth.Text = ImageWidth.ToString();
         if (!string.IsNullOrEmpty(tbCamHeight.Text))
-            height = Convert.ToUInt32(tbCamHeight.Text);
+            ImageHeigth = Convert.ToUInt32(tbCamHeight.Text);
         else
-            tbCamHeight.Text = height.ToString();
+            tbCamHeight.Text = ImageHeigth.ToString();
     }
 
     private void AddButtonHandlers()
@@ -183,8 +185,8 @@ public partial class UserControl_Camera : UserControl
     private void WriteStandardValuesInTextBox()
     {
         /* Write standard values in textboxes*/
-        tbCamWidth.Text = Convert.ToString(width);
-        tbCamHeight.Text = Convert.ToString(height);
+        tbCamWidth.Text = Convert.ToString(ImageWidth);
+        tbCamHeight.Text = Convert.ToString(ImageHeigth);
     }
 
     private void AddTextBoxHandlers()

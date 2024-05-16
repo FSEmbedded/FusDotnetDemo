@@ -25,19 +25,22 @@ public partial class UserControl_Audio : UserControl
 {
     /* Audio functions are in a separate class */
     private Audio_Demo? Audio;
+
+    private readonly string FilePathAudioTestfile = AppContext.BaseDirectory + "Assets/Audio_Test.wav";
+
+    List<string[]>? PlaybackDevices;
+    List<string[]>? RecordingDevices;
+
     private bool speakerIsOn = false;
     private bool isRecording = false;
-    private uint recDuration = DefaultBoardValues.RecDuration; // seconds
-    private readonly string audioTestfile = AppContext.BaseDirectory + "Assets/Audio_Test.wav"; // comes with this tool
-    //TODO: Pfad anpassen, /home/root entfernen
-    private readonly string recFileCont = DefaultBoardValues.RecFileCont; // is created from software
-    private readonly string recFileDur = DefaultBoardValues.RecFileDur; // is created from software
 
-    private string inputSignal = DefaultBoardValues.InputSignal;
-    List<string[]>? playbackDevices;
-    List<string[]>? recordingDevices;
-    private string? linuxPlaybackDev = DefaultBoardValues.LinuxPlaybackDevice;
-    private string? linuxRecordingDev = DefaultBoardValues.LinuxRecordingDevice;
+    /* Default values from boardvalues.json */
+    private uint RecordingTime = DefaultValues.AudioRecordingTime; // seconds
+    private string InputSignal = DefaultValues.AudioInputSignal;
+    private string? PlaybackDevice = DefaultValues.AudioPlaybackDevice;
+    private string? RecordingDevice = DefaultValues.AudioRecordingDevice;
+    private readonly string FilePathRecordingContinuous = DefaultValues.AudioFilePathRecordingContinuous;
+    private readonly string FilePathRecordingTimed = DefaultValues.AudioFilePathRecordingTimed;
 
     public UserControl_Audio()
     {
@@ -58,11 +61,11 @@ public partial class UserControl_Audio : UserControl
         cbRecordDev.Items.Clear();
 
         /* Find all audio devices */
-        playbackDevices = Audio_Demo.GetPlaybackDevices();
-        recordingDevices = Audio_Demo.GetRecordingDevices();
+        PlaybackDevices = Audio_Demo.GetPlaybackDevices();
+        RecordingDevices = Audio_Demo.GetRecordingDevices();
 
         /* Add audio devices to ComboBoxes */
-        foreach (string[] device in playbackDevices)
+        foreach (string[] device in PlaybackDevices)
         {
             cbPlaybackDev.Items.Add(device[0]);
             /* Select default item in list (marked with (*) */
@@ -71,7 +74,7 @@ public partial class UserControl_Audio : UserControl
                 cbPlaybackDev.SelectedItem = device[0];
             }
         }
-        foreach (string[] device in recordingDevices)
+        foreach (string[] device in RecordingDevices)
         {
             cbRecordDev.Items.Add(device[0]);
             /* Select default item in list (marked with (*) */
@@ -89,7 +92,7 @@ public partial class UserControl_Audio : UserControl
             try
             {
                 /* Create new object Audio_Demo */
-                Audio = new Audio_Demo(linuxPlaybackDev!);
+                Audio = new Audio_Demo(PlaybackDevice!);
             }
             catch(Exception ex)
             {
@@ -98,7 +101,7 @@ public partial class UserControl_Audio : UserControl
                 return;
             }
             /* Create new thread, play sound in Loop until manually stopped */
-            Thread audioOutThread = new(() => Audio.PlayInLoop(audioTestfile));
+            Thread audioOutThread = new(() => Audio.PlayInLoop(FilePathAudioTestfile));
             audioOutThread.Start();
             speakerIsOn = true;
             /* Change UI */
@@ -130,7 +133,7 @@ public partial class UserControl_Audio : UserControl
             try
             {
                 /* Create new object Audio_Demo */
-                Audio = new Audio_Demo(linuxPlaybackDev!, linuxRecordingDev!);
+                Audio = new Audio_Demo(PlaybackDevice!, RecordingDevice!);
             }
             catch (Exception ex)
             {
@@ -140,11 +143,11 @@ public partial class UserControl_Audio : UserControl
             }
 
             /* Get selected Input Signal, set alsamixer to this input */
-            inputSignal = GetSelectedInputSignal(0);
-            Audio_Demo.SetAudioInputSignal(inputSignal);
+            InputSignal = GetSelectedInputSignal(0);
+            Audio_Demo.SetAudioInputSignal(InputSignal);
 
             /* Start Recording */
-            Audio.RecordContinuous(recFileCont);
+            Audio.RecordContinuous(FilePathRecordingContinuous);
             isRecording = true;
             /* Change UI */
             btnAudioInCont.Content = "Stop Recording";
@@ -166,16 +169,16 @@ public partial class UserControl_Audio : UserControl
                 txInfoAudioInCont.Foreground = Brushes.Blue;
                 btnAudioInTime.IsEnabled = true;
                 /* Play recorded file */
-                Audio.PlayAudioFile(recFileCont);
+                Audio.PlayAudioFile(FilePathRecordingContinuous);
 
                 if (!(bool)cbKeepFileCont.IsChecked!)
                 {
                     /* Delete recorded file */
-                    File.Delete(recFileCont);
+                    File.Delete(FilePathRecordingContinuous);
                 }
                 else
                 {
-                    txInfoAudioInCont.Text += $"\r\nFile is stored at {recFileCont}";
+                    txInfoAudioInCont.Text += $"\r\nFile is stored at {FilePathRecordingContinuous}";
                 }
             }
         }
@@ -191,13 +194,13 @@ public partial class UserControl_Audio : UserControl
         GetValuesFromTextBox();
 
         /* Get selected Input Signal, set alsamixer to this input */
-        inputSignal = GetSelectedInputSignal(1);
-        Audio_Demo.SetAudioInputSignal(inputSignal);
+        InputSignal = GetSelectedInputSignal(1);
+        Audio_Demo.SetAudioInputSignal(InputSignal);
 
         try
         {
             /* Create new object Audio_Demo */
-            Audio = new Audio_Demo(linuxPlaybackDev!, linuxRecordingDev!);
+            Audio = new Audio_Demo(PlaybackDevice!, RecordingDevice!);
         }
         catch (Exception ex)
         {
@@ -207,10 +210,10 @@ public partial class UserControl_Audio : UserControl
         }
 
         /* Start recording */
-        if (Audio.RecordFixedTime(recFileDur, recDuration))
+        if (Audio.RecordFixedTime(FilePathRecordingTimed, RecordingTime))
         {
             /* Play recorded file */
-            Audio.PlayAudioFile(recFileDur);
+            Audio.PlayAudioFile(FilePathRecordingTimed);
             txInfoAudioInTime.Text = "Recording success";
             txInfoAudioInTime.Foreground = Brushes.Blue;
         }
@@ -224,11 +227,11 @@ public partial class UserControl_Audio : UserControl
         if (!(bool)cbKeepFileTime.IsChecked!)
         {
             /* Delete recorded file */
-            File.Delete(recFileDur);
+            File.Delete(FilePathRecordingTimed);
         }
         else
         {
-            txInfoAudioInTime.Text += $"\r\nFile is stored at {recFileDur}";
+            txInfoAudioInTime.Text += $"\r\nFile is stored at {FilePathRecordingTimed}";
         }
     }
 
@@ -237,7 +240,7 @@ public partial class UserControl_Audio : UserControl
         if (cbPlaybackDev.SelectedItem != null && !string.IsNullOrEmpty(cbPlaybackDev.SelectedItem.ToString()))
         {
             /* Set Playback Device, stored in playbackDevices field 1 */
-            linuxPlaybackDev = playbackDevices!
+            PlaybackDevice = PlaybackDevices!
                 .Where(item => item.Length > 0 && item[0] == cbPlaybackDev.SelectedItem.ToString())
                 .Select(item => item.Length > 1 ? item[1] : null)
                 .FirstOrDefault();
@@ -257,7 +260,7 @@ public partial class UserControl_Audio : UserControl
         if (cbRecordDev.SelectedItem != null && !string.IsNullOrEmpty(cbRecordDev.SelectedItem.ToString()))
         {
             /* Set Recording Device, stored in recordingDevices field 1 */
-            linuxRecordingDev = recordingDevices!
+            RecordingDevice = RecordingDevices!
                 .Where(item => item.Length > 0 && item[0] == cbRecordDev.SelectedItem.ToString())
                 .Select(item => item.Length > 1 ? item[1] : null)
                 .FirstOrDefault();
@@ -331,9 +334,9 @@ public partial class UserControl_Audio : UserControl
     private void GetValuesFromTextBox()
     {
         if (!string.IsNullOrEmpty(tbAudioInTime.Text))
-            recDuration = Convert.ToUInt32(tbAudioInTime.Text);
+            RecordingTime = Convert.ToUInt32(tbAudioInTime.Text);
         else
-            tbAudioInTime.Text = recDuration.ToString();
+            tbAudioInTime.Text = RecordingTime.ToString();
     }
 
     private void AddButtonHandlers()
@@ -348,7 +351,7 @@ public partial class UserControl_Audio : UserControl
     private void WriteStandardValuesInTextBox()
     {
         /* Write standard values in textboxes */
-        tbAudioInTime.Text = Convert.ToString(recDuration);
+        tbAudioInTime.Text = Convert.ToString(RecordingTime);
     }
 
     private void AddTextBoxHandlers()

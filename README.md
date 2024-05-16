@@ -63,14 +63,23 @@ The App is intended to be run in fullscreen (*weston kiosk-shell*), for this rea
 
 ## Implemented Hardware Interfaces
 
-All interface demos have default values already set, for example GPIO pins, device IDs, register addresses etc.
-These default values are meant to be used with the [PicoCoreMX8MPr2, Rev1.10](https://www.fs-net.de/assets/download/docu/PicoCore/PicoCoreMX8MP_eng.pdf). In [this document](Assets/pcmx8mpr2.md) all hardware pins to be used with the default values are listed!
-If you use any other board, the default values are propably not working. Find your needed values in the [documentation for your board](https://www.fs-net.de/en/embedded-modules/product-overview/).
+All interface demos have default values already set, for example GPIO pins, device IDs, register addresses etc. These are defined in *boardvalues.json*. FusDotnetDemo checks your board type on startup and selects the values accordingly.
+You can see your board type / platform with this command in Linux:
+
+```bash
+cat /sys/bdinfo/platform
+```
+
+You can find a documentation for your board and it's interface connectors at [fs-net.de](https://fs-net.de/en/embedded-modules/product-overview/). Select your board and look for the *Hardware Documentation* and *GPIO Reference Card*.
+For some boards I have added files to this repo which show you the connector pins corresponding to the default values in *boardvalues.json*. You can find these files at *Assets/[BOARDTYPE].md*
 
 
 ### GPIO
 
 ![GPIO](Assets/screenshots/gpio.png)
+
+
+You can find the GPIO Pin number in the *GPIO Reference Card* for your board on the [F&S Website](https://fs-net.de/en/embedded-modules/product-overview/) in column */sys/class/gpio/gpio#*. 
 
 
 ### CAN
@@ -105,7 +114,7 @@ STRING=$(candump can0 -L -n1 | cut -d '#' -f2) && cansend can0 01b#${STRING}
 
 Bus for "I2C Extension Board" must be activated in the Device Tree of your board.
 If you don't have the F&S I2C Extension Board, at least the Read / Write test should be adaptable to your setup. The "I2C Extension Board" has LEDs and PWM / ADC that are used in the other tests.
-For the PWM / ADC Test, connect the pins for PWM and ADC!
+For the PWM / ADC Test, connect the pins for PWM and ADC with each other!
 
 
 ### SPI
@@ -160,7 +169,7 @@ You can use a webcam connected via USB.
 
 ## Further Information
 
-* [F&S Product Overview](https://fs-net.de/de/embedded-module/produktuebersicht/) - See all available boards, get hardware documentations for your board
+* [F&S Product Overview](https://fs-net.de/en/embedded-modules/product-overview/) - See all available boards, get hardware documentations for your board
 * [DOTNET on F&S Boards](https://fs-net.de/assets/download/docu/common/en/DOTNET%20on%20FS%20Boards.pdf) - Find information how to get startet with .NET on F&S Boards
 * [Official Microsoft IoT Documentation](https://docs.microsoft.com/dotnet/iot/) - Concepts, quickstarts, tutorials and API reference documentation.
 * [Avalonia  UI Documentation](https://docs.avaloniaui.net/) - All infos needed to build a cross-platform app UI

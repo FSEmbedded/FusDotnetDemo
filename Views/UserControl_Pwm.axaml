@@ -9,35 +9,35 @@
     <StackPanel>
       <!-- PWM Test - Time Span -->
       <TextBlock Text="PWM: Dim over time period" Classes.ClassName="true"/>
-      <TextBlock Name="txDescPwmTS" Classes.ClassDescription="true"/>
+      <TextBlock Name="txDescPwmTimeSpan" Classes.ClassDescription="true"/>
       <Grid ColumnDefinitions="*,*,*">
         <StackPanel Grid.Column="0">
           <TextBlock Text="PWM GPIO Pin:" Classes.ClassContentinfo="true"/>
-          <TextBox Name="tbPwmPinTS"/>
+          <TextBox Name="tbPwmPinTimeSpan"/>
         </StackPanel>
         <StackPanel Grid.Column="1">
           <TextBlock Text="Time span (s):" Classes.ClassContentinfo="true"/>
           <TextBox Name="tbTimeSpan"/>
         </StackPanel>
-        <Button Name="btnPwmTS" Content="Start PWM Test"/>
+        <Button Name="btnPwmTimeSpan" Content="Start PWM Test"/>
       </Grid>
-      <TextBlock Name="txInfoPwmTS" Classes.ClassInfo="true"/>
+      <TextBlock Name="txInfoPwmTimeSpan" Classes.ClassInfo="true"/>
       <Border Classes.ClassDivider="true"/>
       <!-- PWM Test - Value -->
       <TextBlock Text="PWM: Set Voltage" Classes.ClassName="true"/>
-      <TextBlock Name="txDescPwmV" Classes.ClassDescription="true"/>
+      <TextBlock Name="txDescPwmVoltage" Classes.ClassDescription="true"/>
       <Grid ColumnDefinitions="*,*,*">
         <StackPanel Grid.Column="0">
           <TextBlock Text="PWM GPIO Pin:" Classes.ClassContentinfo="true"/>
-          <TextBox Name="tbPwmPinV"/>
+          <TextBox Name="tbPwmPinVoltage"/>
         </StackPanel>
         <StackPanel Grid.Column="1">
           <TextBlock Text="Set Voltage:" Classes.ClassContentinfo="true"/>
           <Slider Name="slVoltage"/>
         </StackPanel>
-        <Button Name="btnPwmV" Content="Activate Slider"/>
+        <Button Name="btnPwmVoltage" Content="Activate Slider"/>
       </Grid>
-      <TextBlock Name="txInfoPwmV" Classes.ClassInfo="true"/>
+      <TextBlock Name="txInfoPwmVoltage" Classes.ClassInfo="true"/>
     </StackPanel>
   </ScrollViewer>
 </UserControl>

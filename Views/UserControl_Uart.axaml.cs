@@ -25,26 +25,25 @@ public partial class UserControl_Uart : UserControl
     Uart_Demo? UartSender;
     Uart_Demo? UartReceiver;
 
-    /* Standard values */
-    private string portSender = DefaultBoardValues.UartPortSender;
-    private string portReceiver = DefaultBoardValues.UartPortReceiver;
-    private string valueWrite = DefaultBoardValues.TestMessage;
-    private int baudrate = DefaultBoardValues.Baudrate;
-    private int dataBit = DefaultBoardValues.DataBit;
-    private double stopBit = DefaultBoardValues.StopBit;
-    private string parity = DefaultBoardValues.Parity;
-    private string handshake = DefaultBoardValues.Handshake;
-
     private bool senderSet = false;
     private bool receiverSet = false;
-    private string valueRead = "";
+    private string ValueRead = string.Empty;
 
+    /* Default values from boardvalues.json */
+    private string PortSender = DefaultValues.UartPortSender;
+    private string PortReceiver = DefaultValues.UartPortReceiver;
+    private string ValueWrite = DefaultValues.UartValueWrite;
+    private int Baudrate = DefaultValues.UartBaudrate;
+    private int DataBit = DefaultValues.UartDataBit;
+    private double StopBit = DefaultValues.UartStopBit;
+    private string Parity = DefaultValues.UartParity;
+    private string Handshake = DefaultValues.UartHandshake;
     /* Values to fill in ComboBoxes */
-    private readonly List<int> baudrates = DefaultBoardValues.Baudrates;
-    private readonly List<int> dataBits = DefaultBoardValues.DataBits;
-    private readonly List<double> stopBits = DefaultBoardValues.StopBits;
-    private readonly List<string> parities = DefaultBoardValues.Parities;
-    private readonly List<string> handshakes = DefaultBoardValues.Handshakes;
+    private readonly List<int> Baudrates = DefaultValues.UartBaudrates;
+    private readonly List<int> DataBits = DefaultValues.UartDataBits;
+    private readonly List<double> StopBits = DefaultValues.UartStopBits;
+    private readonly List<string> Parities = DefaultValues.UartParities;
+    private readonly List<string> handshakes = DefaultValues.UartHandshakes;
 
     public UserControl_Uart()
     {
@@ -66,13 +65,13 @@ public partial class UserControl_Uart : UserControl
         cbUartReceiver.ItemsSource = ports;
 
         /* Select port for Sender and Receiver in ComboBox */
-        if (!string.IsNullOrEmpty(portSender) && ports.Contains(portSender))
-            cbUartSender.SelectedItem = portSender;
+        if (!string.IsNullOrEmpty(PortSender) && ports.Contains(PortSender))
+            cbUartSender.SelectedItem = PortSender;
         else
             cbUartSender.SelectedIndex = 0;
         
-        if (!string.IsNullOrEmpty(portReceiver) && ports.Contains(portReceiver))
-            cbUartReceiver.SelectedItem = portReceiver;
+        if (!string.IsNullOrEmpty(PortReceiver) && ports.Contains(PortReceiver))
+            cbUartReceiver.SelectedItem = PortReceiver;
         else
             cbUartReceiver.SelectedIndex = 0;
 
@@ -87,8 +86,8 @@ public partial class UserControl_Uart : UserControl
         try
         {
             /* Create new objects Uart_Tests for read and write */
-            UartSender = new Uart_Demo(portSender, baudrate, dataBit, stopBit, parity, handshake);
-            UartReceiver = new Uart_Demo(portReceiver, baudrate, dataBit, stopBit, parity, handshake);
+            UartSender = new Uart_Demo(PortSender, Baudrate, DataBit, StopBit, Parity, Handshake);
+            UartReceiver = new Uart_Demo(PortReceiver, Baudrate, DataBit, StopBit, Parity, Handshake);
         }
         catch (Exception ex)
         {
@@ -99,9 +98,9 @@ public partial class UserControl_Uart : UserControl
         }
 
         /* Create new UART read thread*/
-        Thread uartReadThread = new(() => { valueRead = UartReceiver.Read(); });
+        Thread uartReadThread = new(() => { ValueRead = UartReceiver.Read(); });
         /* Create new UART write thread*/
-        Thread uartWriteThread = new(() => UartSender.Write(valueWrite));
+        Thread uartWriteThread = new(() => UartSender.Write(ValueWrite));
         
         /* Start threads */
         uartReadThread.Start();
@@ -111,10 +110,10 @@ public partial class UserControl_Uart : UserControl
         uartReadThread.Join();
 
         /* Show results in UI */
-        txUartSend.Text = $"Message sent on port {portSender}: {valueWrite}";
-        txUartReceive.Text = $"Message read on port {portReceiver}: {valueRead}";
+        txUartSend.Text = $"Message sent on port {PortSender}: {ValueWrite}";
+        txUartReceive.Text = $"Message read on port {PortReceiver}: {ValueRead}";
 
-        if (valueWrite == valueRead)
+        if (ValueWrite == ValueRead)
         {
             txInfoUart.Text = "Values sent and read are equal";
             txInfoUart.Foreground = Brushes.Green;
@@ -145,7 +144,7 @@ public partial class UserControl_Uart : UserControl
         if (cbUartSender.SelectedItem != null && !string.IsNullOrEmpty(cbUartSender.SelectedItem.ToString()))
         {
             /* Set Sender Port */
-            portSender = cbUartSender.SelectedItem.ToString()!;
+            PortSender = cbUartSender.SelectedItem.ToString()!;
             /* Close dropdown */
             cbUartSender.IsDropDownOpen = false;
             senderSet = true;
@@ -163,7 +162,7 @@ public partial class UserControl_Uart : UserControl
         if (cbUartReceiver.SelectedItem != null && !string.IsNullOrEmpty(cbUartReceiver.SelectedItem.ToString()))
         {
             /* Set Receiver Port */
-            portReceiver = cbUartReceiver.SelectedItem.ToString()!;
+            PortReceiver = cbUartReceiver.SelectedItem.ToString()!;
             /* Close dropdown */
             cbUartReceiver.IsDropDownOpen = false;
             receiverSet = true;
@@ -181,7 +180,7 @@ public partial class UserControl_Uart : UserControl
         if (cbDataBit.SelectedItem != null)
         {
             /* Set DataBit */
-            dataBit = dataBits[cbDataBit.SelectedIndex];
+            DataBit = DataBits[cbDataBit.SelectedIndex];
             /* Close dropdown */
             cbDataBit.IsDropDownOpen = false;
         }
@@ -192,7 +191,7 @@ public partial class UserControl_Uart : UserControl
         if (cbStopBit.SelectedItem != null)
         {
             /* Set StopBit */
-            stopBit = stopBits[cbStopBit.SelectedIndex];
+            StopBit = StopBits[cbStopBit.SelectedIndex];
             /* Close dropdown */
             cbStopBit.IsDropDownOpen = false;
         }
@@ -203,7 +202,7 @@ public partial class UserControl_Uart : UserControl
         if (cbBaudrate.SelectedItem != null)
         {
             /* Set Baudrate */
-            baudrate = baudrates[cbBaudrate.SelectedIndex];
+            Baudrate = Baudrates[cbBaudrate.SelectedIndex];
             /* Close dropdown */
             cbBaudrate.IsDropDownOpen = false;
         }
@@ -214,7 +213,7 @@ public partial class UserControl_Uart : UserControl
         if (cbParity.SelectedItem != null && !string.IsNullOrEmpty(cbParity.SelectedItem.ToString()))
         {
             /* Set ledName */
-            parity = parities[cbParity.SelectedIndex];
+            Parity = Parities[cbParity.SelectedIndex];
             /* Close dropdown */
             cbParity.IsDropDownOpen = false;
         }
@@ -225,7 +224,7 @@ public partial class UserControl_Uart : UserControl
         if (cbHandshake.SelectedItem != null && !string.IsNullOrEmpty(cbHandshake.SelectedItem.ToString()))
         {
             /* Set ledName */
-            handshake = handshakes[cbHandshake.SelectedIndex];
+            Handshake = handshakes[cbHandshake.SelectedIndex];
             /* Close dropdown */
             cbHandshake.IsDropDownOpen = false;
         }
@@ -234,9 +233,9 @@ public partial class UserControl_Uart : UserControl
     private void GetValuesFromTextBox()
     {
         if (!string.IsNullOrEmpty(tbMessage.Text))
-            valueWrite = tbMessage.Text;
+            ValueWrite = tbMessage.Text;
         else
-            tbMessage.Text = valueWrite;
+            tbMessage.Text = ValueWrite;
     }
 
     private void AddButtonHandlers()
@@ -249,7 +248,7 @@ public partial class UserControl_Uart : UserControl
     private void WriteStandardValuesInTextBox()
     {
         /* Write standard values in textboxes*/
-        tbMessage.Text = valueWrite;
+        tbMessage.Text = ValueWrite;
     }
 
     private void FillTextBlockWithText()
@@ -269,24 +268,24 @@ public partial class UserControl_Uart : UserControl
         cbUartSender.AddHandler(ComboBox.SelectionChangedEvent, CbUartSender_SelectionChanged!);
         cbUartReceiver.AddHandler(ComboBox.SelectionChangedEvent, CbUartReceiver_SelectionChanged!);
         /* Data Bit */
-        cbDataBit.ItemsSource = dataBits;
-        cbDataBit.SelectedItem = dataBit;
+        cbDataBit.ItemsSource = DataBits;
+        cbDataBit.SelectedItem = DataBit;
         cbDataBit.AddHandler(ComboBox.SelectionChangedEvent, CbDataBit_SelectionChanged!);
         /* Stop Bit */
-        cbStopBit.ItemsSource = stopBits;
-        cbStopBit.SelectedItem = stopBit;
+        cbStopBit.ItemsSource = StopBits;
+        cbStopBit.SelectedItem = StopBit;
         cbStopBit.AddHandler(ComboBox.SelectionChangedEvent, CbStopBit_SelectionChanged!);
         /* Baudrate */
-        cbBaudrate.ItemsSource = baudrates;
-        cbBaudrate.SelectedItem = baudrate;
+        cbBaudrate.ItemsSource = Baudrates;
+        cbBaudrate.SelectedItem = Baudrate;
         cbBaudrate.AddHandler(ComboBox.SelectionChangedEvent, CbBaudrate_SelectionChanged!);
         /* Parity */
-        cbParity.ItemsSource = parities;
-        cbParity.SelectedItem = parity;
+        cbParity.ItemsSource = Parities;
+        cbParity.SelectedItem = Parity;
         cbParity.AddHandler(ComboBox.SelectionChangedEvent, CbParity_SelectionChanged!);
         /* Handshake */
         cbHandshake.ItemsSource = handshakes;
-        cbHandshake.SelectedItem = handshake;
+        cbHandshake.SelectedItem = Handshake;
         cbHandshake.AddHandler(ComboBox.SelectionChangedEvent, CbHandshake_SelectionChanged!);
     }
 }

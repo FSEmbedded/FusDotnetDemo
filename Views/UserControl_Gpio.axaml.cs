@@ -22,14 +22,14 @@ public partial class UserControl_Gpio : UserControl
 {
     /* GPIO functions are in a separate class */
     private Gpio_Demo? Gpio;
-    /* GPIO Pin # */
-    private int gpioNoLed = DefaultBoardValues.GpioNoLed; // GPIO_J1_54
-    //TODO: Namen verbessern!
-    private int gpioNoInputLed = DefaultBoardValues.GpioNoInputLed; // GPIO_J1_54
-    private int gpioNoInput = DefaultBoardValues.GpioNoInput; // GPIO_J1_52
 
     private bool ledIsOn = false;
     private bool buttonIsActive = false;
+
+    /* Default values from boardvalues.json */
+    private int GpioNoOutputLed = DefaultValues.GpioNoOutputLed;
+    private int GpioNoOutputButton = DefaultValues.GpioNoOutputButton;
+    private int GpioNoInputButton = DefaultValues.GpioNoInputButton;
 
     public UserControl_Gpio()
     {
@@ -48,7 +48,7 @@ public partial class UserControl_Gpio : UserControl
             GetValuesFromTextBox();
 
             /* Create new object Gpio_Tests */
-            Gpio = new Gpio_Demo(gpioNoLed);
+            Gpio = new Gpio_Demo(GpioNoOutputLed);
             /* Create new thread, light up LED */
             Thread ledOnThread = new(() => Gpio.LedSwitchOn());
             ledOnThread.Start();
@@ -56,7 +56,7 @@ public partial class UserControl_Gpio : UserControl
             /* Change UI */
             btnLedSwitch.Content = "Switch Off";
             btnLedSwitch.Background = Brushes.Red;
-            txInfoLed.Text = $"LED on GPIO Pin {gpioNoLed} is on";
+            txInfoLed.Text = $"LED on GPIO Pin {GpioNoOutputLed} is on";
         }
         else
         {
@@ -67,7 +67,7 @@ public partial class UserControl_Gpio : UserControl
             /* Change UI */
             btnLedSwitch.Content = "Switch On";
             btnLedSwitch.Background = Brushes.LightGreen;
-            txInfoLed.Text = $"LED on GPIO Pin {gpioNoLed} is off";
+            txInfoLed.Text = $"LED on GPIO Pin {GpioNoOutputLed} is off";
         }
     }
 
@@ -79,7 +79,7 @@ public partial class UserControl_Gpio : UserControl
             GetValuesFromTextBox();
 
             /* Create new object Gpio_Tests */
-            Gpio = new Gpio_Demo(gpioNoInputLed, gpioNoInput);
+            Gpio = new Gpio_Demo(GpioNoOutputButton, GpioNoInputButton);
             /* Create new thread, turn off LED */
             Thread inputThread = new(() => Gpio.ActivateInputListener());
             inputThread.Start();
@@ -106,19 +106,19 @@ public partial class UserControl_Gpio : UserControl
     {
         /* Get Pin numbers from TextBoxes */
         if (!string.IsNullOrEmpty(tbLedPin.Text))
-            gpioNoLed = Convert.ToInt32(tbLedPin.Text);
+            GpioNoOutputLed = Convert.ToInt32(tbLedPin.Text);
         else
-            tbLedPin.Text = Convert.ToString(gpioNoLed);
+            tbLedPin.Text = Convert.ToString(GpioNoOutputLed);
 
         if (!string.IsNullOrEmpty(tbInputLedPin.Text))
-            gpioNoInputLed = Convert.ToInt32(tbInputLedPin.Text);
+            GpioNoOutputButton = Convert.ToInt32(tbInputLedPin.Text);
         else
-            tbInputLedPin.Text = Convert.ToString(gpioNoInputLed);
+            tbInputLedPin.Text = Convert.ToString(GpioNoOutputButton);
 
         if (!string.IsNullOrEmpty(tbInputButtonPin.Text))
-            gpioNoInput = Convert.ToInt32(tbInputButtonPin.Text);
+            GpioNoInputButton = Convert.ToInt32(tbInputButtonPin.Text);
         else
-            tbInputButtonPin.Text = Convert.ToString(gpioNoInput);
+            tbInputButtonPin.Text = Convert.ToString(GpioNoInputButton);
     }
 
     private void AddButtonHandlers()
@@ -132,9 +132,9 @@ public partial class UserControl_Gpio : UserControl
     private void WriteStandardValuesInTextBox()
     {
         /* Write standard GPIO pins in textboxes */
-        tbLedPin.Text = Convert.ToString(gpioNoLed);
-        tbInputLedPin.Text = Convert.ToString(gpioNoInputLed);
-        tbInputButtonPin.Text = Convert.ToString(gpioNoInput);
+        tbLedPin.Text = Convert.ToString(GpioNoOutputLed);
+        tbInputLedPin.Text = Convert.ToString(GpioNoOutputButton);
+        tbInputButtonPin.Text = Convert.ToString(GpioNoInputButton);
     }
 
     private void AddTextBoxHandlers()

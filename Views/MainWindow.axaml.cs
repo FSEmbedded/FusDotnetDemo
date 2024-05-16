@@ -19,11 +19,24 @@ public partial class MainWindow : Window
 {
     public MainWindow()
     {
-        /* Get default values for board type first */
-        DefaultBoardValues.GetDefaultValues();
+        /* Get default values for board type first
+         * Default values only work for Linux */
+        if (OperatingSystem.IsLinux())
+        {
+            DefaultValues.GetDefaultValues();
+        }
 
         InitializeComponent();
+        
+        /* Get version */
+        System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+        System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+        string? version = fvi.FileVersion;
+
         /* Add Infos to Header */
+        if (!string.IsNullOrEmpty(version) )
+            txVersion.Text = $"FusDotnetDemo V{version}";
+
         txHeader.Text = ".NET on Linux with F&S Boards";
         string archName = Environment.MachineName;
         txArchName.Text = archName;

@@ -25,13 +25,15 @@ public partial class UserControl_Pwm : UserControl
     private Pwm_Demo? PwmV;
 
     /* GPIO Pin # */
-    private int gpioNoPwm = DefaultBoardValues.GpioNoPwm;
-    private int pinPwmTS;
-    private int pinPwmV;
+    private int PinPwmTimeSpan;
+    private int PinPwmVoltage;
 
-    private int duration = DefaultBoardValues.PwmDuration;
-    private double voltageValue = DefaultBoardValues.PwmVoltageValue;
     private bool sliderIsActive = false;
+
+    /* Default values from boardvalues.json */
+    private int GpioNo = DefaultValues.PwmGpioNo;
+    private int Duration = DefaultValues.PwmDuration;
+    private double VoltageValue = DefaultValues.PwmVoltageValue;
 
     public UserControl_Pwm()
     {
@@ -46,27 +48,27 @@ public partial class UserControl_Pwm : UserControl
     private void BtnPwmTS_Clicked(object sender, RoutedEventArgs args)
     {
         /* Clear UI */
-        txInfoPwmTS.Text = "";
-        txInfoPwmTS.Foreground = Brushes.Blue;
+        txInfoPwmTimeSpan.Text = "";
+        txInfoPwmTimeSpan.Foreground = Brushes.Blue;
 
         /* Get GPIO Pin # and  Time Span of dimming process */
         GetValuesFromTextBox(0);
 
         /* Convert GPIO Pin # to gpio pin */
-        pinPwmTS = Helper.GetGpioPin(gpioNoPwm);
+        PinPwmTimeSpan = Helper.GetGpioPin(GpioNo);
 
         /* PwmDimLed takes 100 steps, sleep is in ms: (duration * 1000)ms / 100 */
-        int sleep = duration * 10;
+        int sleep = Duration * 10;
 
         try
         {
             /* Create new object Pwm_Tests */
-            PwmTS = new Pwm_Demo(pinPwmTS);
+            PwmTS = new Pwm_Demo(PinPwmTimeSpan);
         }
         catch (Exception ex)
         {
-            txInfoPwmTS.Text = ex.Message;
-            txInfoPwmTS.Foreground = Brushes.Red;
+            txInfoPwmTimeSpan.Text = ex.Message;
+            txInfoPwmTimeSpan.Foreground = Brushes.Red;
             return;
         }
         /* Start dimming */
@@ -76,8 +78,8 @@ public partial class UserControl_Pwm : UserControl
     private void BtnPwmV_Clicked(object sender, RoutedEventArgs args)
     {
         /* Clear UI */
-        txInfoPwmV.Text = "";
-        txInfoPwmV.Foreground = Brushes.Blue;
+        txInfoPwmVoltage.Text = "";
+        txInfoPwmVoltage.Foreground = Brushes.Blue;
 
         if (!sliderIsActive)
         {
@@ -85,29 +87,29 @@ public partial class UserControl_Pwm : UserControl
             GetValuesFromTextBox(1);
 
             /* Convert GPIO Pin # to gpio pin */
-            pinPwmV = Helper.GetGpioPin(gpioNoPwm);
-            voltageValue = slVoltage.Value;
+            PinPwmVoltage = Helper.GetGpioPin(GpioNo);
+            VoltageValue = slVoltage.Value;
 
             try
             {
                 /* Create new object Pwm_Tests */
-                PwmV = new Pwm_Demo(pinPwmV);
+                PwmV = new Pwm_Demo(PinPwmVoltage);
             }
             catch (Exception ex)
             {
-                txInfoPwmV.Text = ex.Message;
-                txInfoPwmV.Foreground = Brushes.Red;
+                txInfoPwmVoltage.Text = ex.Message;
+                txInfoPwmVoltage.Foreground = Brushes.Red;
                 return;
             }
 
             /* Create new thread, light up LED */
-            Thread pwmDimValueThread = new(() => PwmV.PwmDimValue(voltageValue));
+            Thread pwmDimValueThread = new(() => PwmV.PwmDimValue(VoltageValue));
             pwmDimValueThread.Start();
             sliderIsActive = true;
             /* Change UI */
-            btnPwmV.Content = "Deactivate Slider";
-            btnPwmV.Background = Brushes.Red;
-            txInfoPwmV.Text = "Move slider to change brightness";
+            btnPwmVoltage.Content = "Deactivate Slider";
+            btnPwmVoltage.Background = Brushes.Red;
+            txInfoPwmVoltage.Text = "Move slider to change brightness";
         }
         else
         {
@@ -116,9 +118,9 @@ public partial class UserControl_Pwm : UserControl
             stopPwmDimValueThread.Start();
             sliderIsActive = false;
             /* Change UI */
-            btnPwmV.Content = "Activate Slider";
-            btnPwmV.Background = Brushes.LightGreen;
-            txInfoPwmV.Text = "Slider is deactivated";
+            btnPwmVoltage.Content = "Activate Slider";
+            btnPwmVoltage.Background = Brushes.LightGreen;
+            txInfoPwmVoltage.Text = "Slider is deactivated";
         }
     }
 
@@ -127,8 +129,8 @@ public partial class UserControl_Pwm : UserControl
         if (sliderIsActive)
         {
             /* Set voltage when slider is moved */
-            voltageValue = slVoltage.Value;
-            PwmV!.SetVoltageValue(voltageValue);
+            VoltageValue = slVoltage.Value;
+            PwmV!.SetVoltageValue(VoltageValue);
         }
     }
 
@@ -138,21 +140,21 @@ public partial class UserControl_Pwm : UserControl
         {
             /* BtnPwmTS_Clicked() */
             case 0:
-                if (!string.IsNullOrEmpty(tbPwmPinTS.Text))
-                    gpioNoPwm = Convert.ToInt32(tbPwmPinTS.Text);
+                if (!string.IsNullOrEmpty(tbPwmPinTimeSpan.Text))
+                    GpioNo = Convert.ToInt32(tbPwmPinTimeSpan.Text);
                 else
-                    tbPwmPinTS.Text = gpioNoPwm.ToString();
+                    tbPwmPinTimeSpan.Text = GpioNo.ToString();
                 if (!string.IsNullOrEmpty(tbTimeSpan.Text))
-                    duration = Convert.ToInt32(tbTimeSpan.Text);
+                    Duration = Convert.ToInt32(tbTimeSpan.Text);
                 else
-                    tbTimeSpan.Text = duration.ToString();
+                    tbTimeSpan.Text = Duration.ToString();
                 break;
             /* BtnPwmV_Clicked() */
             case 1:
-                if (!string.IsNullOrEmpty(tbPwmPinV.Text))
-                    gpioNoPwm = Convert.ToInt32(tbPwmPinV.Text);
+                if (!string.IsNullOrEmpty(tbPwmPinVoltage.Text))
+                    GpioNo = Convert.ToInt32(tbPwmPinVoltage.Text);
                 else
-                    tbPwmPinV.Text = gpioNoPwm.ToString();
+                    tbPwmPinVoltage.Text = GpioNo.ToString();
                 break;
         }
     }
@@ -160,34 +162,34 @@ public partial class UserControl_Pwm : UserControl
     private void AddButtonHandlers()
     {
         /* Button bindings */
-        btnPwmTS.AddHandler(Button.ClickEvent, BtnPwmTS_Clicked!);
-        btnPwmV.AddHandler(Button.ClickEvent, BtnPwmV_Clicked!);
+        btnPwmTimeSpan.AddHandler(Button.ClickEvent, BtnPwmTS_Clicked!);
+        btnPwmVoltage.AddHandler(Button.ClickEvent, BtnPwmV_Clicked!);
     }
 
     private void WriteStandardValuesInTextBox()
     {
         /* Write standard GPIO pins in textboxes */
-        tbPwmPinTS.Text = Convert.ToString(gpioNoPwm);
-        tbTimeSpan.Text = Convert.ToString(duration);
-        tbPwmPinV.Text = Convert.ToString(gpioNoPwm);
+        tbPwmPinTimeSpan.Text = Convert.ToString(GpioNo);
+        tbTimeSpan.Text = Convert.ToString(Duration);
+        tbPwmPinVoltage.Text = Convert.ToString(GpioNo);
     }
 
     private void AddTextBoxHandlers()
     {
         /* Handler to only allow decimal value inputs */
-        tbPwmPinTS.AddHandler(KeyDownEvent, InputControl.TextBox_DecimalInput!, RoutingStrategies.Tunnel);
+        tbPwmPinTimeSpan.AddHandler(KeyDownEvent, InputControl.TextBox_DecimalInput!, RoutingStrategies.Tunnel);
         tbTimeSpan.AddHandler(KeyDownEvent, InputControl.TextBox_DecimalInput!, RoutingStrategies.Tunnel);
-        tbPwmPinV.AddHandler(KeyDownEvent, InputControl.TextBox_DecimalInput!, RoutingStrategies.Tunnel);
+        tbPwmPinVoltage.AddHandler(KeyDownEvent, InputControl.TextBox_DecimalInput!, RoutingStrategies.Tunnel);
     }
 
     private void FillTextBlockWithText()
     {
-        txDescPwmTS.Text = "This test will light up the LED connected to the selected GPIO pin.\r\n" +
+        txDescPwmTimeSpan.Text = "This test will light up the LED connected to the selected GPIO pin.\r\n" +
             "The brightness will be increased over time by changing PWM values";
-        txDescPwmV.Text = "This test will light up the LED connected to the selected GPIO pin.\r\n" +
+        txDescPwmVoltage.Text = "This test will light up the LED connected to the selected GPIO pin.\r\n" +
             "LED brightness by changing the value for voltage using the slider";
-        txInfoPwmTS.Text = "";
-        txInfoPwmV.Text = "";
+        txInfoPwmTimeSpan.Text = "";
+        txInfoPwmVoltage.Text = "";
     }
 
     private void SetupSlider()
@@ -195,7 +197,7 @@ public partial class UserControl_Pwm : UserControl
         /* Set values for slider, add handler for movement */
         slVoltage.Minimum = 0;
         slVoltage.Maximum = 1;
-        slVoltage.Value = voltageValue;
+        slVoltage.Value = VoltageValue;
         slVoltage.AddHandler(PointerMovedEvent, SlVoltage_OnPointerMoved!);
     }
 }

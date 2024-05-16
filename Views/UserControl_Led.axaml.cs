@@ -22,8 +22,11 @@ public partial class UserControl_Led : UserControl
 {
     /* LED functions are in a separate class */
     private readonly Led_Demo Led;
-    private string ledName = DefaultBoardValues.LedName;
+
     private bool ledBlinkIsActive = false;
+
+    /* Default values from boardvalues.json */
+    private string LedName = DefaultValues.LedName;
 
     public UserControl_Led()
     {
@@ -51,9 +54,9 @@ public partial class UserControl_Led : UserControl
         }
 
         /* Select ledName in ComboBox */
-        if (!string.IsNullOrEmpty(ledName) && ledNames.Contains(ledName))
+        if (!string.IsNullOrEmpty(LedName) && ledNames.Contains(LedName))
         {
-            cbLedNames.SelectedItem = ledName;
+            cbLedNames.SelectedItem = LedName;
         }
         else
             cbLedNames.SelectedIndex = 0;
@@ -66,8 +69,8 @@ public partial class UserControl_Led : UserControl
         if (cbLedNames.SelectedItem != null && !string.IsNullOrEmpty(cbLedNames.SelectedItem.ToString()))
         {
             /* Set ledName */
-            ledName = cbLedNames.SelectedItem.ToString()!;
-            tbLedName.Text = ledName;
+            LedName = cbLedNames.SelectedItem.ToString()!;
+            tbLedName.Text = LedName;
             /* Close dropdown */
             cbLedNames.IsDropDownOpen = false;
 
@@ -81,16 +84,16 @@ public partial class UserControl_Led : UserControl
     {
         if (!ledBlinkIsActive)
         {
-            if (!string.IsNullOrEmpty(ledName))
+            if (!string.IsNullOrEmpty(LedName))
             {
                 /* Create new thread, let LED blink */
-                Thread ledBlinkThread = new(() => Led.StartLedBlink(ledName));
+                Thread ledBlinkThread = new(() => Led.StartLedBlink(LedName));
                 ledBlinkThread.Start();
                 ledBlinkIsActive = true;
                 /* Change UI */
                 btnLed.Content = "Stop LED";
                 btnLed.Background = Brushes.Red;
-                txInfoLed.Text = $"LED {ledName} blinks";
+                txInfoLed.Text = $"LED {LedName} blinks";
             }
             else
                 txInfoLed.Text = "Select LED from Dropdown";
@@ -104,7 +107,7 @@ public partial class UserControl_Led : UserControl
             /* Change UI */
             btnLed.Content = "Blink LED";
             btnLed.Background = Brushes.LightGreen;
-            txInfoLed.Text = $"LED {ledName} is off";
+            txInfoLed.Text = $"LED {LedName} is off";
         }
     }
 

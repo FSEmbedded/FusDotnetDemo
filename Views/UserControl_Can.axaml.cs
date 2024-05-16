@@ -23,16 +23,19 @@ public partial class UserControl_Can : UserControl
 {
     /* CAN functions are in a separate class */
     private Can_Demo? Can;
-    /* Standard values */
-    private string canDevNo = DefaultBoardValues.CanDevNo; //can0
-    private string canDevice = string.Empty; //TODO -> benötigt?
-    private string bitrate = DefaultBoardValues.Bitrate;
-    private byte[] valueSend = DefaultBoardValues.ValueSend;
-    private uint canIdWrite = DefaultBoardValues.CanIdWrite;
-    /* values that are read */
-    private byte[] valueRead = [];
-    private uint canIdRead;
     
+    private string CanDevice = string.Empty;
+
+    /* values that are read */
+    private byte[] ValuesRead = [];
+    private uint CanIdRead;
+
+    /* Default values from boardvalues.json */
+    private string CanDeviceNo = DefaultValues.CanDeviceNo;
+    private uint CanIdWrite = DefaultValues.CanIdWrite;
+    private string Bitrate = DefaultValues.CanBitrate;
+    private byte[] ValuesSend = DefaultValues.CanValuesSend;
+
     public UserControl_Can()
     {
         InitializeComponent();
@@ -54,7 +57,7 @@ public partial class UserControl_Can : UserControl
             /* Create new object Can_Tests
              * Will activate CAN device in constructor
              * Writes to external CAN device to check if connection is established */
-            Can = new Can_Demo(canDevice, bitrate, canIdWrite);
+            Can = new Can_Demo(CanDevice, Bitrate, CanIdWrite);
             txInfoCanAct.Text = "CAN device is active and connection to receiving device is validated";
             txInfoCanAct.Foreground = Brushes.Green;
             ActivateButtonCanRW(true);
@@ -71,16 +74,16 @@ public partial class UserControl_Can : UserControl
     private void BtnCanRW_Clicked(object sender, RoutedEventArgs args)
     {
         /* Reset values */
-        valueRead = [];
-        canIdRead = new();
+        ValuesRead = [];
+        CanIdRead = new();
 
         /* take values from TextBoxes, insert them into byte array */
-        valueSend = ValuesToByteArray();
+        ValuesSend = ValuesToByteArray();
 
         try
         {
             /* Run Read/Write test */
-            (valueRead, canIdRead) = Can!.StartRWTest(valueSend);
+            (ValuesRead, CanIdRead) = Can!.StartRWTest(ValuesSend);
         }
         catch (Exception ex)
         {
@@ -91,11 +94,11 @@ public partial class UserControl_Can : UserControl
         }
 
         /* Convert the byte array values to strings to display in UI */
-        txCanWrite.Text = "CAN Write - " + CreateResultString(canIdWrite, valueSend);
-        txCanRead.Text = "CAN Read - " + CreateResultString(canIdRead, valueRead);
+        txCanWrite.Text = "CAN Write - " + CreateResultString(CanIdWrite, ValuesSend);
+        txCanRead.Text = "CAN Read - " + CreateResultString(CanIdRead, ValuesRead);
 
         /* Compare CanIds and byte arrays - CanId must be different, but byte array the same */
-        if (canIdRead != canIdWrite && Helper.ByteArraysEqual(valueRead, valueSend))
+        if (CanIdRead != CanIdWrite && Helper.ByteArraysEqual(ValuesRead, ValuesSend))
         {
             txInfoCanRW.Text = $"CAN Test Success!\r\nCAN ID differs while values are the same";
             txInfoCanRW.Foreground = Brushes.Green;
@@ -143,21 +146,21 @@ public partial class UserControl_Can : UserControl
     {
         /* Get CAN Device and Bitrate from TextBoxes */
         if (!string.IsNullOrEmpty(tbCanDev.Text))
-            canDevNo = tbCanDev.Text;
+            CanDeviceNo = tbCanDev.Text;
         else
-            tbCanDev.Text = canDevNo;
+            tbCanDev.Text = CanDeviceNo;
         
         if (!string.IsNullOrEmpty(tbBitrate.Text))
-            bitrate = tbBitrate.Text;
+            Bitrate = tbBitrate.Text;
         else
-            tbBitrate.Text = bitrate;
+            tbBitrate.Text = Bitrate;
         
         if (!string.IsNullOrEmpty(tbCanId.Text))
-            canIdWrite = Helper.ConvertStringToUInt(tbCanId.Text);
+            CanIdWrite = Helper.ConvertStringToUInt(tbCanId.Text);
         else
-            tbCanId.Text = canIdWrite.ToString("X");
+            tbCanId.Text = CanIdWrite.ToString("X");
 
-        canDevice = $"can{canDevNo}";
+        CanDevice = $"can{CanDeviceNo}";
     }
 
     private void ActivateButtonCanRW(bool activate)
@@ -185,21 +188,21 @@ public partial class UserControl_Can : UserControl
          * or activation with new value is run again */
         if (sender == tbCanDev)
         {
-            if (tbCanDev.Text == canDevNo.ToString())
+            if (tbCanDev.Text == CanDeviceNo.ToString())
                 ActivateButtonCanRW(true);
             else
                 ActivateButtonCanRW(false);
         }
         else if (sender == tbCanId)
         {
-            if (tbCanId.Text == canIdWrite.ToString("X"))
+            if (tbCanId.Text == CanIdWrite.ToString("X"))
                 ActivateButtonCanRW(true);
             else
                 ActivateButtonCanRW(false);
         }
         else if (sender == tbBitrate)
         {
-            if (tbBitrate.Text == bitrate.ToString())
+            if (tbBitrate.Text == Bitrate.ToString())
                 ActivateButtonCanRW(true);
             else
                 ActivateButtonCanRW(false);
@@ -217,17 +220,17 @@ public partial class UserControl_Can : UserControl
     private void WriteStandardValuesInTextBox()
     {
         /* Write standard values in textboxes*/
-        tbCanDev.Text = canDevNo.ToString();
-        tbCanId.Text = canIdWrite.ToString("X");
-        tbBitrate.Text = bitrate.ToString();
-        tbVal0.Text = valueSend[0].ToString();
-        tbVal1.Text = valueSend[1].ToString();
-        tbVal2.Text = valueSend[2].ToString();
-        tbVal3.Text = valueSend[3].ToString();
-        tbVal4.Text = valueSend[4].ToString();
-        tbVal5.Text = valueSend[5].ToString();
-        tbVal6.Text = valueSend[6].ToString();
-        tbVal7.Text = valueSend[7].ToString();
+        tbCanDev.Text = CanDeviceNo.ToString();
+        tbCanId.Text = CanIdWrite.ToString("X");
+        tbBitrate.Text = Bitrate.ToString();
+        tbVal0.Text = ValuesSend[0].ToString();
+        tbVal1.Text = ValuesSend[1].ToString();
+        tbVal2.Text = ValuesSend[2].ToString();
+        tbVal3.Text = ValuesSend[3].ToString();
+        tbVal4.Text = ValuesSend[4].ToString();
+        tbVal5.Text = ValuesSend[5].ToString();
+        tbVal6.Text = ValuesSend[6].ToString();
+        tbVal7.Text = ValuesSend[7].ToString();
     }
 
     private void AddTextBoxHandlers()

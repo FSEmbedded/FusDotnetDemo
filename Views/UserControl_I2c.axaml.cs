@@ -24,20 +24,22 @@ public partial class UserControl_I2c : UserControl
     I2c_Demo? I2c;
     I2c_Demo? I2cPwm;
     I2c_Demo? I2cAdc;
-    /* Standard IDs and addresses */
-    private int busIdRW = DefaultBoardValues.BusId;
-    private int devAddrRW = DefaultBoardValues.DevAddrRW;
-    private int busIdLed = DefaultBoardValues.BusId;
-    private int devAddrLed = DefaultBoardValues.DevAddrLed;
-    private int busIdPwm = DefaultBoardValues.BusId;
-    private int devAddrPwm = DefaultBoardValues.DevAddrPwm;
-    private int busIdAdc = DefaultBoardValues.BusId;
-    private int devAddrAdc = DefaultBoardValues.DevAddrAdc;
+
+    /* Default values from boardvalues.json */
+    /* IDs and addresses */
+    private int BusIdRW = DefaultValues.I2cBusIdRW;
+    private int BusIdLed = DefaultValues.I2cBusIdLed;
+    private int BusIdPwm = DefaultValues.I2cBusIdPwm;
+    private int BusIdAdc = DefaultValues.I2cBusIdAdc;
+    private int DeviceAddrRW = DefaultValues.I2cDeviceAddrRW;
+    private int DeviceAddrLed = DefaultValues.I2cDeviceAddrLed;
+    private int DeviceAddrPwm = DefaultValues.I2cDeviceAddrPwm;
+    private int DeviceAddrAdc = DefaultValues.I2cDeviceAddrAdc;
     /* Values to write to I2C device */
-    private byte valueWrite1 = DefaultBoardValues.ValueWrite1;
-    private byte valueWrite2 = DefaultBoardValues.ValueWrite2;
-    private byte register1 = DefaultBoardValues.I2cRegister1;
-    private byte register2 = DefaultBoardValues.I2cRegister2;
+    private byte ValueWrite1 = DefaultValues.I2cValueWrite1;
+    private byte ValueWrite2 = DefaultValues.I2cValueWrite2;
+    private byte Register1 = DefaultValues.I2cRegister1;
+    private byte Register2 = DefaultValues.I2cRegister2;
 
     private bool ledThreadStarted = false;
 
@@ -58,7 +60,7 @@ public partial class UserControl_I2c : UserControl
         try
         {
             /* Create new object I2c_Tests */
-            I2c = new I2c_Demo(busIdRW, devAddrRW);
+            I2c = new I2c_Demo(BusIdRW, DeviceAddrRW);
         }
         catch (Exception ex)
         {
@@ -72,8 +74,8 @@ public partial class UserControl_I2c : UserControl
         try
         {
             /* Write values to I2C Device */
-           I2c!.WriteValueToRegister(register1, valueWrite1);
-           I2c!.WriteValueToRegister(register2, valueWrite2);
+           I2c!.WriteValueToRegister(Register1, ValueWrite1);
+           I2c!.WriteValueToRegister(Register2, ValueWrite2);
         }
         catch (Exception ex)
         {
@@ -83,15 +85,15 @@ public partial class UserControl_I2c : UserControl
             return;
         }
 
-        txInfoWrite.Text = $"Values 0x{valueWrite1:X} & 0x{valueWrite2:X} sent to I�C Device";
+        txInfoWrite.Text = $"Values 0x{ValueWrite1:X} & 0x{ValueWrite2:X} sent to I�C Device";
         txInfoWrite.Foreground = Brushes.Blue;
 
         /* Read values from I2C Device */
-        byte valueRead1 = I2c.ReadValueFromRegister(register1);
-        byte valueRead2 = I2c.ReadValueFromRegister(register2);
+        byte valueRead1 = I2c.ReadValueFromRegister(Register1);
+        byte valueRead2 = I2c.ReadValueFromRegister(Register2);
 
         /* Check if values read and write are equal */
-        if (valueRead1 == valueWrite1 && valueRead2 == valueWrite2)
+        if (valueRead1 == ValueWrite1 && valueRead2 == ValueWrite2)
         {
             txInfoRead.Text = $"Values 0x{valueRead1:X} & 0x{valueRead2:X} read from I�C Device";
             txInfoRead.Foreground = Brushes.Green;
@@ -113,7 +115,7 @@ public partial class UserControl_I2c : UserControl
             try
             {
                 /* Create new object I2c_Tests */
-                I2c = new I2c_Demo(busIdLed, devAddrLed);
+                I2c = new I2c_Demo(BusIdLed, DeviceAddrLed);
             }
             catch (Exception ex)
             {
@@ -158,9 +160,9 @@ public partial class UserControl_I2c : UserControl
         try
         {
             /* Create new object I2c_Tests for PWM device */
-            I2cPwm = new I2c_Demo(busIdPwm, devAddrPwm);
+            I2cPwm = new I2c_Demo(BusIdPwm, DeviceAddrPwm);
             /* Create new object I2c_Tests for ADC device */
-            I2cAdc = new I2c_Demo(busIdAdc, devAddrAdc);
+            I2cAdc = new I2c_Demo(BusIdAdc, DeviceAddrAdc);
         }
         catch (Exception ex)
         {
@@ -215,59 +217,59 @@ public partial class UserControl_I2c : UserControl
             /* BtnI2cRW_Clicked() */
             case 0:
                 if (!string.IsNullOrEmpty(tbBusIdRW.Text))
-                    busIdRW = Helper.ConvertHexStringToInt(tbBusIdRW.Text, busIdRW);
+                    BusIdRW = Helper.ConvertHexStringToInt(tbBusIdRW.Text, BusIdRW);
                 else
-                    tbBusIdRW.Text = busIdRW.ToString("X");
+                    tbBusIdRW.Text = BusIdRW.ToString("X");
                 if (!string.IsNullOrEmpty(tbDevAddrRW.Text))
-                    devAddrRW = Helper.ConvertHexStringToInt(tbDevAddrRW.Text, devAddrRW);
+                    DeviceAddrRW = Helper.ConvertHexStringToInt(tbDevAddrRW.Text, DeviceAddrRW);
                 else
-                    tbDevAddrRW.Text = devAddrRW.ToString("X");
+                    tbDevAddrRW.Text = DeviceAddrRW.ToString("X");
                 if (!string.IsNullOrEmpty(tbValue1.Text))
-                    valueWrite1 = Helper.ConvertHexStringToByte(tbValue1.Text, valueWrite1);
+                    ValueWrite1 = Helper.ConvertHexStringToByte(tbValue1.Text, ValueWrite1);
                 else
-                    tbValue1.Text = valueWrite1.ToString("X");
+                    tbValue1.Text = ValueWrite1.ToString("X");
                 if (!string.IsNullOrEmpty(tbValue2.Text))
-                    valueWrite2 = Helper.ConvertHexStringToByte(tbValue2.Text, valueWrite2);
+                    ValueWrite2 = Helper.ConvertHexStringToByte(tbValue2.Text, ValueWrite2);
                 else
-                    tbValue2.Text = valueWrite2.ToString("X");
+                    tbValue2.Text = ValueWrite2.ToString("X");
                 if (!string.IsNullOrEmpty(tbReg1.Text))
-                    register1 = Helper.ConvertHexStringToByte(tbReg1.Text, register1);
+                    Register1 = Helper.ConvertHexStringToByte(tbReg1.Text, Register1);
                 else
-                    tbReg1.Text = register1.ToString("X");
+                    tbReg1.Text = Register1.ToString("X");
                 if (!string.IsNullOrEmpty(tbReg2.Text))
-                    register2 = Helper.ConvertHexStringToByte(tbReg2.Text, register2);
+                    Register2 = Helper.ConvertHexStringToByte(tbReg2.Text, Register2);
                 else
-                    tbReg2.Text = register2.ToString("X");
+                    tbReg2.Text = Register2.ToString("X");
                 break;
             /* BtnI2cLed_Clicked() */
             case 1:
                 if (!string.IsNullOrEmpty(tbBusIdLed.Text))
-                    busIdLed = Helper.ConvertHexStringToInt(tbBusIdLed.Text, busIdLed);
+                    BusIdLed = Helper.ConvertHexStringToInt(tbBusIdLed.Text, BusIdLed);
                 else
-                    tbBusIdLed.Text = busIdLed.ToString("X");
+                    tbBusIdLed.Text = BusIdLed.ToString("X");
                 if (!string.IsNullOrEmpty(tbDevAddrLed.Text))
-                    devAddrLed = Helper.ConvertHexStringToInt(tbDevAddrLed.Text, devAddrLed);
+                    DeviceAddrLed = Helper.ConvertHexStringToInt(tbDevAddrLed.Text, DeviceAddrLed);
                 else
-                    tbDevAddrLed.Text = devAddrLed.ToString("X");
+                    tbDevAddrLed.Text = DeviceAddrLed.ToString("X");
                 break;
             /* BtnI2cPwm_Clicked() */
             case 2:
                 if (!string.IsNullOrEmpty(tbBusIdPwm.Text))
-                    busIdPwm = Helper.ConvertHexStringToInt(tbBusIdPwm.Text, busIdPwm);
+                    BusIdPwm = Helper.ConvertHexStringToInt(tbBusIdPwm.Text, BusIdPwm);
                 else
-                    tbBusIdPwm.Text = busIdPwm.ToString("X");
+                    tbBusIdPwm.Text = BusIdPwm.ToString("X");
                 if (!string.IsNullOrEmpty(tbDevAddrPwm.Text))
-                    devAddrPwm = Helper.ConvertHexStringToInt(tbDevAddrPwm.Text, devAddrPwm);
+                    DeviceAddrPwm = Helper.ConvertHexStringToInt(tbDevAddrPwm.Text, DeviceAddrPwm);
                 else
-                    tbDevAddrPwm.Text = devAddrPwm.ToString("X");
+                    tbDevAddrPwm.Text = DeviceAddrPwm.ToString("X");
                 if (!string.IsNullOrEmpty(tbBusIdAdc.Text))
-                    busIdAdc = Helper.ConvertHexStringToInt(tbBusIdAdc.Text, busIdAdc);
+                    BusIdAdc = Helper.ConvertHexStringToInt(tbBusIdAdc.Text, BusIdAdc);
                 else
-                    tbBusIdAdc.Text = busIdAdc.ToString("X");
+                    tbBusIdAdc.Text = BusIdAdc.ToString("X");
                 if (!string.IsNullOrEmpty(tbDevAddrAdc.Text))
-                    devAddrAdc = Helper.ConvertHexStringToInt(tbDevAddrAdc.Text, devAddrAdc);
+                    DeviceAddrAdc = Helper.ConvertHexStringToInt(tbDevAddrAdc.Text, DeviceAddrAdc);
                 else
-                    tbDevAddrAdc.Text = devAddrAdc.ToString("X");
+                    tbDevAddrAdc.Text = DeviceAddrAdc.ToString("X");
                 break;
         }
     }
@@ -283,18 +285,18 @@ public partial class UserControl_I2c : UserControl
     private void WriteStandardValuesInTextBox()
     {
         /* Write standard values in textboxes*/
-        tbBusIdRW.Text = busIdRW.ToString("X");
-        tbDevAddrRW.Text = devAddrRW.ToString("X");
-        tbValue1.Text = valueWrite1.ToString("X");
-        tbValue2.Text = valueWrite2.ToString("X");
-        tbReg1.Text = register1.ToString("X");
-        tbReg2.Text = register2.ToString("X");
-        tbBusIdLed.Text = busIdLed.ToString("X");
-        tbDevAddrLed.Text = devAddrLed.ToString("X");
-        tbBusIdPwm.Text = busIdPwm.ToString("X");
-        tbDevAddrPwm.Text = devAddrPwm.ToString("X");
-        tbBusIdAdc.Text = busIdAdc.ToString("X");
-        tbDevAddrAdc.Text = devAddrAdc.ToString("X");
+        tbBusIdRW.Text = BusIdRW.ToString("X");
+        tbDevAddrRW.Text = DeviceAddrRW.ToString("X");
+        tbValue1.Text = ValueWrite1.ToString("X");
+        tbValue2.Text = ValueWrite2.ToString("X");
+        tbReg1.Text = Register1.ToString("X");
+        tbReg2.Text = Register2.ToString("X");
+        tbBusIdLed.Text = BusIdLed.ToString("X");
+        tbDevAddrLed.Text = DeviceAddrLed.ToString("X");
+        tbBusIdPwm.Text = BusIdPwm.ToString("X");
+        tbDevAddrPwm.Text = DeviceAddrPwm.ToString("X");
+        tbBusIdAdc.Text = BusIdAdc.ToString("X");
+        tbDevAddrAdc.Text = DeviceAddrAdc.ToString("X");
     }
 
     private void AddTextBoxHandlers()

@@ -19,7 +19,10 @@
   <Grid RowDefinitions="50,*">
     <Grid ColumnDefinitions="Auto,*,Auto" Classes.ClassHeader="true" Grid.Row="0">
       <Image Source="/Assets/fs_logo.png" Margin="5" Grid.Column="0" HorizontalAlignment="Left"/>
-      <TextBlock Name="txHeader" Classes.ClassHeader="true" Grid.Column="1"/>
+      <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+        <TextBlock Name="txVersion" Classes.ClassHeaderDevInfo="true" HorizontalAlignment="Center"/>
+        <TextBlock Name="txHeader" Classes.ClassHeader="true"/>
+      </StackPanel>
       <StackPanel Grid.Column="2" HorizontalAlignment="Right">
         <TextBlock Name="txArchName" Classes.ClassHeaderDevInfo="true"/>
         <TextBlock Name="txIp" Classes.ClassHeaderDevInfo="true"/>
