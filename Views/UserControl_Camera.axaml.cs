@@ -46,10 +46,17 @@ public partial class UserControl_Camera : UserControl
     private void BtnGetCams_Clicked(object sender, RoutedEventArgs args)
     {
         /* Find all available Cameras */
-        List<string> cameras = Camera_Demo.GetAvailableCameras();
+        List<string> Cameras = Camera_Demo.GetAvailableCameras();
+
+        if (Cameras.Count == 0)
+        {
+            txInfoGetCams.Text = "No camera found!";
+        }
+        else
+            txInfoGetCams.Text = string.Empty;
 
         /* Add all available cameras to the ComboBox */
-        cbCams.ItemsSource = cameras;
+        cbCams.ItemsSource = Cameras;
 
         /* Select camera in ComboBox */
         cbCams.SelectedIndex = 0;

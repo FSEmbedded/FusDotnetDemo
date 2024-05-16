@@ -46,22 +46,29 @@ public partial class UserControl_Led : UserControl
         /* Empty ComboBox */
         cbLedNames.Items.Clear();
 
-        List<string> ledNames = Led_Demo.GetAllLeds();
+        List<string> LedNames = Led_Demo.GetAllLeds();
+        
+        if (LedNames.Count == 0)
+        {
+            txInfoLedName.Text = "No LEDs found!";
+            return;
+        }
+        else
+            txInfoLedName.Text = "Select LED from dropdown to continue.";
+
         /* Add all names to the ComboBox */
-        foreach (string name in ledNames)
+        foreach (string name in LedNames)
         {
             cbLedNames.Items.Add(name);
         }
 
-        /* Select ledName in ComboBox */
-        if (!string.IsNullOrEmpty(LedName) && ledNames.Contains(LedName))
+        /* Select LedName in ComboBox */
+        if (!string.IsNullOrEmpty(LedName) && LedNames.Contains(LedName))
         {
             cbLedNames.SelectedItem = LedName;
         }
         else
-            cbLedNames.SelectedIndex = 0;
-
-        txInfoLedName.Text = "Select LED from dropdown to continue.";
+            cbLedNames.SelectedIndex = 0;        
     }
 
     private void CbLedNames_SelectionChanged(object sender, RoutedEventArgs args)

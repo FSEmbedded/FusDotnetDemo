@@ -64,6 +64,14 @@ public partial class UserControl_Audio : UserControl
         PlaybackDevices = Audio_Demo.GetPlaybackDevices();
         RecordingDevices = Audio_Demo.GetRecordingDevices();
 
+        if (PlaybackDevices.Count == 0 && RecordingDevices.Count == 0)
+        {
+            txInfoGetAudioDev.Text = "No audio devices found!";
+            return;
+        }
+        else
+            txInfoGetAudioDev.Text = string.Empty;
+
         /* Add audio devices to ComboBoxes */
         foreach (string[] device in PlaybackDevices)
         {
