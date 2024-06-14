@@ -3,20 +3,23 @@
     "picocoremx8mpr2": {
       "interfaces": {
         "audio": {
-          "LinuxPlaybackDevice": "",
-          "LinuxRecordingDevice": ""
+          "PlaybackDevice": "",
+          "RecordingDevice": ""
         },
         "can": {
-          "CanDevNo": "0",
+          "CanDeviceNo": "0",
           "CanIdWrite": "0x1a"
         },
         "gpio": {
-          "GpioNoLed": 1,
-          "GpioNoInputLed": 1,
-          "GpioNoInput": 78
+          "GpioNoInputButton": 78,
+          "GpioNoOutputButton": 1,
+          "GpioNoOutputLed": 1
         },
         "i2c": {
-          "BusId": "0x5"
+          "I2cBusIdAdc": "0x5",
+          "I2cBusIdLed": "0x5",
+          "I2cBusIdPwm": "0x5",
+          "I2cBusIdRW": "0x5"
         },
         "led": {
           "LedName": ""
@@ -25,48 +28,51 @@
           "GpioNoPwm": 1
         },
         "spi": {
-          "SpiDev": "0x1",
           "Register1": "0x2b",
-          "Register2": "0x2c"
+          "Register2": "0x2c",
+          "SpiDevice": "0x1"
         },
         "uart": {
-          "UartPortSender": "/dev/ttymxc1",
-          "UartPortReceiver": "/dev/ttymxc2"
+          "PortReceiver": "/dev/ttymxc2",
+          "PortSender": "/dev/ttymxc1"
         }
       }
     },
     "picocoremx6sx": {
       "interfaces": {
         "audio": {
-          "LinuxPlaybackDevice": "",
-          "LinuxRecordingDevice": ""
+          "PlaybackDevice": "",
+          "RecordingDevice": ""
         },
         "can": {
-          "CanDevNo": "0",
+          "CanDeviceNo": "0",
           "CanIdWrite": "0x1a"
         },
         "gpio": {
-          "GpioNoLed": 8,
-          "GpioNoInputLed": 5,
-          "GpioNoInput": 90
+          "GpioNoInputButton": 121,
+          "GpioNoOutputButton": 122,
+          "GpioNoOutputLed": 122
         },
         "i2c": {
-          "BusId": "0x5"
+          "I2cBusIdAdc": "0x5",
+          "I2cBusIdLed": "0x5",
+          "I2cBusIdPwm": "0x5",
+          "I2cBusIdRW": "0x5"
         },
         "led": {
           "LedName": ""
         },
         "pwm": {
-          "GpioNoPwm": 1
+          "GpioNoPwm": 122
         },
         "spi": {
-          "SpiDev": "0x1",
           "Register1": "0x2b",
-          "Register2": "0x2c"
+          "Register2": "0x2c",
+          "SpiDevice": "0x1"
         },
         "uart": {
-          "UartPortSender": "/dev/ttymxc1",
-          "UartPortReceiver": "/dev/ttymxc2"
+          "PortReceiver": "/dev/ttymxc2",
+          "PortSender": "/dev/ttymxc1"
         }
       }
     }
@@ -74,29 +80,29 @@
   "CommonDefaults": {
     "interfaces": {
       "audio": {
-        "RecDuration": 5,
-        "RecFileCont": "/home/root/record_continuous.wav",
-        "RecFileDur": "/home/root/record_fixedduration.wav",
-        "InputSignal": "LINE_IN"
+        "FilePathRecordingContinuous": "rec_continuous.wav",
+        "FilePathRecordingTimed": "rec_fixedduration.wav",
+        "InputSignal": "LINE_IN",
+        "RecordingTime": 5
       },
       "camera": {
-        "ImgFile": "/home/root/img_camtest.png",
-        "Width": 1920,
-        "Height": 1080
+        "FilePathImage": "img_camtest.png",
+        "ImageHeigth": 1080,
+        "ImageWidth": 1920
       },
       "can": {
         "Bitrate": "1000000",
-        "ValueSend": [1,2,3,40,50,60,70,80]
+        "ValuesSend": [ 1, 2, 3, 40, 50, 60, 70, 80 ]
       },
       "i2c": {
-        "DevAddrRW": "0x23",
-        "DevAddrLed": "0x23",
-        "DevAddrPwm": "0x63",
-        "DevAddrAdc": "0x4b",
-        "ValueWrite1": "0xaa",
-        "ValueWrite2": "0x55",
+        "DeviceAddrAdc": "0x4b",
+        "DeviceAddrLed": "0x23",
+        "DeviceAddrPwm": "0x63",
+        "DeviceAddrRW": "0x23",
         "Register1": "0x02",
-        "Register2": "0x03"
+        "Register2": "0x03",
+        "ValueWrite1": "0xaa",
+        "ValueWrite2": "0x55"
       },
       "pwm": {
         "Duration": 10,
@@ -107,17 +113,17 @@
         "ValueWrite2": "0x6"
       },
       "uart": {
-        "TestMessage": "TestMessage1234567890",
         "Baudrate": 115200,
+        "Baudrates": [ 110, 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 57600, 115200, 230400, 460800, 921600 ],
         "DataBit": 8,
-        "StopBit": 1,
-        "Parity": "None",
+        "DataBits": [ 7, 8 ],
         "Handshake": "None",
-        "Baudrates": [110,300,600,1200,2400,4800,9600,14400,19200,38400,57600,115200,230400,460800,921600],
-        "DataBits": [7,8],
-        "StopBits": [0,1,1.5,2],
-        "Parities": ["None","Odd","Even","Mark","Space"],
-        "Handshakes": ["None","XOnXOff","RequestToSend","RequestToSendXOnXOff"]
+        "Handshakes": [ "None", "XOnXOff", "RequestToSend", "RequestToSendXOnXOff" ],
+        "Parities": [ "None", "Odd", "Even", "Mark", "Space" ],
+        "Parity": "None",
+        "StopBit": 1,
+        "StopBits": [ 0, 1, 1.5, 2 ],
+        "ValueWrite": "TestMessage1234567890"
       }
     }
   }

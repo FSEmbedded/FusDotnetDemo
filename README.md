@@ -4,9 +4,10 @@
 
 This software demonstrates the possibilities of [dotnet on Linux](https://github.com/RDunkley/meta-dotnet-core).
 FusDotnetDemo implements the [.NET IoT Libraries](https://github.com/dotnet/iot), which make it easy to use the hardware features of [F&S Boards](https://fs-net.de/en)).
-The [UI](#avalonia-ui) is built with [Avalonia UI](https://www.avaloniaui.net/), so it is a multiplatform app and can be started on Linux as well as Windows (on Windows at least the program starts. The hardware tests are designed to work on Linux only and will propably lead to crashes on Windows!).
+The [UI](#avalonia-ui) is built with [Avalonia UI](https://www.avaloniaui.net/), so it is a multiplatform app and can be started on Linux as well as Windows (But mind that the hardware tests are designed to work on Linux only and will propably lead to crashes on Windows!).
 If you want to see which interface demos are implemented in this app you can jump right to the [descriptions](#implemented-hardware-interfaces).
 
+This software and the default values set in *boardvalues.json* are currently tested to work on a PicoCoreMX8MPr2. It should also run on other boards, however there are no default values set yet.
 
 ## Software Requirements
 

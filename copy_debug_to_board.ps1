@@ -1,5 +1,5 @@
 # Define variables, adapt as needed
-$ipAddress = "10.0.135"
+$ipAddress = "10.0.0.136"
 $projectName = "FusDotnetDemo"
 
 # Directories to copy from the local runtimes directory
@@ -50,6 +50,6 @@ ssh $remoteHost "tar -xf ${tarFileName} && rm ${tarFileName}"
 #ssh $remoteHost "dotnet ${projectName}/${projectName}.dll"
 
 # Clean up temporary directory
-#Remove-Item -Path $tempDir -Recurse
+Remove-Item -Path $tempDir -Recurse
 # Delete local .tar file
-#Remove-Item -Path $tarFilePath
+Remove-Item -Path $tarFilePath

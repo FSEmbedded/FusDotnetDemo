@@ -40,9 +40,3 @@ internal class Program
         .UseReactiveUI();
     }
 }
-
-//TODO: json files mit standardconfig
-//TODO: standard config für verschiedene boards einfügen
-//TODO: Readme -> standard values in json
-//TODO: Readme -> wo findet man benötigte pins?
-//TODO: Readme: neue boardconfig eintragen: -> cat /sys/bdinfo/platform
