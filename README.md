@@ -9,6 +9,8 @@ If you want to see which interface demos are implemented in this app you can jum
 
 This software and the default values set in *boardvalues.json* are currently tested to work on a PicoCoreMX8MPr2. It should also run on other boards, however there are no default values set yet.
 
+For questions and discussions, please visit the [F&S Forum](https://forum.fs-net.de/index.php?thread/4882-new-demo-application-net8-on-linux-with-gui-and-hardware-interfaces/).
+
 ## Software Requirements
 
 This software is targeting .NET 8.0.
@@ -170,6 +172,7 @@ You can use a webcam connected via USB.
 
 ## Further Information
 
+* [F&S Forum](https://forum.fs-net.de/index.php?thread/4882-new-demo-application-net8-on-linux-with-gui-and-hardware-interfaces/) - Questions and discussions about this software
 * [F&S Product Overview](https://fs-net.de/en/embedded-modules/product-overview/) - See all available boards, get hardware documentations for your board
 * [DOTNET on F&S Boards](https://fs-net.de/assets/download/docu/common/en/DOTNET%20on%20FS%20Boards.pdf) - Find information how to get startet with .NET on F&S Boards
 * [Official Microsoft IoT Documentation](https://docs.microsoft.com/dotnet/iot/) - Concepts, quickstarts, tutorials and API reference documentation.
