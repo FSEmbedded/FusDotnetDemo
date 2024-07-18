@@ -75,6 +75,44 @@
           "PortSender": "/dev/ttymxc1"
         }
       }
+    },
+    "efusa9x": {
+      "interfaces": {
+        "audio": {
+          "PlaybackDevice": "",
+          "RecordingDevice": ""
+        },
+        "can": {
+          "CanDeviceNo": "0",
+          "CanIdWrite": "0"
+        },
+        "gpio": {
+          "GpioNoInputButton": 0,
+          "GpioNoOutputButton": 0,
+          "GpioNoOutputLed": 0
+        },
+        "i2c": {
+          "I2cBusIdAdc": "0",
+          "I2cBusIdLed": "0",
+          "I2cBusIdPwm": "0",
+          "I2cBusIdRW": "0"
+        },
+        "led": {
+          "LedName": ""
+        },
+        "pwm": {
+          "GpioNoPwm": 0
+        },
+        "spi": {
+          "Register1": "0",
+          "Register2": "0",
+          "SpiDevice": "0"
+        },
+        "uart": {
+          "PortReceiver": "/dev/ttymxc0",
+          "PortSender": "/dev/ttymxc1"
+        }
+      }
     }
   },
   "CommonDefaults": {
