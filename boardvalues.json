@@ -1,6 +1,6 @@
 {
   "boards": {
-    "picocoremx8mpr2": {
+    "efusa9r2": {
       "interfaces": {
         "audio": {
           "PlaybackDevice": "",
@@ -8,32 +8,70 @@
         },
         "can": {
           "CanDeviceNo": "0",
-          "CanIdWrite": "0x1a"
+          "CanIdWrite": "0"
         },
         "gpio": {
-          "GpioNoInputButton": 78,
-          "GpioNoOutputButton": 1,
-          "GpioNoOutputLed": 1
+          "GpioNoInputButton": 0,
+          "GpioNoOutputButton": 0,
+          "GpioNoOutputLed": 0
         },
         "i2c": {
-          "I2cBusIdAdc": "0x5",
-          "I2cBusIdLed": "0x5",
-          "I2cBusIdPwm": "0x5",
-          "I2cBusIdRW": "0x5"
+          "I2cBusIdAdc": "0",
+          "I2cBusIdLed": "0",
+          "I2cBusIdPwm": "0",
+          "I2cBusIdRW": "0"
         },
         "led": {
           "LedName": ""
         },
         "pwm": {
-          "GpioNoPwm": 1
+          "GpioNoPwm": 0
         },
         "spi": {
-          "Register1": "0x2b",
-          "Register2": "0x2c",
-          "SpiDevice": "0x1"
+          "Register1": "0",
+          "Register2": "0",
+          "SpiDevice": "0"
         },
         "uart": {
           "PortReceiver": "/dev/ttymxc2",
+          "PortSender": "/dev/ttymxc1"
+        }
+      }
+    },
+    "efusa9x": {
+      "interfaces": {
+        "audio": {
+          "PlaybackDevice": "",
+          "RecordingDevice": ""
+        },
+        "can": {
+          "CanDeviceNo": "0",
+          "CanIdWrite": "0"
+        },
+        "gpio": {
+          "GpioNoInputButton": 0,
+          "GpioNoOutputButton": 0,
+          "GpioNoOutputLed": 0
+        },
+        "i2c": {
+          "I2cBusIdAdc": "0",
+          "I2cBusIdLed": "0",
+          "I2cBusIdPwm": "0",
+          "I2cBusIdRW": "0"
+        },
+        "led": {
+          "LedName": ""
+        },
+        "pwm": {
+          "GpioNoPwm": 0
+        },
+        "spi": {
+          "Register1": "0",
+          "Register2": "0",
+          "SpiDevice": "0"
+        },
+        "uart": {
+          "PortReceiver": "/dev/ttymxc0",
           "PortSender": "/dev/ttymxc1"
         }
       }
@@ -76,7 +114,7 @@
         }
       }
     },
-    "efusa9x": {
+    "picocoremx8mpr2": {
       "interfaces": {
         "audio": {
           "PlaybackDevice": "",
@@ -84,32 +122,32 @@
         },
         "can": {
           "CanDeviceNo": "0",
-          "CanIdWrite": "0"
+          "CanIdWrite": "0x1a"
         },
         "gpio": {
-          "GpioNoInputButton": 0,
-          "GpioNoOutputButton": 0,
-          "GpioNoOutputLed": 0
+          "GpioNoInputButton": 78,
+          "GpioNoOutputButton": 1,
+          "GpioNoOutputLed": 1
         },
         "i2c": {
-          "I2cBusIdAdc": "0",
-          "I2cBusIdLed": "0",
-          "I2cBusIdPwm": "0",
-          "I2cBusIdRW": "0"
+          "I2cBusIdAdc": "0x5",
+          "I2cBusIdLed": "0x5",
+          "I2cBusIdPwm": "0x5",
+          "I2cBusIdRW": "0x5"
         },
         "led": {
           "LedName": ""
         },
         "pwm": {
-          "GpioNoPwm": 0
+          "GpioNoPwm": 1
         },
         "spi": {
-          "Register1": "0",
-          "Register2": "0",
-          "SpiDevice": "0"
+          "Register1": "0x2b",
+          "Register2": "0x2c",
+          "SpiDevice": "0x1"
         },
         "uart": {
-          "PortReceiver": "/dev/ttymxc0",
+          "PortReceiver": "/dev/ttymxc2",
           "PortSender": "/dev/ttymxc1"
         }
       }

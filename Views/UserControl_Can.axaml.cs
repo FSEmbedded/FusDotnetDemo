@@ -24,7 +24,7 @@ public partial class UserControl_Can : UserControl
     /* CAN functions are in a separate class */
     private Can_Demo? Can;
     
-    private string CanDevice = string.Empty;
+    private string CanDevice = string.Empty;    
 
     /* values that are read */
     private byte[] ValuesRead = [];

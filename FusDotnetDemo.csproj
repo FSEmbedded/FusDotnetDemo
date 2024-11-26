@@ -30,6 +30,7 @@
   </ItemGroup>
 
  <ItemGroup>
+   <None Remove="Assets\efusa9r2.md" />
    <None Remove="boardvalues.json" />
  </ItemGroup>
 
