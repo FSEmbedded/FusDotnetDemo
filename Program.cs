@@ -40,10 +40,3 @@ internal class Program
         .UseReactiveUI();
     }
 }
-
-//TODO: standard config für verschiedene boards einfügen
-//TODO: DefaultValues pcoremx6sx prüfen!
-//TODO: Neue Version Testen auf pcoremx6sx & pcoremx8mpr2 & efusa9x
-//TODO: efusa9x.md fertigstellen
-//TODO: boardvalues.json für efusa9x fertigstellen
-//TODO: neuer release auf github
