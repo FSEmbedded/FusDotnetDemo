@@ -40,7 +40,7 @@ public class DefaultValues
     public static string CanDeviceNo { get; private set; } = string.Empty; // board specific
     public static uint CanIdWrite { get; private set; } = 0; // board specific
     public static string CanBitrate { get; private set; } = "1000000"; // common default
-    public static byte[] CanValuesSend { get; private set; } = [1, 2, 3, 40, 50, 60, 70, 80]; // common default
+    public static byte[] CanValuesSend { get; private set; } = [1, 2, 3, 4, 5, 6, 7, 8]; // common default
     /* GPIO Values */
     public static int GpioNoInputButton { get; private set; } = 0; // board specific
     public static int GpioNoOutputButton { get; private set; } = 0; // board specific
@@ -122,15 +122,66 @@ public class DefaultValues
         if (!File.Exists(boardvaluesPath))
             return;
 
-        string jsonString = File.ReadAllText(boardvaluesPath);
-        dynamic? jsonData = JsonConvert.DeserializeObject(jsonString);
-
-        if (jsonData == null)
-            return;
-
-        /* Get board specific values */
-        if (!string.IsNullOrEmpty(BoardType) || jsonData.boards[BoardType] != null)
+        try
         {
+            string jsonString = File.ReadAllText(boardvaluesPath);
+            dynamic? jsonData = JsonConvert.DeserializeObject(jsonString);
+
+            if (jsonData == null)
+                return;
+
+            /* Check if json contains "CommonDefaults" */
+            if (jsonData.CommonDefaults != null)
+            {
+                /* Read values from "CommonDefaults" */
+                var commonDefaults = jsonData.CommonDefaults.interfaces;
+                /* Audio Values */
+                AudioRecordingTime = commonDefaults.audio.RecordingTime ?? AudioRecordingTime;
+                AudioFilePathRecordingContinuous = commonDefaults.audio.FilePathRecordingContinuous ?? AudioFilePathRecordingContinuous;
+                AudioFilePathRecordingTimed = commonDefaults.audio.FilePathRecordingTimed ?? AudioFilePathRecordingTimed;
+                AudioInputSignal = commonDefaults.audio.InputSignal ?? AudioInputSignal;
+                /* Camera Values */
+                CameraFilePathImage = commonDefaults.camera.FilePathImage ?? CameraFilePathImage;
+                CameraImageWidth = commonDefaults.camera.ImageWidth ?? CameraImageWidth;
+                CameraImageHeigth = commonDefaults.camera.ImageHeigth ?? CameraImageHeigth;
+                /* CAN Values */
+                CanBitrate = commonDefaults.can.Bitrate ?? CanBitrate;
+                CanValuesSend = ((JArray)commonDefaults.can.ValuesSend).ToObject<byte[]>() ?? CanValuesSend;
+                /* I2C Values */
+                I2cDeviceAddrRW = ConvertHexStringToInt((string)commonDefaults.i2c.DeviceAddrRW);
+                I2cDeviceAddrLed = ConvertHexStringToInt((string)commonDefaults.i2c.DeviceAddrLed);
+                I2cDeviceAddrPwm = ConvertHexStringToInt((string)commonDefaults.i2c.DeviceAddrPwm);
+                I2cDeviceAddrAdc = ConvertHexStringToInt((string)commonDefaults.i2c.DeviceAddrAdc);
+                I2cValueWrite1 = ConvertHexStringToByte((string)commonDefaults.i2c.ValueWrite1);
+                I2cValueWrite2 = ConvertHexStringToByte((string)commonDefaults.i2c.ValueWrite2);
+                I2cRegister1 = ConvertHexStringToByte((string)commonDefaults.i2c.Register1);
+                I2cRegister2 = ConvertHexStringToByte((string)commonDefaults.i2c.Register2);
+                /* PWM Values */
+                PwmDuration = commonDefaults.pwm.Duration ?? PwmDuration;
+                PwmVoltageValue = commonDefaults.pwm.VoltageValue ?? PwmVoltageValue;
+                /* SPI Values */
+                SpiValueWrite1 = ConvertHexStringToByte((string)commonDefaults.spi.ValueWrite1);
+                SpiValueWrite2 = ConvertHexStringToByte((string)commonDefaults.spi.ValueWrite2);
+                /* UART Values */
+                UartValueWrite = commonDefaults.uart.ValueWrite ?? UartValueWrite;
+                UartBaudrate = commonDefaults.uart.Baudrate ?? UartBaudrate;
+                UartDataBit = commonDefaults.uart.DataBit ?? UartDataBit;
+                UartStopBit = commonDefaults.uart.StopBit ?? UartStopBit;
+                UartParity = commonDefaults.uart.Parity ?? UartParity;
+                UartHandshake = commonDefaults.uart.Handshake ?? UartHandshake;
+                UartBaudrates = ((JArray)commonDefaults.uart.Baudrates).ToObject<List<int>>() ?? UartBaudrates;
+                UartDataBits = ((JArray)commonDefaults.uart.DataBits).ToObject<List<int>>() ?? UartDataBits;
+                UartStopBits = ((JArray)commonDefaults.uart.StopBits).ToObject<List<double>>() ?? UartStopBits;
+                UartParities = ((JArray)commonDefaults.uart.Parities).ToObject<List<string>>() ?? UartParities;
+                UartHandshakes = ((JArray)commonDefaults.uart.Handshakes).ToObject<List<string>>() ?? UartHandshakes;
+            }
+
+            /* Get board specific values */
+            if (string.IsNullOrEmpty(BoardType) || jsonData.boards[BoardType] == null)
+            {
+                /* Return, if BoardType is not listed in boardvalues.json */
+                return;
+            }
             /* Read values for the specific board type */
             var boardData = jsonData.boards[BoardType].interfaces;
             /* Audio Values */
@@ -160,51 +211,9 @@ public class DefaultValues
             UartPortSender = boardData.uart.PortSender ?? UartPortSender;
             UartPortReceiver = boardData.uart.PortReceiver ?? UartPortReceiver;
         }
-        
-        /* Check if json contains "CommonDefaults" */
-        if(jsonData.CommonDefaults != null)
+        catch
         {
-            /* Read values from "CommonDefaults" */
-            var commonDefaults = jsonData.CommonDefaults.interfaces;
-            /* Audio Values */
-            AudioRecordingTime = commonDefaults.audio.RecordingTime ?? AudioRecordingTime;
-            AudioFilePathRecordingContinuous = commonDefaults.audio.FilePathRecordingContinuous ?? AudioFilePathRecordingContinuous;
-            AudioFilePathRecordingTimed = commonDefaults.audio.FilePathRecordingTimed ?? AudioFilePathRecordingTimed;
-            AudioInputSignal = commonDefaults.audio.InputSignal ?? AudioInputSignal;
-            /* Camera Values */
-            CameraFilePathImage = commonDefaults.camera.FilePathImage ?? CameraFilePathImage;
-            CameraImageWidth = commonDefaults.camera.ImageWidth ?? CameraImageWidth;
-            CameraImageHeigth = commonDefaults.camera.ImageHeigth ?? CameraImageHeigth;
-            /* CAN Values */
-            CanBitrate = commonDefaults.can.Bitrate ?? CanBitrate;
-            CanValuesSend = ((JArray)commonDefaults.can.ValuesSend).ToObject<byte[]>() ?? CanValuesSend;
-            /* I2C Values */
-            I2cDeviceAddrRW = ConvertHexStringToInt((string)commonDefaults.i2c.DeviceAddrRW);
-            I2cDeviceAddrLed = ConvertHexStringToInt((string)commonDefaults.i2c.DeviceAddrLed);
-            I2cDeviceAddrPwm = ConvertHexStringToInt((string)commonDefaults.i2c.DeviceAddrPwm);
-            I2cDeviceAddrAdc = ConvertHexStringToInt((string)commonDefaults.i2c.DeviceAddrAdc);
-            I2cValueWrite1 = ConvertHexStringToByte((string)commonDefaults.i2c.ValueWrite1);
-            I2cValueWrite2 = ConvertHexStringToByte((string)commonDefaults.i2c.ValueWrite2);
-            I2cRegister1 = ConvertHexStringToByte((string)commonDefaults.i2c.Register1);
-            I2cRegister2 = ConvertHexStringToByte((string)commonDefaults.i2c.Register2);
-            /* PWM Values */
-            PwmDuration = commonDefaults.pwm.Duration ?? PwmDuration;
-            PwmVoltageValue = commonDefaults.pwm.VoltageValue ?? PwmVoltageValue;
-            /* SPI Values */
-            SpiValueWrite1 = ConvertHexStringToByte((string)commonDefaults.spi.ValueWrite1);
-            SpiValueWrite2 = ConvertHexStringToByte((string)commonDefaults.spi.ValueWrite2);
-            /* UART Values */
-            UartValueWrite = commonDefaults.uart.ValueWrite ?? UartValueWrite;
-            UartBaudrate = commonDefaults.uart.Baudrate ?? UartBaudrate;
-            UartDataBit = commonDefaults.uart.DataBit ?? UartDataBit;
-            UartStopBit = commonDefaults.uart.StopBit ?? UartStopBit;
-            UartParity = commonDefaults.uart.Parity ?? UartParity;
-            UartHandshake = commonDefaults.uart.Handshake ?? UartHandshake;
-            UartBaudrates = ((JArray)commonDefaults.uart.Baudrates).ToObject<List<int>>() ?? UartBaudrates;
-            UartDataBits = ((JArray)commonDefaults.uart.DataBits).ToObject<List<int>>() ?? UartDataBits;
-            UartStopBits = ((JArray)commonDefaults.uart.StopBits).ToObject<List<double>>() ?? UartStopBits;
-            UartParities = ((JArray)commonDefaults.uart.Parities).ToObject<List<string>>() ?? UartParities;
-            UartHandshakes = ((JArray)commonDefaults.uart.Handshakes).ToObject<List<string>>() ?? UartHandshakes;
+            return;
         }
     }
 

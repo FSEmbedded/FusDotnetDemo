@@ -160,6 +160,7 @@ internal partial class Audio_Demo
 
     public static List<string[]> GetPlaybackDevices()
     {
+        //TODO: PlaybackDeviceName = sysdefault!? -> sollte für alle Boards gültig sein, Ausgabe von aplay -l unterschiedlich
         List<string[]> playbackDevices = [];
 
         /* Start the process to run the aplay -l command */

@@ -1,5 +1,5 @@
 # Define variables, adapt as needed
-$ipAddress = "10.0.0.136"
+$ipAddress = "10.0.0.95"
 $projectName = "FusDotnetDemo"
 
 # Directories to copy from the local runtimes directory
